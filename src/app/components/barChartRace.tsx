@@ -40,7 +40,7 @@ const D3BarChart: React.FC = () => {
       .attr("width", width)
       .attr("height", height);
 
-    const tickDuration = 500;
+    const tickDuration = 1;
     const top_n = 12;
 
     const margin = {
@@ -79,8 +79,11 @@ const D3BarChart: React.FC = () => {
         value: +d.value || 0,
         lastValue: +d.lastValue || 0,
         year: +d.year,
-        colour: d3.hsl(Math.random() * 360, 0.75, 0.75).toString(),
+        colour: d3.hsl((Math.random()*(0.8-0.3)+0.3) * 360, 0.75, 0.75).toString(),
       }));
+
+      let maxYear = d3.max(processedData, (d) => d.year) || 0;
+      let maxValue = d3.max(processedData, (d) => d.value) || 0;
 
       let yearSlice = processedData
         .filter((d) => d.year === year && !isNaN(d.value))
@@ -89,15 +92,15 @@ const D3BarChart: React.FC = () => {
         .map((d, i) => ({ ...d, rank: i }));
 
       const x = d3.scaleLinear()
-        .domain([0, d3.max(yearSlice, (d) => d.value) || 0])
-        .range([margin.left, width - margin.right - 65]);
+        .domain([0, d3.max(yearSlice, (d) => d.value-100) || 0])
+        .range([margin.left, 900]);
 
       const y = d3.scaleLinear()
         .domain([top_n, 0])
         .range([height - margin.bottom, margin.top]);
 
       const xAxis = d3.axisTop(x)
-        .ticks(width > 500 ? 5 : 2)
+        .ticks(5)
         .tickSize(-(height - margin.top - margin.bottom))
         .tickFormat(d3.format(","));
 
@@ -151,7 +154,7 @@ const D3BarChart: React.FC = () => {
         .attr("x", width - margin.right)
         .attr("y", height - 25)
         .style("text-anchor", "end")
-        .html(~~year)
+        .html(year)
         .call(halo, 0);
       // Ticker interval would be set up here
       const ticker = d3.interval((e) => {
@@ -160,13 +163,21 @@ const D3BarChart: React.FC = () => {
  yearSlice = data
           .filter((d) => d.year == year && !isNaN(d.value))
           .sort((a, b) => b.value - a.value)
+          // set the values of the undefined to 0
+          
           .slice(0, top_n);
 
         yearSlice.forEach((d, i) => (d.rank = i));
+        // console.log(yearSlice.map())
+        console.log(yearSlice[0]);
 
         //console.log('IntervalYear: ', yearSlice);
 
-        x.domain([0, d3.max(yearSlice, (d) => d.value)]);
+        // let maxxVall = d3.max(yearSlice, (d) => d.value) || 0;
+        
+        x.domain([0, yearSlice[0].value]);
+        // print the largest value of the yearSlice.value
+        
 
         svg
           .select(".xAxis")
@@ -182,7 +193,9 @@ const D3BarChart: React.FC = () => {
           .append("rect")
           .attr("class", (d) => `bar ${d.name.replace(/\s/g, "_")}`)
           .attr("x", x(0) + 1)
-          .attr("width", (d) => x(d.value) - x(0) - 1)
+          // .attr("width", (d) => x(d.value) - x(0) - 1)
+          // .attr("width", (d) => Math.min(x(d.value) - x(0) - 1, width - margin.right - x(0) - 1)) // Ensure bars do not exceed the right boundary
+          .attr("width", (d) => ((x(d.value) - x(0))/maxValue)*width) // Ensure bars do not exceed the right boundary
           .attr("y", (d) => y(top_n + 1) + 5)
           .attr("height", y(1) - y(0) - barPadding)
           // .style("fill", (d) => d.colour)
@@ -190,13 +203,15 @@ const D3BarChart: React.FC = () => {
           .duration(tickDuration)
           .ease(d3.easeLinear)
           .attr("y", (d) => y(d.rank) + 5)
-          .style("fill", d3.hsl(Math.random() * 360, 0.75, 0.75).toString());
+          .style("fill", d3.hsl((Math.random()*(0.8-0.3)+0.3) * 360, 0.75, 0.75).toString());
 
         bars
           .transition()
           .duration(tickDuration)
           .ease(d3.easeLinear)
-          .attr("width", (d) => x(d.value) - x(0) - 1)
+          // .attr("width", (d) => x(d.value) - x(0) - 1)
+          // .attr("width", (d) => Math.min(x(d.value) - x(0) - 1, width - margin.right - x(0) - 1)) // Ensure bars do not exceed the right boundary
+          .attr("width", (d) => ((x(d.value)-x(0)-1)/1)*1) // Ensure bars do not exceed the right boundary
           .attr("y", (d) => y(d.rank) + 5);
           // .style("fill", d3.hsl(Math.random() * 360, 0.75, 0.75).toString());
           // .style("fill", (d) => d.colour); // Ensure color is set for each bar
@@ -216,6 +231,7 @@ const D3BarChart: React.FC = () => {
           .enter()
           .append("text")
           .attr("class", "label")
+          .attr("width", (d) => Math.min(x(d.value) - x(0) - 1, width - margin.right - x(0) - 1)) // Ensure bars do not exceed the right boundary
           .attr("x", (d) => x(d.value) - 8)
           .attr("y", (d) => y(top_n + 1) + 5 + (y(1) - y(0)) / 2)
           .style("text-anchor", "end")
@@ -228,6 +244,7 @@ const D3BarChart: React.FC = () => {
         labels
           .transition()
           .duration(tickDuration)
+          .attr("width", (d) => Math.min(x(d.value) - x(0) - 1, width - margin.right - x(0) - 1)) // Ensure bars do not exceed the right boundary
           .ease(d3.easeLinear)
           .attr("x", (d) => x(d.value) - 8)
           .attr("y", (d) => y(d.rank) + 5 + (y(1) - y(0)) / 2 + 1);
@@ -236,6 +253,7 @@ const D3BarChart: React.FC = () => {
           .exit()
           .transition()
           .duration(tickDuration)
+          .attr("width", (d) => Math.min(x(d.value) - x(0) - 1, width - margin.right - x(0) - 1)) // Ensure bars do not exceed the right boundary
           .ease(d3.easeLinear)
           .attr("x", (d) => x(d.value) - 8)
           .attr("y", (d) => y(top_n + 1) + 5)
@@ -282,6 +300,8 @@ const D3BarChart: React.FC = () => {
         yearText.html(~~year);
 
         // if (year === 2001) ticker.stop();
+        
+        if (year === maxYear) ticker.stop();
         year = +d3.format(".1f")(year + 0.1);
       }, tickDuration);
     });
