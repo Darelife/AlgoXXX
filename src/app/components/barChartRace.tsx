@@ -44,7 +44,7 @@ const D3BarChart: React.FC = () => {
       .attr("width", width)
       .attr("height", height);
 
-    const tickDuration = 1;
+    const tickDuration = 300;
     const top_n = 12;
 
     const margin = {
