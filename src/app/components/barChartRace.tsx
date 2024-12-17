@@ -56,19 +56,19 @@ const D3BarChart: React.FC = () => {
     svg.append("text")
       .attr("class", "title")
       .attr("y", 24)
-      .html("18 years of Interbrand's Top Global Brands");
+      .html("Top Bits Goa CodeForce Users");
 
     svg.append("text")
       .attr("class", "subTitle")
       .attr("y", 55)
-      .html("Brand value, $m");
+      .html("Rating");
 
     svg.append("text")
       .attr("class", "caption")
       .attr("x", width)
       .attr("y", height - 5)
       .style("text-anchor", "end")
-      .html("Source: Interbrand");
+      .html("Source: CodeForces");
 
     let year = 2000;
 
@@ -185,11 +185,12 @@ const D3BarChart: React.FC = () => {
           .attr("width", (d) => x(d.value) - x(0) - 1)
           .attr("y", (d) => y(top_n + 1) + 5)
           .attr("height", y(1) - y(0) - barPadding)
-          .style("fill", (d) => d.colour)
+          // .style("fill", (d) => d.colour)
           .transition()
           .duration(tickDuration)
           .ease(d3.easeLinear)
-          .attr("y", (d) => y(d.rank) + 5);
+          .attr("y", (d) => y(d.rank) + 5)
+          .style("fill", d3.hsl(Math.random() * 360, 0.75, 0.75).toString());
 
         bars
           .transition()
@@ -197,6 +198,8 @@ const D3BarChart: React.FC = () => {
           .ease(d3.easeLinear)
           .attr("width", (d) => x(d.value) - x(0) - 1)
           .attr("y", (d) => y(d.rank) + 5);
+          // .style("fill", d3.hsl(Math.random() * 360, 0.75, 0.75).toString());
+          // .style("fill", (d) => d.colour); // Ensure color is set for each bar
 
         bars
           .exit()
@@ -278,7 +281,7 @@ const D3BarChart: React.FC = () => {
           
         yearText.html(~~year);
 
-        if (year === 2001) ticker.stop();
+        // if (year === 2001) ticker.stop();
         year = +d3.format(".1f")(year + 0.1);
       }, tickDuration);
     });
