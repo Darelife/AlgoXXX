@@ -14,16 +14,20 @@ interface BrandData {
 }
 
 const halo = (text: d3.Selection<SVGTextElement, unknown, null, undefined>, strokeWidth: number): void => {
-  text.select(function() { 
-    return this.parentNode?.insertBefore(this.cloneNode(true) as Element, this); 
-  })
-    .style('fill', '#ffffff')
-    .style('stroke','#ffffff')
-    .style('stroke-width', strokeWidth)
-    .style('stroke-linejoin', 'round')
-    .style('opacity', 1);
-}   
-
+  text.each(function () {
+    const parent = this.parentNode;
+    if (parent) {
+      const clone = this.cloneNode(true) as Element;
+      parent.insertBefore(clone, this);
+      d3.select(clone)
+        .style('fill', '#ffffff')
+        .style('stroke', '#ffffff')
+        .style('stroke-width', strokeWidth)
+        .style('stroke-linejoin', 'round')
+        .style('opacity', 1);
+    }
+  });
+};
 const D3BarChart: React.FC = () => {
   const svgRef = useRef<SVGSVGElement>(null);
   const width = 960;
@@ -73,17 +77,17 @@ const D3BarChart: React.FC = () => {
     let year = 2000;
 
     // Fetch CSV data - adjust path for Next.js public folder
-    d3.csv("/brand_values.csv").then((data: any[]) => {
+    d3.csv("/brand_values.csv").then((data) => {
       const processedData: BrandData[] = data.map((d) => ({
         name: d.name,
         value: +d.value || 0,
         lastValue: +d.lastValue || 0,
-        year: +d.year,
+        year: +d.year || 0,
         colour: d3.hsl((Math.random()*(0.8-0.3)+0.3) * 360, 0.75, 0.75).toString(),
       }));
 
-      let maxYear = d3.max(processedData, (d) => d.year) || 0;
-      let maxValue = d3.max(processedData, (d) => d.value) || 0;
+      const maxYear = d3.max(processedData, (d) => d.year) || 0;
+      const maxValue = d3.max(processedData, (d) => d.value) || 0;
 
       let yearSlice = processedData
         .filter((d) => d.year === year && !isNaN(d.value))
@@ -116,19 +120,19 @@ const D3BarChart: React.FC = () => {
       // You would continue the implementation similarly to the original component
 
       svg
-        .selectAll("rect.bar")
+        .selectAll<SVGRectElement, BrandData>("rect.bar") // Explicitly type the selection
         .data(yearSlice, (d) => d.name)
         .enter()
         .append("rect")
         .attr("class", "bar")
         .attr("x", x(0) + 1)
-        .attr("width", (d) => x(d.value) - x(0) - 1)
+        .attr("width", (d: BrandData) => x(d.value) - x(0) - 1)
         .attr("y", (d) => y(d.rank) + 5)
         .attr("height", y(1) - y(0) - barPadding)
         .style("fill", (d) => d.colour);
 
       svg
-        .selectAll("text.label")
+        .selectAll<SVGRectElement, BrandData>("text.label")
         .data(yearSlice, (d) => d.name)
         .enter()
         .append("text")
@@ -139,7 +143,7 @@ const D3BarChart: React.FC = () => {
         .html((d) => d.name);
 
       svg
-        .selectAll("text.valueLabel")
+        .selectAll<SVGRectElement, BrandData>("text.valueLabel")
         .data(yearSlice, (d) => d.name)
         .enter()
         .append("text")
@@ -148,26 +152,27 @@ const D3BarChart: React.FC = () => {
         .attr("y", (d) => y(d.rank) + 5 + (y(1) - y(0)) / 2 + 1)
         .text((d) => d3.format(",.0f")(d.lastValue));
 
-      let yearText = svg
+      const yearText = svg
         .append("text")
         .attr("class", "yearText")
         .attr("x", width - margin.right)
         .attr("y", height - 25)
         .style("text-anchor", "end")
-        .html(year)
+        .html(year.toString())
         .call(halo, 0);
       // Ticker interval would be set up here
-      const ticker = d3.interval((e) => {
+      const ticker = d3.interval(() => {
         // Interval logic remains the same as in the original component
         // Update year slice, redraw bars, labels, etc.
- yearSlice = data
-          .filter((d) => d.year == year && !isNaN(d.value))
-          .sort((a, b) => b.value - a.value)
-          // set the values of the undefined to 0
-          
-          .slice(0, top_n);
+      yearSlice = processedData
+                .filter((d) => +d.year == year && !isNaN(+d.value))
+                .sort((a, b) => b.value - a.value)
+                // set the values of the undefined to 0
+                
+                .slice(0, top_n)
+                .map((d, i) => ({ ...d, rank: i }));
 
-        yearSlice.forEach((d, i) => (d.rank = i));
+        // yearSlice.forEach((d, i) => (d.rank = i));
         // console.log(yearSlice.map())
         console.log(yearSlice[0]);
 
@@ -178,15 +183,15 @@ const D3BarChart: React.FC = () => {
         x.domain([0, yearSlice[0].value]);
         // print the largest value of the yearSlice.value
         
+// const xAxis: d3.Axis<d3.NumberValue> = d3.axisTop(x);
 
-        svg
-          .select(".xAxis")
-          .transition()
-          .duration(tickDuration)
-          .ease(d3.easeLinear)
-          .call(xAxis);
+       svg.select(".xAxis")
+  .transition()
+  .duration(tickDuration)
+  .ease(d3.easeLinear);
+  // .call(xAxis);..
 
-        let bars = svg.selectAll(".bar").data(yearSlice, (d) => d.name);
+        const bars = svg.selectAll<SVGRectElement, BrandData>(".bar").data(yearSlice, (d) => d.name);
 
         bars
           .enter()
@@ -196,7 +201,7 @@ const D3BarChart: React.FC = () => {
           // .attr("width", (d) => x(d.value) - x(0) - 1)
           // .attr("width", (d) => Math.min(x(d.value) - x(0) - 1, width - margin.right - x(0) - 1)) // Ensure bars do not exceed the right boundary
           .attr("width", (d) => ((x(d.value) - x(0))/maxValue)*width) // Ensure bars do not exceed the right boundary
-          .attr("y", (d) => y(top_n + 1) + 5)
+          .attr("y", y(top_n + 1) + 5)
           .attr("height", y(1) - y(0) - barPadding)
           // .style("fill", (d) => d.colour)
           .transition()
@@ -221,11 +226,11 @@ const D3BarChart: React.FC = () => {
           .transition()
           .duration(tickDuration)
           .ease(d3.easeLinear)
-          .attr("width", (d) => x(d.value) - x(0) - 1)
-          .attr("y", (d) => y(top_n + 1) + 5)
+          // .attr("width", (d) => x(d.value) - x(0) - 1)
+          .attr("y", y(top_n + 1) + 5)
           .remove();
 
-        let labels = svg.selectAll(".label").data(yearSlice, (d) => d.name);
+        const labels = svg.selectAll<SVGRectElement, BrandData>(".label").data(yearSlice, (d) => d.name);
 
         labels
           .enter()
@@ -233,7 +238,7 @@ const D3BarChart: React.FC = () => {
           .attr("class", "label")
           .attr("width", (d) => Math.min(x(d.value) - x(0) - 1, width - margin.right - x(0) - 1)) // Ensure bars do not exceed the right boundary
           .attr("x", (d) => x(d.value) - 8)
-          .attr("y", (d) => y(top_n + 1) + 5 + (y(1) - y(0)) / 2)
+          .attr("y", y(top_n + 1) + 5 + (y(1) - y(0)) / 2)
           .style("text-anchor", "end")
           .html((d) => d.name)
           .transition()
@@ -253,14 +258,14 @@ const D3BarChart: React.FC = () => {
           .exit()
           .transition()
           .duration(tickDuration)
-          .attr("width", (d) => Math.min(x(d.value) - x(0) - 1, width - margin.right - x(0) - 1)) // Ensure bars do not exceed the right boundary
+          // .attr("width", (d) => Math.min(x(d.value) - x(0) - 1, width - margin.right - x(0) - 1)) // Ensure bars do not exceed the right boundary
           .ease(d3.easeLinear)
-          .attr("x", (d) => x(d.value) - 8)
-          .attr("y", (d) => y(top_n + 1) + 5)
+          // .attr("x", (d) => x(d.value) - 8)
+          .attr("y", y(top_n + 1) + 5)
           .remove();
 
-        let valueLabels = svg
-          .selectAll(".valueLabel")
+        const valueLabels = svg
+          .selectAll<SVGRectElement, BrandData>(".valueLabel")
           .data(yearSlice, (d) => d.name);
 
         valueLabels
@@ -268,7 +273,7 @@ const D3BarChart: React.FC = () => {
           .append("text")
           .attr("class", "valueLabel")
           .attr("x", (d) => x(d.value) + 5)
-          .attr("y", (d) => y(top_n + 1) + 5)
+          .attr("y", y(top_n + 1) + 5)
           .text((d) => d3.format(",.0f")(d.lastValue))
           .transition()
           .duration(tickDuration)
@@ -282,7 +287,7 @@ const D3BarChart: React.FC = () => {
           .attr("x", (d) => x(d.value) + 5)
           .attr("y", (d) => y(d.rank) + 5 + (y(1) - y(0)) / 2 + 1)
           .tween("text", function (d) {
-            let i = d3.interpolateRound(d.lastValue, d.value);
+            const i = d3.interpolateRound(d.lastValue, d.value);
             return function (t) {
               this.textContent = d3.format(",")(i(t));
             };
@@ -293,11 +298,11 @@ const D3BarChart: React.FC = () => {
           .transition()
           .duration(tickDuration)
           .ease(d3.easeLinear)
-          .attr("x", (d) => x(d.value) + 5)
-          .attr("y", (d) => y(top_n + 1) + 5)
+          // .attr("x", (d) => x(d.value) + 5)
+          .attr("y", y(top_n + 1) + 5)
           .remove();
           
-        yearText.html(~~year);
+        yearText.html(year.toString());
 
         // if (year === 2001) ticker.stop();
         
