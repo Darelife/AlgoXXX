@@ -92,7 +92,7 @@ const D3BarChart: React.FC = () => {
         value: +d.value || 0,
         lastValue: +d.lastValue || 0,
         year: +d.year || 0,
-        colour: d3.hsl((Math.random() * (0.9 - 0.1) + 0.1) * 300, 0.8, 0.8).toString(),
+        colour: d3.hsl((Math.random() * (0.9 - 0.1) + 0.1) * 500, 0.8, 0.8).toString(),
       }));
 
       const maxYear = d3.max(processedData, (d) => d.year) || 0;
@@ -230,7 +230,7 @@ svg.select(".xAxis")
           .duration(tickDuration)
           .ease(d3.easeLinear)
           .attr("y", (d) => y(d.rank) + 5)
-          .style("fill", d3.hsl((Math.random() * (0.9 - 0.1) + 0.1) * 300, 0.8, 0.8).toString());
+          .style("fill", d3.hsl((Math.random() * (0.9 - 0.5) + 0.5) * 500, 0.8, 0.8).toString());
 
         bars
           .transition()
