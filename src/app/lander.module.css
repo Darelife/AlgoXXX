@@ -1,0 +1,39 @@
+.lander {
+  height: 100vh; /* Occupies full screen height */
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0; /* Ensure background elements are below */
+}
+
+.logo {
+  position: fixed; /* Stay in the viewport */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  will-change: transform;
+  z-index: -4; /* Ensure the logo is above only when needed */
+}
+
+.logo.scrolled {
+  top: 10px; /* Navbar position */
+  left: 10px; /* Top-left corner */
+  transform: translate(0, 0) scale(1);
+  font-size: 1rem;
+  z-index: 5; /* Adjust to ensure smooth stacking */
+}
+
+/* Ensure responsive behavior */
+@media (max-width: 768px) {
+  .logo {
+    font-size: 1.5rem;
+  }
+  .logo.scrolled {
+    font-size: 0.8rem;
+  }
+}

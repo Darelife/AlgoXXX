@@ -20,11 +20,17 @@ const halo = (text: d3.Selection<SVGTextElement, unknown, null, undefined>, stro
       const clone = this.cloneNode(true) as Element;
       parent.insertBefore(clone, this);
       d3.select(clone)
-        .style('fill', '#ffffff')
-        .style('stroke', '#ffffff')
-        .style('stroke-width', strokeWidth)
-        .style('stroke-linejoin', 'round')
-        .style('opacity', 1);
+      .style('fill', '#ffffff')
+      .style('stroke','#ffffff')
+      .style('stroke-width', strokeWidth)
+      .style('stroke-linejoin', 'round')
+      .style('opacity', 1);
+      
+      // erase the old text
+      // d3.select(clone)
+      //   .attr('fill', 'none')
+      //   .attr('stroke', 'none');
+
     }
   });
 };
@@ -60,11 +66,13 @@ const D3BarChart: React.FC = () => {
     svg.append("text")
       .attr("class", "title")
       .attr("y", 24)
+      .style("fill", "#eeeeee")
       .html("Top Bits Goa CodeForce Users");
 
     svg.append("text")
       .attr("class", "subTitle")
       .attr("y", 55)
+      .style("fill", "#eeeeee")
       .html("Rating");
 
     svg.append("text")
@@ -72,6 +80,7 @@ const D3BarChart: React.FC = () => {
       .attr("x", width)
       .attr("y", height - 5)
       .style("text-anchor", "end")
+      .style("fill", "#eeeeee")
       .html("Source: CodeForces");
 
     let year = 2000;
@@ -113,8 +122,12 @@ const D3BarChart: React.FC = () => {
         .attr("transform", `translate(0, ${margin.top})`)
         .call(xAxis)
         .selectAll(".tick line")
+        .style("stroke", "#666666")
         .classed("origin", (d) => d === 0);
 
+      svg.selectAll(".tick text")
+        .style("fill", "#ffffff") // Tick text color
+        .style("font-size", "12px");
       // Rest of the implementation follows the original code...
       // (Note: For brevity, I've omitted the full interval and rendering logic)
       // You would continue the implementation similarly to the original component
@@ -147,6 +160,7 @@ const D3BarChart: React.FC = () => {
         .data(yearSlice, (d) => d.name)
         .enter()
         .append("text")
+        .style("fill", "#eeeeee")
         .attr("class", "valueLabel")
         .attr("x", (d) => x(d.value) + 5)
         .attr("y", (d) => y(d.rank) + 5 + (y(1) - y(0)) / 2 + 1)
@@ -158,8 +172,14 @@ const D3BarChart: React.FC = () => {
         .attr("x", width - margin.right)
         .attr("y", height - 25)
         .style("text-anchor", "end")
-        .html(year.toString())
-        .call(halo, 0);
+        .style("fill", "#ffffff") // Text color
+        .style("font-size", "48px") // Increase font size
+        .style("font-weight", "bold") // Make text bold
+        .style("stroke", "#000000") // Optional: Add a stroke for contrast
+        .style("stroke-width", 2) // Make the stroke thicker for visibility
+        .style("stroke-linejoin", "round")
+        .html(year.toString());
+        // .call(halo, 0);
       // Ticker interval would be set up here
       const ticker = d3.interval(() => {
         // Interval logic remains the same as in the original component
@@ -174,7 +194,8 @@ const D3BarChart: React.FC = () => {
 
         // yearSlice.forEach((d, i) => (d.rank = i));
         // console.log(yearSlice.map())
-        console.log(yearSlice[0]);
+        yearText.html(year.toString());
+        // console.log(yearSlice[0]);
 
         //console.log('IntervalYear: ', yearSlice);
 
@@ -188,7 +209,7 @@ const D3BarChart: React.FC = () => {
        svg.select(".xAxis")
   .transition()
   .duration(tickDuration)
-  .ease(d3.easeLinear);
+  .ease(d3.easeLinear); 
   // .call(xAxis);..
 
         const bars = svg.selectAll<SVGRectElement, BrandData>(".bar").data(yearSlice, (d) => d.name);
@@ -208,7 +229,7 @@ const D3BarChart: React.FC = () => {
           .duration(tickDuration)
           .ease(d3.easeLinear)
           .attr("y", (d) => y(d.rank) + 5)
-          .style("fill", d3.hsl((Math.random()*(0.8-0.3)+0.3) * 360, 0.75, 0.75).toString());
+          .style("fill", d3.hsl((Math.random() * (0.9 - 0.1) + 0.1) * 300, 0.8, 0.8).toString());
 
         bars
           .transition()
@@ -276,6 +297,7 @@ const D3BarChart: React.FC = () => {
           .attr("y", y(top_n + 1) + 5)
           .text((d) => d3.format(",.0f")(d.lastValue))
           .transition()
+          .style("fill", "#ffffff")
           .duration(tickDuration)
           .ease(d3.easeLinear)
           .attr("y", (d) => y(d.rank) + 5 + (y(1) - y(0)) / 2 + 1);
