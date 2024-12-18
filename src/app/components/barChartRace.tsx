@@ -13,27 +13,27 @@ interface BrandData {
   rank?: number;
 }
 
-const halo = (text: d3.Selection<SVGTextElement, unknown, null, undefined>, strokeWidth: number): void => {
-  text.each(function () {
-    const parent = this.parentNode;
-    if (parent) {
-      const clone = this.cloneNode(true) as Element;
-      parent.insertBefore(clone, this);
-      d3.select(clone)
-      .style('fill', '#ffffff')
-      .style('stroke','#ffffff')
-      .style('stroke-width', strokeWidth)
-      .style('stroke-linejoin', 'round')
-      .style('opacity', 1);
+// const halo = (text: d3.Selection<SVGTextElement, unknown, null, undefined>, strokeWidth: number): void => {
+//   text.each(function () {
+//     const parent = this.parentNode;
+//     if (parent) {
+//       const clone = this.cloneNode(true) as Element;
+//       parent.insertBefore(clone, this);
+//       d3.select(clone)
+//       .style('fill', '#ffffff')
+//       .style('stroke','#ffffff')
+//       .style('stroke-width', strokeWidth)
+//       .style('stroke-linejoin', 'round')
+//       .style('opacity', 1);
       
-      // erase the old text
-      // d3.select(clone)
-      //   .attr('fill', 'none')
-      //   .attr('stroke', 'none');
+//       // erase the old text
+//       // d3.select(clone)
+//       //   .attr('fill', 'none')
+//       //   .attr('stroke', 'none');
 
-    }
-  });
-};
+//     }
+//   });
+// };
 const D3BarChart: React.FC = () => {
   const svgRef = useRef<SVGSVGElement>(null);
   const width = 960;
@@ -92,7 +92,7 @@ const D3BarChart: React.FC = () => {
         value: +d.value || 0,
         lastValue: +d.lastValue || 0,
         year: +d.year || 0,
-        colour: d3.hsl((Math.random()*(0.8-0.3)+0.3) * 360, 0.75, 0.75).toString(),
+        colour: d3.hsl((Math.random() * (0.9 - 0.1) + 0.1) * 300, 0.8, 0.8).toString(),
       }));
 
       const maxYear = d3.max(processedData, (d) => d.year) || 0;
@@ -172,13 +172,13 @@ const D3BarChart: React.FC = () => {
         .attr("x", width - margin.right)
         .attr("y", height - 25)
         .style("text-anchor", "end")
-        .style("fill", "#ffffff") // Text color
+        .style("fill", "#e7e7e7") // Text color
         .style("font-size", "48px") // Increase font size
         .style("font-weight", "bold") // Make text bold
-        .style("stroke", "#000000") // Optional: Add a stroke for contrast
-        .style("stroke-width", 2) // Make the stroke thicker for visibility
+        .style("stroke", "#ffffff") // Optional: Add a stroke for contrast
+        .style("stroke-width", 1) // Make the stroke thicker for visibility
         .style("stroke-linejoin", "round")
-        .html(year.toString());
+        .html(year.toString().split(".")[0]);
         // .call(halo, 0);
       // Ticker interval would be set up here
       const ticker = d3.interval(() => {
@@ -194,7 +194,7 @@ const D3BarChart: React.FC = () => {
 
         // yearSlice.forEach((d, i) => (d.rank = i));
         // console.log(yearSlice.map())
-        yearText.html(year.toString());
+        // yearText.html(year.toString());
         // console.log(yearSlice[0]);
 
         //console.log('IntervalYear: ', yearSlice);
@@ -202,15 +202,16 @@ const D3BarChart: React.FC = () => {
         // let maxxVall = d3.max(yearSlice, (d) => d.value) || 0;
         
         x.domain([0, yearSlice[0].value]);
+        // x.range([margin.left, width - margin.right]);
         // print the largest value of the yearSlice.value
         
 // const xAxis: d3.Axis<d3.NumberValue> = d3.axisTop(x);
 
-       svg.select(".xAxis")
+svg.select(".xAxis")
   .transition()
   .duration(tickDuration)
-  .ease(d3.easeLinear); 
-  // .call(xAxis);..
+  .ease(d3.easeLinear)
+  .call((g) => xAxis(g as unknown as d3.Selection<SVGGElement, unknown, HTMLElement, unknown>));
 
         const bars = svg.selectAll<SVGRectElement, BrandData>(".bar").data(yearSlice, (d) => d.name);
 
@@ -324,7 +325,8 @@ const D3BarChart: React.FC = () => {
           .attr("y", y(top_n + 1) + 5)
           .remove();
           
-        yearText.html(year.toString());
+        yearText.html(year.toString().split(".")[0]);
+
 
         // if (year === 2001) ticker.stop();
         
