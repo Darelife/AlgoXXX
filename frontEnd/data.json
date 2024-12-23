@@ -1,0 +1,4720 @@
+[
+  {
+    "name": "tourist",
+    "value": 1602,
+    "lastValue": 0,
+    "year": 2010,
+    "colour": "hsl(164.38168086109096, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 1764,
+    "lastValue": 1602,
+    "year": 2010,
+    "colour": "hsl(167.7564272134047, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 1878,
+    "lastValue": 1764,
+    "year": 2010,
+    "colour": "hsl(173.1399595405136, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 1967,
+    "lastValue": 1878,
+    "year": 2010,
+    "colour": "hsl(210.14856998400214, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2063,
+    "lastValue": 1967,
+    "year": 2010,
+    "colour": "hsl(11.037994463200391, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2081,
+    "lastValue": 2063,
+    "year": 2010,
+    "colour": "hsl(296.5002358702761, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2098,
+    "lastValue": 2081,
+    "year": 2010,
+    "colour": "hsl(92.12394819828917, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2128,
+    "lastValue": 2098,
+    "year": 2010,
+    "colour": "hsl(196.05038571730492, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2203,
+    "lastValue": 2128,
+    "year": 2010,
+    "colour": "hsl(177.95880480913698, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2256,
+    "lastValue": 2203,
+    "year": 2010,
+    "colour": "hsl(189.49864410415324, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2270,
+    "lastValue": 2256,
+    "year": 2010,
+    "colour": "hsl(355.99638552831937, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2311,
+    "lastValue": 2270,
+    "year": 2010,
+    "colour": "hsl(82.20984604580752, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2341,
+    "lastValue": 2311,
+    "year": 2010,
+    "colour": "hsl(18.254161643964856, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2351,
+    "lastValue": 2341,
+    "year": 2010,
+    "colour": "hsl(200.75608005157792, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2388,
+    "lastValue": 2351,
+    "year": 2010,
+    "colour": "hsl(280.5668852395359, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2419,
+    "lastValue": 2388,
+    "year": 2011,
+    "colour": "hsl(310.75960285301625, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2438,
+    "lastValue": 2419,
+    "year": 2011,
+    "colour": "hsl(147.55649119891785, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2455,
+    "lastValue": 2438,
+    "year": 2011,
+    "colour": "hsl(234.34503392042805, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2491,
+    "lastValue": 2455,
+    "year": 2011,
+    "colour": "hsl(52.27346074833373, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2494,
+    "lastValue": 2491,
+    "year": 2011,
+    "colour": "hsl(309.307895234082, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2517,
+    "lastValue": 2494,
+    "year": 2011,
+    "colour": "hsl(275.1590784098517, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2501,
+    "lastValue": 2517,
+    "year": 2011,
+    "colour": "hsl(46.94381719476372, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2514,
+    "lastValue": 2501,
+    "year": 2011,
+    "colour": "hsl(123.74093232412017, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2547,
+    "lastValue": 2514,
+    "year": 2011,
+    "colour": "hsl(297.7956095379657, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2586,
+    "lastValue": 2547,
+    "year": 2011,
+    "colour": "hsl(252.30232212355116, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2624,
+    "lastValue": 2586,
+    "year": 2011,
+    "colour": "hsl(100.92342083799439, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2632,
+    "lastValue": 2624,
+    "year": 2011,
+    "colour": "hsl(141.1009554701676, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2646,
+    "lastValue": 2632,
+    "year": 2011,
+    "colour": "hsl(315.8440058568178, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2610,
+    "lastValue": 2646,
+    "year": 2011,
+    "colour": "hsl(207.53847990521515, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2609,
+    "lastValue": 2610,
+    "year": 2011,
+    "colour": "hsl(137.34365299038512, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2604,
+    "lastValue": 2609,
+    "year": 2011,
+    "colour": "hsl(324.17517532646576, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2613,
+    "lastValue": 2604,
+    "year": 2011,
+    "colour": "hsl(11.742348877998117, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2601,
+    "lastValue": 2613,
+    "year": 2011,
+    "colour": "hsl(121.16339446355494, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2549,
+    "lastValue": 2601,
+    "year": 2011,
+    "colour": "hsl(219.31284877749619, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2560,
+    "lastValue": 2549,
+    "year": 2011,
+    "colour": "hsl(184.6428096870687, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2595,
+    "lastValue": 2560,
+    "year": 2011,
+    "colour": "hsl(339.1958389796754, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2612,
+    "lastValue": 2595,
+    "year": 2011,
+    "colour": "hsl(346.5581209273299, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2635,
+    "lastValue": 2612,
+    "year": 2011,
+    "colour": "hsl(174.71628351704032, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2661,
+    "lastValue": 2635,
+    "year": 2011,
+    "colour": "hsl(102.45307846478887, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2683,
+    "lastValue": 2661,
+    "year": 2011,
+    "colour": "hsl(207.2347493003716, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2693,
+    "lastValue": 2683,
+    "year": 2011,
+    "colour": "hsl(202.48207554775306, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2670,
+    "lastValue": 2693,
+    "year": 2011,
+    "colour": "hsl(149.57209674484295, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2704,
+    "lastValue": 2670,
+    "year": 2012,
+    "colour": "hsl(136.57012303686187, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2762,
+    "lastValue": 2704,
+    "year": 2012,
+    "colour": "hsl(185.1772871691189, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2809,
+    "lastValue": 2762,
+    "year": 2012,
+    "colour": "hsl(341.2667682965904, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2783,
+    "lastValue": 2809,
+    "year": 2012,
+    "colour": "hsl(232.79007183102212, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2831,
+    "lastValue": 2783,
+    "year": 2012,
+    "colour": "hsl(254.33778293134066, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2877,
+    "lastValue": 2831,
+    "year": 2012,
+    "colour": "hsl(322.1790055683462, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2883,
+    "lastValue": 2877,
+    "year": 2012,
+    "colour": "hsl(239.5092909097977, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2907,
+    "lastValue": 2883,
+    "year": 2012,
+    "colour": "hsl(276.2625307819952, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2906,
+    "lastValue": 2907,
+    "year": 2012,
+    "colour": "hsl(319.5310686164469, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2919,
+    "lastValue": 2906,
+    "year": 2012,
+    "colour": "hsl(64.0081948237723, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2877,
+    "lastValue": 2919,
+    "year": 2012,
+    "colour": "hsl(172.48984494640032, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2887,
+    "lastValue": 2877,
+    "year": 2012,
+    "colour": "hsl(104.99660738462883, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2902,
+    "lastValue": 2887,
+    "year": 2012,
+    "colour": "hsl(337.83524313289297, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2938,
+    "lastValue": 2902,
+    "year": 2012,
+    "colour": "hsl(124.01023373883264, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2964,
+    "lastValue": 2938,
+    "year": 2012,
+    "colour": "hsl(221.4014715045081, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3022,
+    "lastValue": 2964,
+    "year": 2012,
+    "colour": "hsl(346.9176093369251, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3010,
+    "lastValue": 3022,
+    "year": 2012,
+    "colour": "hsl(263.04337187264764, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2998,
+    "lastValue": 3010,
+    "year": 2012,
+    "colour": "hsl(350.8387201072006, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2973,
+    "lastValue": 2998,
+    "year": 2012,
+    "colour": "hsl(254.05463065240926, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2991,
+    "lastValue": 2973,
+    "year": 2012,
+    "colour": "hsl(221.83060802020205, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3042,
+    "lastValue": 2991,
+    "year": 2012,
+    "colour": "hsl(315.6297735224487, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3022,
+    "lastValue": 3042,
+    "year": 2012,
+    "colour": "hsl(184.4829796052129, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2977,
+    "lastValue": 3022,
+    "year": 2012,
+    "colour": "hsl(334.2315055128689, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3034,
+    "lastValue": 2977,
+    "year": 2012,
+    "colour": "hsl(45.48401245696575, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3082,
+    "lastValue": 3034,
+    "year": 2012,
+    "colour": "hsl(1.143427906329224, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3016,
+    "lastValue": 3082,
+    "year": 2012,
+    "colour": "hsl(163.8298557009225, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3030,
+    "lastValue": 3016,
+    "year": 2012,
+    "colour": "hsl(212.73303024085828, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3026,
+    "lastValue": 3030,
+    "year": 2013,
+    "colour": "hsl(333.1625916169606, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3039,
+    "lastValue": 3026,
+    "year": 2013,
+    "colour": "hsl(217.44994121526685, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 2990,
+    "lastValue": 3039,
+    "year": 2013,
+    "colour": "hsl(187.56013655164253, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3051,
+    "lastValue": 2990,
+    "year": 2013,
+    "colour": "hsl(104.79808329412423, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3103,
+    "lastValue": 3051,
+    "year": 2013,
+    "colour": "hsl(263.48864604884915, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3157,
+    "lastValue": 3103,
+    "year": 2013,
+    "colour": "hsl(152.14419151160754, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3188,
+    "lastValue": 3157,
+    "year": 2013,
+    "colour": "hsl(289.04016945664597, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3195,
+    "lastValue": 3188,
+    "year": 2013,
+    "colour": "hsl(71.44458858535607, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3088,
+    "lastValue": 3195,
+    "year": 2013,
+    "colour": "hsl(49.91307135753601, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3136,
+    "lastValue": 3088,
+    "year": 2013,
+    "colour": "hsl(94.89403682056836, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3072,
+    "lastValue": 3136,
+    "year": 2013,
+    "colour": "hsl(31.908865800937427, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3121,
+    "lastValue": 3072,
+    "year": 2013,
+    "colour": "hsl(271.3367950732685, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3165,
+    "lastValue": 3121,
+    "year": 2013,
+    "colour": "hsl(322.03602219677583, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3210,
+    "lastValue": 3165,
+    "year": 2013,
+    "colour": "hsl(27.3936887611924, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3250,
+    "lastValue": 3210,
+    "year": 2013,
+    "colour": "hsl(157.44573783009514, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3205,
+    "lastValue": 3250,
+    "year": 2013,
+    "colour": "hsl(201.72859467528892, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3209,
+    "lastValue": 3205,
+    "year": 2013,
+    "colour": "hsl(154.87107283968808, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3209,
+    "lastValue": 3209,
+    "year": 2013,
+    "colour": "hsl(311.61240165965114, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3093,
+    "lastValue": 3209,
+    "year": 2013,
+    "colour": "hsl(292.4678772442843, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3141,
+    "lastValue": 3093,
+    "year": 2014,
+    "colour": "hsl(28.98661253039557, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3186,
+    "lastValue": 3141,
+    "year": 2014,
+    "colour": "hsl(96.19618697184654, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3228,
+    "lastValue": 3186,
+    "year": 2014,
+    "colour": "hsl(125.76839607618341, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3206,
+    "lastValue": 3228,
+    "year": 2014,
+    "colour": "hsl(266.34342498883905, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3245,
+    "lastValue": 3206,
+    "year": 2014,
+    "colour": "hsl(344.6475105360497, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3173,
+    "lastValue": 3245,
+    "year": 2014,
+    "colour": "hsl(104.29750481897725, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3213,
+    "lastValue": 3173,
+    "year": 2014,
+    "colour": "hsl(198.5263908407103, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3260,
+    "lastValue": 3213,
+    "year": 2014,
+    "colour": "hsl(153.19686434551303, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3299,
+    "lastValue": 3260,
+    "year": 2014,
+    "colour": "hsl(93.46282364761137, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3164,
+    "lastValue": 3299,
+    "year": 2014,
+    "colour": "hsl(306.4482579168572, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3203,
+    "lastValue": 3164,
+    "year": 2014,
+    "colour": "hsl(74.15692881426091, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3240,
+    "lastValue": 3203,
+    "year": 2014,
+    "colour": "hsl(267.0653335473805, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3254,
+    "lastValue": 3240,
+    "year": 2014,
+    "colour": "hsl(156.5668873145757, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3201,
+    "lastValue": 3254,
+    "year": 2015,
+    "colour": "hsl(347.88697877497765, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3239,
+    "lastValue": 3201,
+    "year": 2015,
+    "colour": "hsl(138.56059939846796, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3223,
+    "lastValue": 3239,
+    "year": 2015,
+    "colour": "hsl(265.4755279836266, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3274,
+    "lastValue": 3223,
+    "year": 2015,
+    "colour": "hsl(232.26897878152644, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3341,
+    "lastValue": 3274,
+    "year": 2015,
+    "colour": "hsl(153.82170246076984, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3407,
+    "lastValue": 3341,
+    "year": 2015,
+    "colour": "hsl(211.76513831824175, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3445,
+    "lastValue": 3407,
+    "year": 2015,
+    "colour": "hsl(351.06588402490894, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3503,
+    "lastValue": 3445,
+    "year": 2015,
+    "colour": "hsl(78.70310840954087, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3374,
+    "lastValue": 3503,
+    "year": 2015,
+    "colour": "hsl(112.11335452766237, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3374,
+    "lastValue": 3374,
+    "year": 2015,
+    "colour": "hsl(65.99973700255714, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3444,
+    "lastValue": 3374,
+    "year": 2015,
+    "colour": "hsl(271.97035613949555, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3373,
+    "lastValue": 3444,
+    "year": 2016,
+    "colour": "hsl(146.98469041806322, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3444,
+    "lastValue": 3373,
+    "year": 2016,
+    "colour": "hsl(36.09629725195923, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3518,
+    "lastValue": 3444,
+    "year": 2016,
+    "colour": "hsl(190.8757337044027, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3582,
+    "lastValue": 3518,
+    "year": 2016,
+    "colour": "hsl(169.620018508678, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3534,
+    "lastValue": 3582,
+    "year": 2016,
+    "colour": "hsl(31.52556515802707, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3588,
+    "lastValue": 3534,
+    "year": 2016,
+    "colour": "hsl(355.5757701230238, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3640,
+    "lastValue": 3588,
+    "year": 2016,
+    "colour": "hsl(182.90373530983342, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3501,
+    "lastValue": 3640,
+    "year": 2016,
+    "colour": "hsl(317.4175339008425, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3554,
+    "lastValue": 3501,
+    "year": 2016,
+    "colour": "hsl(182.9560896619725, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3525,
+    "lastValue": 3554,
+    "year": 2016,
+    "colour": "hsl(28.78261190865853, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3580,
+    "lastValue": 3525,
+    "year": 2016,
+    "colour": "hsl(188.80833420213037, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3638,
+    "lastValue": 3580,
+    "year": 2016,
+    "colour": "hsl(66.46079378523177, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3615,
+    "lastValue": 3638,
+    "year": 2016,
+    "colour": "hsl(71.56136264946949, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3670,
+    "lastValue": 3615,
+    "year": 2017,
+    "colour": "hsl(304.3816182843437, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3739,
+    "lastValue": 3670,
+    "year": 2017,
+    "colour": "hsl(44.53505335484277, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3544,
+    "lastValue": 3739,
+    "year": 2017,
+    "colour": "hsl(177.2244812707688, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3534,
+    "lastValue": 3544,
+    "year": 2017,
+    "colour": "hsl(183.2184744444351, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3602,
+    "lastValue": 3534,
+    "year": 2017,
+    "colour": "hsl(0.31169355298332313, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3488,
+    "lastValue": 3602,
+    "year": 2017,
+    "colour": "hsl(96.7367982229515, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3438,
+    "lastValue": 3488,
+    "year": 2017,
+    "colour": "hsl(102.13062492955771, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3411,
+    "lastValue": 3438,
+    "year": 2017,
+    "colour": "hsl(291.1665671809907, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3496,
+    "lastValue": 3411,
+    "year": 2017,
+    "colour": "hsl(307.7338470748432, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3206,
+    "lastValue": 3496,
+    "year": 2018,
+    "colour": "hsl(182.55683519536234, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3235,
+    "lastValue": 3206,
+    "year": 2018,
+    "colour": "hsl(4.116669468458696, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3341,
+    "lastValue": 3235,
+    "year": 2018,
+    "colour": "hsl(234.5443360063753, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3434,
+    "lastValue": 3341,
+    "year": 2018,
+    "colour": "hsl(71.05114124160569, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3509,
+    "lastValue": 3434,
+    "year": 2018,
+    "colour": "hsl(52.9461920488522, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3581,
+    "lastValue": 3509,
+    "year": 2018,
+    "colour": "hsl(37.09074719399042, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3312,
+    "lastValue": 3581,
+    "year": 2018,
+    "colour": "hsl(252.36173127439187, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3401,
+    "lastValue": 3312,
+    "year": 2018,
+    "colour": "hsl(87.80593549054936, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3372,
+    "lastValue": 3401,
+    "year": 2018,
+    "colour": "hsl(132.3698826934804, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3469,
+    "lastValue": 3372,
+    "year": 2018,
+    "colour": "hsl(70.45718142135244, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3559,
+    "lastValue": 3469,
+    "year": 2018,
+    "colour": "hsl(166.3010832344651, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3539,
+    "lastValue": 3559,
+    "year": 2019,
+    "colour": "hsl(257.5485828406429, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3624,
+    "lastValue": 3539,
+    "year": 2019,
+    "colour": "hsl(90.85721287554138, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3628,
+    "lastValue": 3624,
+    "year": 2019,
+    "colour": "hsl(2.1309597802908087, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3698,
+    "lastValue": 3628,
+    "year": 2019,
+    "colour": "hsl(329.8364211651087, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3686,
+    "lastValue": 3698,
+    "year": 2019,
+    "colour": "hsl(153.99860253537904, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3645,
+    "lastValue": 3686,
+    "year": 2019,
+    "colour": "hsl(92.97788585663925, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3711,
+    "lastValue": 3645,
+    "year": 2019,
+    "colour": "hsl(54.02557063296613, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3557,
+    "lastValue": 3711,
+    "year": 2019,
+    "colour": "hsl(196.65711606103454, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3532,
+    "lastValue": 3557,
+    "year": 2019,
+    "colour": "hsl(18.002069842706288, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3544,
+    "lastValue": 3532,
+    "year": 2019,
+    "colour": "hsl(124.28029945376917, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3556,
+    "lastValue": 3544,
+    "year": 2019,
+    "colour": "hsl(145.90466884562022, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3539,
+    "lastValue": 3556,
+    "year": 2019,
+    "colour": "hsl(14.36210100198486, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3615,
+    "lastValue": 3539,
+    "year": 2019,
+    "colour": "hsl(168.3304639980056, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3418,
+    "lastValue": 3615,
+    "year": 2019,
+    "colour": "hsl(174.00695905036423, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3430,
+    "lastValue": 3418,
+    "year": 2020,
+    "colour": "hsl(26.266341576925598, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3461,
+    "lastValue": 3430,
+    "year": 2020,
+    "colour": "hsl(189.60406508145536, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3549,
+    "lastValue": 3461,
+    "year": 2020,
+    "colour": "hsl(355.8748231210178, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3404,
+    "lastValue": 3549,
+    "year": 2020,
+    "colour": "hsl(242.15814872979513, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3496,
+    "lastValue": 3404,
+    "year": 2020,
+    "colour": "hsl(289.3535161750608, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3585,
+    "lastValue": 3496,
+    "year": 2020,
+    "colour": "hsl(44.048373470186455, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3669,
+    "lastValue": 3585,
+    "year": 2020,
+    "colour": "hsl(320.78122099841033, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3673,
+    "lastValue": 3669,
+    "year": 2020,
+    "colour": "hsl(222.310426535418, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3733,
+    "lastValue": 3673,
+    "year": 2020,
+    "colour": "hsl(182.825029944924, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3541,
+    "lastValue": 3733,
+    "year": 2020,
+    "colour": "hsl(75.13756493663642, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3409,
+    "lastValue": 3541,
+    "year": 2020,
+    "colour": "hsl(29.957426547858887, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3520,
+    "lastValue": 3409,
+    "year": 2020,
+    "colour": "hsl(259.0670411461098, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3567,
+    "lastValue": 3520,
+    "year": 2020,
+    "colour": "hsl(25.02551381922852, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3669,
+    "lastValue": 3567,
+    "year": 2020,
+    "colour": "hsl(254.45606717869134, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3735,
+    "lastValue": 3669,
+    "year": 2020,
+    "colour": "hsl(180.16862061595006, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3515,
+    "lastValue": 3735,
+    "year": 2020,
+    "colour": "hsl(132.93261404660495, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3506,
+    "lastValue": 3515,
+    "year": 2020,
+    "colour": "hsl(141.65259620565342, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3613,
+    "lastValue": 3506,
+    "year": 2020,
+    "colour": "hsl(227.82398391898712, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3438,
+    "lastValue": 3613,
+    "year": 2020,
+    "colour": "hsl(269.8639787047545, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3533,
+    "lastValue": 3438,
+    "year": 2020,
+    "colour": "hsl(184.01763247678647, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3629,
+    "lastValue": 3533,
+    "year": 2020,
+    "colour": "hsl(17.643665065199787, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3509,
+    "lastValue": 3629,
+    "year": 2020,
+    "colour": "hsl(2.426672264797576, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3619,
+    "lastValue": 3509,
+    "year": 2020,
+    "colour": "hsl(50.24122248595027, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3687,
+    "lastValue": 3619,
+    "year": 2020,
+    "colour": "hsl(144.24155140939283, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3712,
+    "lastValue": 3687,
+    "year": 2020,
+    "colour": "hsl(74.36141014242061, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3783,
+    "lastValue": 3712,
+    "year": 2020,
+    "colour": "hsl(223.99349792110286, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3601,
+    "lastValue": 3783,
+    "year": 2020,
+    "colour": "hsl(244.0699063118366, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3702,
+    "lastValue": 3601,
+    "year": 2020,
+    "colour": "hsl(8.528017319102386, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3778,
+    "lastValue": 3702,
+    "year": 2021,
+    "colour": "hsl(257.6787090625669, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3748,
+    "lastValue": 3778,
+    "year": 2021,
+    "colour": "hsl(220.4245023838701, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3565,
+    "lastValue": 3748,
+    "year": 2021,
+    "colour": "hsl(15.314603678461864, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3572,
+    "lastValue": 3565,
+    "year": 2021,
+    "colour": "hsl(27.104667088903504, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3668,
+    "lastValue": 3572,
+    "year": 2021,
+    "colour": "hsl(322.81248028447334, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3697,
+    "lastValue": 3668,
+    "year": 2021,
+    "colour": "hsl(206.65623914691832, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3682,
+    "lastValue": 3697,
+    "year": 2021,
+    "colour": "hsl(164.10111014062917, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3617,
+    "lastValue": 3682,
+    "year": 2021,
+    "colour": "hsl(302.4173580769292, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3579,
+    "lastValue": 3617,
+    "year": 2021,
+    "colour": "hsl(107.55383219568353, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3538,
+    "lastValue": 3579,
+    "year": 2021,
+    "colour": "hsl(323.8584346890912, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3669,
+    "lastValue": 3538,
+    "year": 2021,
+    "colour": "hsl(3.051394987630207, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3723,
+    "lastValue": 3669,
+    "year": 2021,
+    "colour": "hsl(5.160265680396154, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3748,
+    "lastValue": 3723,
+    "year": 2021,
+    "colour": "hsl(37.298288107066824, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3729,
+    "lastValue": 3748,
+    "year": 2021,
+    "colour": "hsl(222.5520885516674, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3822,
+    "lastValue": 3729,
+    "year": 2021,
+    "colour": "hsl(128.20816932830462, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3819,
+    "lastValue": 3822,
+    "year": 2021,
+    "colour": "hsl(233.50686785861834, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3656,
+    "lastValue": 3819,
+    "year": 2021,
+    "colour": "hsl(175.8271909068426, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3707,
+    "lastValue": 3656,
+    "year": 2021,
+    "colour": "hsl(132.63422817019938, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3804,
+    "lastValue": 3707,
+    "year": 2021,
+    "colour": "hsl(89.90962509845752, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3797,
+    "lastValue": 3804,
+    "year": 2021,
+    "colour": "hsl(120.94004135021515, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3870,
+    "lastValue": 3797,
+    "year": 2021,
+    "colour": "hsl(305.9673366765288, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3756,
+    "lastValue": 3870,
+    "year": 2021,
+    "colour": "hsl(237.10243402620065, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3836,
+    "lastValue": 3756,
+    "year": 2021,
+    "colour": "hsl(340.3847055732491, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3911,
+    "lastValue": 3836,
+    "year": 2022,
+    "colour": "hsl(348.9347349191494, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3979,
+    "lastValue": 3911,
+    "year": 2022,
+    "colour": "hsl(67.93800379128864, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3809,
+    "lastValue": 3979,
+    "year": 2022,
+    "colour": "hsl(326.4544111983405, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3879,
+    "lastValue": 3809,
+    "year": 2022,
+    "colour": "hsl(335.2010340980214, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3946,
+    "lastValue": 3879,
+    "year": 2022,
+    "colour": "hsl(251.70350239968292, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3796,
+    "lastValue": 3946,
+    "year": 2022,
+    "colour": "hsl(92.2918559060728, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3801,
+    "lastValue": 3796,
+    "year": 2022,
+    "colour": "hsl(63.3418408236667, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3814,
+    "lastValue": 3801,
+    "year": 2022,
+    "colour": "hsl(336.5603906654592, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3805,
+    "lastValue": 3814,
+    "year": 2022,
+    "colour": "hsl(16.043591852117622, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3882,
+    "lastValue": 3805,
+    "year": 2022,
+    "colour": "hsl(230.37558807792152, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3764,
+    "lastValue": 3882,
+    "year": 2022,
+    "colour": "hsl(190.97217401832913, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3732,
+    "lastValue": 3764,
+    "year": 2022,
+    "colour": "hsl(315.08543440284683, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3727,
+    "lastValue": 3732,
+    "year": 2022,
+    "colour": "hsl(153.03161329729755, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3671,
+    "lastValue": 3727,
+    "year": 2022,
+    "colour": "hsl(132.14822460566168, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3678,
+    "lastValue": 3671,
+    "year": 2022,
+    "colour": "hsl(312.88294035909024, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3771,
+    "lastValue": 3678,
+    "year": 2022,
+    "colour": "hsl(187.47057551706106, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3851,
+    "lastValue": 3771,
+    "year": 2022,
+    "colour": "hsl(47.679440109845174, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3757,
+    "lastValue": 3851,
+    "year": 2022,
+    "colour": "hsl(217.29198544415158, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3834,
+    "lastValue": 3757,
+    "year": 2022,
+    "colour": "hsl(21.983029150312614, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3912,
+    "lastValue": 3834,
+    "year": 2022,
+    "colour": "hsl(234.17320640094968, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3735,
+    "lastValue": 3912,
+    "year": 2022,
+    "colour": "hsl(346.7365568386342, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3817,
+    "lastValue": 3735,
+    "year": 2022,
+    "colour": "hsl(272.9429871238972, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3764,
+    "lastValue": 3817,
+    "year": 2022,
+    "colour": "hsl(232.86177206075166, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3731,
+    "lastValue": 3764,
+    "year": 2022,
+    "colour": "hsl(324.36419267992966, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3768,
+    "lastValue": 3731,
+    "year": 2023,
+    "colour": "hsl(139.12382692753278, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3803,
+    "lastValue": 3768,
+    "year": 2023,
+    "colour": "hsl(141.50209858380336, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3658,
+    "lastValue": 3803,
+    "year": 2023,
+    "colour": "hsl(49.604393522043935, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3706,
+    "lastValue": 3658,
+    "year": 2023,
+    "colour": "hsl(326.0283690783366, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3486,
+    "lastValue": 3706,
+    "year": 2023,
+    "colour": "hsl(182.49330729164438, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3635,
+    "lastValue": 3486,
+    "year": 2023,
+    "colour": "hsl(112.37078893539552, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3588,
+    "lastValue": 3635,
+    "year": 2023,
+    "colour": "hsl(245.4407234079644, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3662,
+    "lastValue": 3588,
+    "year": 2023,
+    "colour": "hsl(333.9917585977436, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3622,
+    "lastValue": 3662,
+    "year": 2023,
+    "colour": "hsl(17.646759965348828, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3611,
+    "lastValue": 3622,
+    "year": 2023,
+    "colour": "hsl(209.5795921272981, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3664,
+    "lastValue": 3611,
+    "year": 2023,
+    "colour": "hsl(204.03946067226187, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3755,
+    "lastValue": 3664,
+    "year": 2023,
+    "colour": "hsl(7.345103418567307, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3767,
+    "lastValue": 3755,
+    "year": 2023,
+    "colour": "hsl(72.25578222261322, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3726,
+    "lastValue": 3767,
+    "year": 2023,
+    "colour": "hsl(261.72993627337115, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3727,
+    "lastValue": 3726,
+    "year": 2023,
+    "colour": "hsl(222.1144615293841, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3817,
+    "lastValue": 3727,
+    "year": 2023,
+    "colour": "hsl(215.70684289211508, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3751,
+    "lastValue": 3817,
+    "year": 2023,
+    "colour": "hsl(295.42604704528316, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3775,
+    "lastValue": 3751,
+    "year": 2023,
+    "colour": "hsl(93.20367490782631, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3557,
+    "lastValue": 3775,
+    "year": 2023,
+    "colour": "hsl(41.0419844348301, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3584,
+    "lastValue": 3557,
+    "year": 2023,
+    "colour": "hsl(325.26568161859814, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3485,
+    "lastValue": 3584,
+    "year": 2023,
+    "colour": "hsl(100.82306706096087, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3375,
+    "lastValue": 3485,
+    "year": 2023,
+    "colour": "hsl(227.71177786744528, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3330,
+    "lastValue": 3375,
+    "year": 2023,
+    "colour": "hsl(180.55353924793513, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3375,
+    "lastValue": 3330,
+    "year": 2024,
+    "colour": "hsl(107.5672429371714, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3395,
+    "lastValue": 3375,
+    "year": 2024,
+    "colour": "hsl(222.85364578499636, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3434,
+    "lastValue": 3395,
+    "year": 2024,
+    "colour": "hsl(179.51006462223347, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3572,
+    "lastValue": 3434,
+    "year": 2024,
+    "colour": "hsl(77.50798010871779, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3565,
+    "lastValue": 3572,
+    "year": 2024,
+    "colour": "hsl(271.2408342062813, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3690,
+    "lastValue": 3565,
+    "year": 2024,
+    "colour": "hsl(207.57256760492552, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3757,
+    "lastValue": 3690,
+    "year": 2024,
+    "colour": "hsl(225.11346606291244, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3845,
+    "lastValue": 3757,
+    "year": 2024,
+    "colour": "hsl(40.109117764375625, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3803,
+    "lastValue": 3845,
+    "year": 2024,
+    "colour": "hsl(166.2911993517768, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3880,
+    "lastValue": 3803,
+    "year": 2024,
+    "colour": "hsl(332.65282020989883, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3947,
+    "lastValue": 3880,
+    "year": 2024,
+    "colour": "hsl(219.99778860507547, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 4009,
+    "lastValue": 3947,
+    "year": 2024,
+    "colour": "hsl(346.191710185283, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3993,
+    "lastValue": 4009,
+    "year": 2024,
+    "colour": "hsl(189.03384830457412, 75%, 75%)"
+  },
+  {
+    "name": "tourist",
+    "value": 3985,
+    "lastValue": 3993,
+    "year": 2024,
+    "colour": "hsl(197.92453715446538, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1404,
+    "lastValue": 0,
+    "year": 2015,
+    "colour": "hsl(132.11807757904575, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1353,
+    "lastValue": 1404,
+    "year": 2015,
+    "colour": "hsl(100.35905969573692, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1279,
+    "lastValue": 1353,
+    "year": 2015,
+    "colour": "hsl(206.34922878142456, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1503,
+    "lastValue": 1279,
+    "year": 2015,
+    "colour": "hsl(218.12742126973714, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1433,
+    "lastValue": 1503,
+    "year": 2015,
+    "colour": "hsl(61.364270190112215, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1500,
+    "lastValue": 1433,
+    "year": 2015,
+    "colour": "hsl(245.50787477768898, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1494,
+    "lastValue": 1500,
+    "year": 2015,
+    "colour": "hsl(262.01144804514917, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1574,
+    "lastValue": 1494,
+    "year": 2016,
+    "colour": "hsl(168.9058438617523, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1680,
+    "lastValue": 1574,
+    "year": 2016,
+    "colour": "hsl(55.60304679017429, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1741,
+    "lastValue": 1680,
+    "year": 2016,
+    "colour": "hsl(345.51558485845976, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1833,
+    "lastValue": 1741,
+    "year": 2016,
+    "colour": "hsl(71.72659834791835, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1855,
+    "lastValue": 1833,
+    "year": 2016,
+    "colour": "hsl(173.84953330545116, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1942,
+    "lastValue": 1855,
+    "year": 2016,
+    "colour": "hsl(316.0233874797952, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1997,
+    "lastValue": 1942,
+    "year": 2016,
+    "colour": "hsl(332.6962909858051, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1951,
+    "lastValue": 1997,
+    "year": 2016,
+    "colour": "hsl(356.0894655033479, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 1922,
+    "lastValue": 1951,
+    "year": 2016,
+    "colour": "hsl(106.76884256850138, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2030,
+    "lastValue": 1922,
+    "year": 2016,
+    "colour": "hsl(87.76490596453952, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2020,
+    "lastValue": 2030,
+    "year": 2016,
+    "colour": "hsl(72.75006041279224, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2067,
+    "lastValue": 2020,
+    "year": 2016,
+    "colour": "hsl(50.555141553147145, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2117,
+    "lastValue": 2067,
+    "year": 2016,
+    "colour": "hsl(39.72896777653826, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2180,
+    "lastValue": 2117,
+    "year": 2016,
+    "colour": "hsl(103.11177339289513, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2251,
+    "lastValue": 2180,
+    "year": 2017,
+    "colour": "hsl(268.41363091441093, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2264,
+    "lastValue": 2251,
+    "year": 2017,
+    "colour": "hsl(274.96565737508274, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2419,
+    "lastValue": 2264,
+    "year": 2017,
+    "colour": "hsl(193.53305151707133, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2445,
+    "lastValue": 2419,
+    "year": 2017,
+    "colour": "hsl(0.06962110727214643, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2460,
+    "lastValue": 2445,
+    "year": 2017,
+    "colour": "hsl(137.40909176571603, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2399,
+    "lastValue": 2460,
+    "year": 2017,
+    "colour": "hsl(116.92174806420749, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2448,
+    "lastValue": 2399,
+    "year": 2017,
+    "colour": "hsl(294.60722452711775, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2492,
+    "lastValue": 2448,
+    "year": 2017,
+    "colour": "hsl(140.39526905785328, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2530,
+    "lastValue": 2492,
+    "year": 2017,
+    "colour": "hsl(350.4323370842839, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2649,
+    "lastValue": 2530,
+    "year": 2017,
+    "colour": "hsl(318.2904684226492, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2589,
+    "lastValue": 2649,
+    "year": 2017,
+    "colour": "hsl(300.18278238731284, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2484,
+    "lastValue": 2589,
+    "year": 2017,
+    "colour": "hsl(266.49032055671984, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2519,
+    "lastValue": 2484,
+    "year": 2017,
+    "colour": "hsl(82.74727767571454, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2635,
+    "lastValue": 2519,
+    "year": 2017,
+    "colour": "hsl(62.45477209297327, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2508,
+    "lastValue": 2635,
+    "year": 2017,
+    "colour": "hsl(240.69434483195397, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2656,
+    "lastValue": 2508,
+    "year": 2017,
+    "colour": "hsl(340.47246516303903, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2722,
+    "lastValue": 2656,
+    "year": 2017,
+    "colour": "hsl(186.08483211401415, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2683,
+    "lastValue": 2722,
+    "year": 2017,
+    "colour": "hsl(110.62483748697586, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2643,
+    "lastValue": 2683,
+    "year": 2018,
+    "colour": "hsl(338.8105868719595, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2680,
+    "lastValue": 2643,
+    "year": 2018,
+    "colour": "hsl(149.27912934648515, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2825,
+    "lastValue": 2680,
+    "year": 2018,
+    "colour": "hsl(273.27102239136724, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2759,
+    "lastValue": 2825,
+    "year": 2018,
+    "colour": "hsl(46.84229290259793, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2712,
+    "lastValue": 2759,
+    "year": 2018,
+    "colour": "hsl(208.59262558773906, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2893,
+    "lastValue": 2712,
+    "year": 2018,
+    "colour": "hsl(330.8683934977839, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2875,
+    "lastValue": 2893,
+    "year": 2018,
+    "colour": "hsl(303.01351509099055, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2779,
+    "lastValue": 2875,
+    "year": 2018,
+    "colour": "hsl(185.16407840930995, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2789,
+    "lastValue": 2779,
+    "year": 2018,
+    "colour": "hsl(241.2865017594215, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2846,
+    "lastValue": 2789,
+    "year": 2018,
+    "colour": "hsl(304.80198123975066, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2974,
+    "lastValue": 2846,
+    "year": 2018,
+    "colour": "hsl(123.26609270537956, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2962,
+    "lastValue": 2974,
+    "year": 2018,
+    "colour": "hsl(179.73525270055754, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3056,
+    "lastValue": 2962,
+    "year": 2018,
+    "colour": "hsl(110.7794123171111, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3105,
+    "lastValue": 3056,
+    "year": 2018,
+    "colour": "hsl(256.3889921122041, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3130,
+    "lastValue": 3105,
+    "year": 2018,
+    "colour": "hsl(90.71517215667464, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3098,
+    "lastValue": 3130,
+    "year": 2018,
+    "colour": "hsl(184.0629867803998, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3161,
+    "lastValue": 3098,
+    "year": 2018,
+    "colour": "hsl(118.93951562490219, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3187,
+    "lastValue": 3161,
+    "year": 2018,
+    "colour": "hsl(215.381955100716, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3154,
+    "lastValue": 3187,
+    "year": 2018,
+    "colour": "hsl(215.8355711956065, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3096,
+    "lastValue": 3154,
+    "year": 2018,
+    "colour": "hsl(173.1501309400116, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2955,
+    "lastValue": 3096,
+    "year": 2018,
+    "colour": "hsl(28.889964471932927, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 2992,
+    "lastValue": 2955,
+    "year": 2018,
+    "colour": "hsl(125.13458702788785, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3065,
+    "lastValue": 2992,
+    "year": 2019,
+    "colour": "hsl(268.7002208552652, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3142,
+    "lastValue": 3065,
+    "year": 2019,
+    "colour": "hsl(228.55992526976127, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3262,
+    "lastValue": 3142,
+    "year": 2019,
+    "colour": "hsl(263.7891904729835, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3396,
+    "lastValue": 3262,
+    "year": 2019,
+    "colour": "hsl(275.55697296554666, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3339,
+    "lastValue": 3396,
+    "year": 2019,
+    "colour": "hsl(221.0478785641353, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3294,
+    "lastValue": 3339,
+    "year": 2019,
+    "colour": "hsl(218.62135386834217, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3258,
+    "lastValue": 3294,
+    "year": 2019,
+    "colour": "hsl(82.77534070300787, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3315,
+    "lastValue": 3258,
+    "year": 2019,
+    "colour": "hsl(153.9060888389344, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3311,
+    "lastValue": 3315,
+    "year": 2019,
+    "colour": "hsl(292.5234974351685, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3320,
+    "lastValue": 3311,
+    "year": 2019,
+    "colour": "hsl(20.124751572455814, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3316,
+    "lastValue": 3320,
+    "year": 2019,
+    "colour": "hsl(61.94074400253041, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3286,
+    "lastValue": 3316,
+    "year": 2019,
+    "colour": "hsl(36.588988197480774, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3429,
+    "lastValue": 3286,
+    "year": 2019,
+    "colour": "hsl(90.26047302664443, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3539,
+    "lastValue": 3429,
+    "year": 2019,
+    "colour": "hsl(283.3190163583482, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3368,
+    "lastValue": 3539,
+    "year": 2019,
+    "colour": "hsl(132.83946305821664, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3230,
+    "lastValue": 3368,
+    "year": 2019,
+    "colour": "hsl(286.2365210185648, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3308,
+    "lastValue": 3230,
+    "year": 2020,
+    "colour": "hsl(352.51450974173366, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3290,
+    "lastValue": 3308,
+    "year": 2020,
+    "colour": "hsl(228.78412813487193, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3330,
+    "lastValue": 3290,
+    "year": 2020,
+    "colour": "hsl(64.49637479661325, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3274,
+    "lastValue": 3330,
+    "year": 2020,
+    "colour": "hsl(258.2291030734399, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3299,
+    "lastValue": 3274,
+    "year": 2020,
+    "colour": "hsl(79.7063957414335, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3081,
+    "lastValue": 3299,
+    "year": 2020,
+    "colour": "hsl(256.28589635140173, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3143,
+    "lastValue": 3081,
+    "year": 2020,
+    "colour": "hsl(83.56397341767801, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3205,
+    "lastValue": 3143,
+    "year": 2020,
+    "colour": "hsl(271.09525550540076, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3230,
+    "lastValue": 3205,
+    "year": 2020,
+    "colour": "hsl(178.42528670288453, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3213,
+    "lastValue": 3230,
+    "year": 2020,
+    "colour": "hsl(38.09456256604287, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3220,
+    "lastValue": 3213,
+    "year": 2020,
+    "colour": "hsl(210.85334033243956, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3260,
+    "lastValue": 3220,
+    "year": 2020,
+    "colour": "hsl(147.70993306170843, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3283,
+    "lastValue": 3260,
+    "year": 2020,
+    "colour": "hsl(23.20917278939648, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3226,
+    "lastValue": 3283,
+    "year": 2020,
+    "colour": "hsl(249.41817789370225, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3117,
+    "lastValue": 3226,
+    "year": 2020,
+    "colour": "hsl(338.6776535465411, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3284,
+    "lastValue": 3117,
+    "year": 2020,
+    "colour": "hsl(178.8946399962433, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3376,
+    "lastValue": 3284,
+    "year": 2020,
+    "colour": "hsl(232.06473116055986, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3508,
+    "lastValue": 3376,
+    "year": 2020,
+    "colour": "hsl(201.46163465489087, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3428,
+    "lastValue": 3508,
+    "year": 2020,
+    "colour": "hsl(321.8851149767634, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3386,
+    "lastValue": 3428,
+    "year": 2020,
+    "colour": "hsl(41.857415019058436, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3317,
+    "lastValue": 3386,
+    "year": 2020,
+    "colour": "hsl(40.07618934177725, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3301,
+    "lastValue": 3317,
+    "year": 2020,
+    "colour": "hsl(97.78146456664074, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3406,
+    "lastValue": 3301,
+    "year": 2020,
+    "colour": "hsl(22.47203362156455, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3549,
+    "lastValue": 3406,
+    "year": 2020,
+    "colour": "hsl(227.884808415196, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3473,
+    "lastValue": 3549,
+    "year": 2020,
+    "colour": "hsl(348.2507380266099, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3299,
+    "lastValue": 3473,
+    "year": 2020,
+    "colour": "hsl(153.39906459737983, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3373,
+    "lastValue": 3299,
+    "year": 2020,
+    "colour": "hsl(195.4133522457876, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3478,
+    "lastValue": 3373,
+    "year": 2020,
+    "colour": "hsl(270.9049624465842, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3503,
+    "lastValue": 3478,
+    "year": 2020,
+    "colour": "hsl(333.5042662040482, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3633,
+    "lastValue": 3503,
+    "year": 2020,
+    "colour": "hsl(146.096890525122, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3561,
+    "lastValue": 3633,
+    "year": 2020,
+    "colour": "hsl(358.29250373327983, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3592,
+    "lastValue": 3561,
+    "year": 2020,
+    "colour": "hsl(121.05872767206152, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3550,
+    "lastValue": 3592,
+    "year": 2021,
+    "colour": "hsl(86.95775623107724, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3540,
+    "lastValue": 3550,
+    "year": 2021,
+    "colour": "hsl(271.02617754258694, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3552,
+    "lastValue": 3540,
+    "year": 2021,
+    "colour": "hsl(68.06299785864564, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3583,
+    "lastValue": 3552,
+    "year": 2021,
+    "colour": "hsl(38.11315674295634, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3549,
+    "lastValue": 3583,
+    "year": 2021,
+    "colour": "hsl(328.6668102660434, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3675,
+    "lastValue": 3549,
+    "year": 2021,
+    "colour": "hsl(95.29342287929668, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3650,
+    "lastValue": 3675,
+    "year": 2021,
+    "colour": "hsl(308.8570308780886, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3691,
+    "lastValue": 3650,
+    "year": 2021,
+    "colour": "hsl(172.15777371997098, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3797,
+    "lastValue": 3691,
+    "year": 2021,
+    "colour": "hsl(306.87541655496045, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3695,
+    "lastValue": 3797,
+    "year": 2021,
+    "colour": "hsl(18.753133212012454, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3642,
+    "lastValue": 3695,
+    "year": 2021,
+    "colour": "hsl(0.4934337893766916, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3746,
+    "lastValue": 3642,
+    "year": 2021,
+    "colour": "hsl(230.5103595205345, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3745,
+    "lastValue": 3746,
+    "year": 2021,
+    "colour": "hsl(81.6407175293397, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3747,
+    "lastValue": 3745,
+    "year": 2021,
+    "colour": "hsl(314.169127847808, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3672,
+    "lastValue": 3747,
+    "year": 2021,
+    "colour": "hsl(314.4951537410235, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3618,
+    "lastValue": 3672,
+    "year": 2021,
+    "colour": "hsl(134.890324327143, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3532,
+    "lastValue": 3618,
+    "year": 2021,
+    "colour": "hsl(305.562244077408, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3548,
+    "lastValue": 3532,
+    "year": 2021,
+    "colour": "hsl(201.63109466258823, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3583,
+    "lastValue": 3548,
+    "year": 2022,
+    "colour": "hsl(337.4466015550609, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3623,
+    "lastValue": 3583,
+    "year": 2022,
+    "colour": "hsl(117.57736584952197, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3513,
+    "lastValue": 3623,
+    "year": 2022,
+    "colour": "hsl(187.31239803406515, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3441,
+    "lastValue": 3513,
+    "year": 2022,
+    "colour": "hsl(299.9989420882532, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3605,
+    "lastValue": 3441,
+    "year": 2022,
+    "colour": "hsl(124.30506840556558, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3584,
+    "lastValue": 3605,
+    "year": 2022,
+    "colour": "hsl(258.84837087576625, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3715,
+    "lastValue": 3584,
+    "year": 2022,
+    "colour": "hsl(305.1307248520785, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3813,
+    "lastValue": 3715,
+    "year": 2023,
+    "colour": "hsl(216.22449760213468, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3783,
+    "lastValue": 3813,
+    "year": 2023,
+    "colour": "hsl(111.78567648725792, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3727,
+    "lastValue": 3783,
+    "year": 2023,
+    "colour": "hsl(359.8788569127556, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3724,
+    "lastValue": 3727,
+    "year": 2023,
+    "colour": "hsl(40.458855905575994, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3833,
+    "lastValue": 3724,
+    "year": 2023,
+    "colour": "hsl(351.10949006945987, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3644,
+    "lastValue": 3833,
+    "year": 2023,
+    "colour": "hsl(181.86722051514846, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3487,
+    "lastValue": 3644,
+    "year": 2023,
+    "colour": "hsl(6.082670131400247, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3569,
+    "lastValue": 3487,
+    "year": 2023,
+    "colour": "hsl(135.59154064904396, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3518,
+    "lastValue": 3569,
+    "year": 2024,
+    "colour": "hsl(154.10617037020816, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3572,
+    "lastValue": 3518,
+    "year": 2024,
+    "colour": "hsl(349.1824561972417, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3601,
+    "lastValue": 3572,
+    "year": 2024,
+    "colour": "hsl(66.52701167899156, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3593,
+    "lastValue": 3601,
+    "year": 2024,
+    "colour": "hsl(131.33706982350816, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3581,
+    "lastValue": 3593,
+    "year": 2024,
+    "colour": "hsl(166.8278654077479, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3630,
+    "lastValue": 3581,
+    "year": 2024,
+    "colour": "hsl(342.8334264547453, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3627,
+    "lastValue": 3630,
+    "year": 2024,
+    "colour": "hsl(200.7625742445322, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3586,
+    "lastValue": 3627,
+    "year": 2024,
+    "colour": "hsl(246.465131726781, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3620,
+    "lastValue": 3586,
+    "year": 2024,
+    "colour": "hsl(347.9571321312859, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3738,
+    "lastValue": 3620,
+    "year": 2024,
+    "colour": "hsl(237.65247090587758, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3564,
+    "lastValue": 3738,
+    "year": 2024,
+    "colour": "hsl(58.705764555925626, 75%, 75%)"
+  },
+  {
+    "name": "benq",
+    "value": 3529,
+    "lastValue": 3564,
+    "year": 2024,
+    "colour": "hsl(19.927120409598864, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 1733,
+    "lastValue": 0,
+    "year": 2014,
+    "colour": "hsl(132.4478878007389, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 1753,
+    "lastValue": 1733,
+    "year": 2014,
+    "colour": "hsl(342.87629013020205, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2036,
+    "lastValue": 1753,
+    "year": 2014,
+    "colour": "hsl(141.3202194423678, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 1915,
+    "lastValue": 2036,
+    "year": 2014,
+    "colour": "hsl(268.8053294436223, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 1979,
+    "lastValue": 1915,
+    "year": 2014,
+    "colour": "hsl(118.36586495990392, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2074,
+    "lastValue": 1979,
+    "year": 2014,
+    "colour": "hsl(207.59703273252723, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 1996,
+    "lastValue": 2074,
+    "year": 2014,
+    "colour": "hsl(168.93722884886094, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 1912,
+    "lastValue": 1996,
+    "year": 2014,
+    "colour": "hsl(318.5847202451103, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2034,
+    "lastValue": 1912,
+    "year": 2015,
+    "colour": "hsl(26.701005899981727, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2099,
+    "lastValue": 2034,
+    "year": 2015,
+    "colour": "hsl(119.13645645663904, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2012,
+    "lastValue": 2099,
+    "year": 2015,
+    "colour": "hsl(214.09936819853706, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2140,
+    "lastValue": 2012,
+    "year": 2015,
+    "colour": "hsl(131.41088548344192, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2168,
+    "lastValue": 2140,
+    "year": 2015,
+    "colour": "hsl(312.0738710344481, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2122,
+    "lastValue": 2168,
+    "year": 2015,
+    "colour": "hsl(280.6525163046591, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2275,
+    "lastValue": 2122,
+    "year": 2015,
+    "colour": "hsl(281.3853902630841, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2234,
+    "lastValue": 2275,
+    "year": 2015,
+    "colour": "hsl(82.647022600772, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2279,
+    "lastValue": 2234,
+    "year": 2015,
+    "colour": "hsl(198.91710514450233, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2174,
+    "lastValue": 2279,
+    "year": 2015,
+    "colour": "hsl(34.86827454359391, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2214,
+    "lastValue": 2174,
+    "year": 2015,
+    "colour": "hsl(134.55577423454093, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2122,
+    "lastValue": 2214,
+    "year": 2015,
+    "colour": "hsl(147.9209596100312, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2235,
+    "lastValue": 2122,
+    "year": 2015,
+    "colour": "hsl(81.61164018032551, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2310,
+    "lastValue": 2235,
+    "year": 2015,
+    "colour": "hsl(243.11426637032224, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2404,
+    "lastValue": 2310,
+    "year": 2015,
+    "colour": "hsl(52.714964454068706, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2465,
+    "lastValue": 2404,
+    "year": 2015,
+    "colour": "hsl(283.0467475892975, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2511,
+    "lastValue": 2465,
+    "year": 2015,
+    "colour": "hsl(281.77829398228585, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2393,
+    "lastValue": 2511,
+    "year": 2015,
+    "colour": "hsl(110.40784740390349, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2413,
+    "lastValue": 2393,
+    "year": 2015,
+    "colour": "hsl(160.3106102350458, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2431,
+    "lastValue": 2413,
+    "year": 2015,
+    "colour": "hsl(31.40940402554591, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2333,
+    "lastValue": 2431,
+    "year": 2015,
+    "colour": "hsl(47.15749485830823, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2348,
+    "lastValue": 2333,
+    "year": 2015,
+    "colour": "hsl(244.70490650848043, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2332,
+    "lastValue": 2348,
+    "year": 2015,
+    "colour": "hsl(118.61105312495195, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2492,
+    "lastValue": 2332,
+    "year": 2015,
+    "colour": "hsl(352.50187412731447, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2423,
+    "lastValue": 2492,
+    "year": 2016,
+    "colour": "hsl(344.00683963561056, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2548,
+    "lastValue": 2423,
+    "year": 2016,
+    "colour": "hsl(15.430084104834663, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2378,
+    "lastValue": 2548,
+    "year": 2016,
+    "colour": "hsl(281.38815358822507, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2472,
+    "lastValue": 2378,
+    "year": 2016,
+    "colour": "hsl(355.9666549743258, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2408,
+    "lastValue": 2472,
+    "year": 2016,
+    "colour": "hsl(89.87910928852887, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2407,
+    "lastValue": 2408,
+    "year": 2016,
+    "colour": "hsl(139.72865429189773, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2421,
+    "lastValue": 2407,
+    "year": 2016,
+    "colour": "hsl(15.432071847526307, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2537,
+    "lastValue": 2421,
+    "year": 2016,
+    "colour": "hsl(308.5238470281533, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2631,
+    "lastValue": 2537,
+    "year": 2016,
+    "colour": "hsl(119.88390765590508, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2661,
+    "lastValue": 2631,
+    "year": 2016,
+    "colour": "hsl(91.36010776113166, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2672,
+    "lastValue": 2661,
+    "year": 2016,
+    "colour": "hsl(82.4215014379115, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2693,
+    "lastValue": 2672,
+    "year": 2016,
+    "colour": "hsl(155.88685859447006, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2542,
+    "lastValue": 2693,
+    "year": 2016,
+    "colour": "hsl(192.2008264858901, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2716,
+    "lastValue": 2542,
+    "year": 2016,
+    "colour": "hsl(149.46167912773663, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2735,
+    "lastValue": 2716,
+    "year": 2016,
+    "colour": "hsl(269.47662009749394, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2668,
+    "lastValue": 2735,
+    "year": 2016,
+    "colour": "hsl(258.6544868767724, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2797,
+    "lastValue": 2668,
+    "year": 2016,
+    "colour": "hsl(28.932457040341582, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2683,
+    "lastValue": 2797,
+    "year": 2016,
+    "colour": "hsl(285.3947387266368, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2681,
+    "lastValue": 2683,
+    "year": 2016,
+    "colour": "hsl(237.7048072718597, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2789,
+    "lastValue": 2681,
+    "year": 2016,
+    "colour": "hsl(323.6487517643206, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2699,
+    "lastValue": 2789,
+    "year": 2017,
+    "colour": "hsl(267.03536289053517, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2753,
+    "lastValue": 2699,
+    "year": 2017,
+    "colour": "hsl(261.4500997115476, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2716,
+    "lastValue": 2753,
+    "year": 2017,
+    "colour": "hsl(71.11245117278298, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2751,
+    "lastValue": 2716,
+    "year": 2017,
+    "colour": "hsl(313.3418512887551, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2926,
+    "lastValue": 2751,
+    "year": 2017,
+    "colour": "hsl(227.41108293863832, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2896,
+    "lastValue": 2926,
+    "year": 2017,
+    "colour": "hsl(104.27721439649297, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2943,
+    "lastValue": 2896,
+    "year": 2017,
+    "colour": "hsl(260.4067178184652, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2895,
+    "lastValue": 2943,
+    "year": 2017,
+    "colour": "hsl(165.79285499481549, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2853,
+    "lastValue": 2895,
+    "year": 2017,
+    "colour": "hsl(126.43407937424021, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2835,
+    "lastValue": 2853,
+    "year": 2017,
+    "colour": "hsl(138.88732800746251, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2922,
+    "lastValue": 2835,
+    "year": 2017,
+    "colour": "hsl(349.0044348536524, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2939,
+    "lastValue": 2922,
+    "year": 2017,
+    "colour": "hsl(102.351929607007, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3017,
+    "lastValue": 2939,
+    "year": 2017,
+    "colour": "hsl(103.478978966451, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2894,
+    "lastValue": 3017,
+    "year": 2017,
+    "colour": "hsl(96.80269453477973, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2806,
+    "lastValue": 2894,
+    "year": 2017,
+    "colour": "hsl(151.85141378028987, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3015,
+    "lastValue": 2806,
+    "year": 2017,
+    "colour": "hsl(173.18385579408027, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3163,
+    "lastValue": 3015,
+    "year": 2017,
+    "colour": "hsl(44.196799047948694, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3187,
+    "lastValue": 3163,
+    "year": 2017,
+    "colour": "hsl(229.9259425348941, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3094,
+    "lastValue": 3187,
+    "year": 2017,
+    "colour": "hsl(308.38066885062716, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3246,
+    "lastValue": 3094,
+    "year": 2017,
+    "colour": "hsl(121.657755981759, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3266,
+    "lastValue": 3246,
+    "year": 2017,
+    "colour": "hsl(61.26206802497347, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3148,
+    "lastValue": 3266,
+    "year": 2017,
+    "colour": "hsl(130.2844247114957, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3053,
+    "lastValue": 3148,
+    "year": 2017,
+    "colour": "hsl(334.69447796884003, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2928,
+    "lastValue": 3053,
+    "year": 2017,
+    "colour": "hsl(276.1901720768925, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2956,
+    "lastValue": 2928,
+    "year": 2017,
+    "colour": "hsl(151.3346221196731, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2915,
+    "lastValue": 2956,
+    "year": 2017,
+    "colour": "hsl(348.133097786358, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3041,
+    "lastValue": 2915,
+    "year": 2017,
+    "colour": "hsl(316.2509603147256, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3039,
+    "lastValue": 3041,
+    "year": 2017,
+    "colour": "hsl(9.306238321827767, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3085,
+    "lastValue": 3039,
+    "year": 2017,
+    "colour": "hsl(125.14426563882448, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3175,
+    "lastValue": 3085,
+    "year": 2017,
+    "colour": "hsl(212.38442459221892, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3209,
+    "lastValue": 3175,
+    "year": 2017,
+    "colour": "hsl(169.77553578583954, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3150,
+    "lastValue": 3209,
+    "year": 2018,
+    "colour": "hsl(57.571954758985896, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3104,
+    "lastValue": 3150,
+    "year": 2018,
+    "colour": "hsl(312.06525792830246, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3084,
+    "lastValue": 3104,
+    "year": 2018,
+    "colour": "hsl(138.17146931033307, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3216,
+    "lastValue": 3084,
+    "year": 2018,
+    "colour": "hsl(220.4837238495331, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3218,
+    "lastValue": 3216,
+    "year": 2018,
+    "colour": "hsl(235.96497124849137, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3076,
+    "lastValue": 3218,
+    "year": 2018,
+    "colour": "hsl(77.10891955221577, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3158,
+    "lastValue": 3076,
+    "year": 2018,
+    "colour": "hsl(170.1524268295298, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3197,
+    "lastValue": 3158,
+    "year": 2018,
+    "colour": "hsl(278.11059436535925, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3088,
+    "lastValue": 3197,
+    "year": 2018,
+    "colour": "hsl(119.94439206924467, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3159,
+    "lastValue": 3088,
+    "year": 2018,
+    "colour": "hsl(18.210165507374796, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3217,
+    "lastValue": 3159,
+    "year": 2018,
+    "colour": "hsl(133.40797071519603, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3098,
+    "lastValue": 3217,
+    "year": 2018,
+    "colour": "hsl(185.31308355248146, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3101,
+    "lastValue": 3098,
+    "year": 2018,
+    "colour": "hsl(308.48008737720454, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3065,
+    "lastValue": 3101,
+    "year": 2018,
+    "colour": "hsl(21.3726286018997, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2974,
+    "lastValue": 3065,
+    "year": 2018,
+    "colour": "hsl(32.740234665415514, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2984,
+    "lastValue": 2974,
+    "year": 2018,
+    "colour": "hsl(104.30129477510809, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3098,
+    "lastValue": 2984,
+    "year": 2018,
+    "colour": "hsl(178.46732735457573, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3061,
+    "lastValue": 3098,
+    "year": 2018,
+    "colour": "hsl(89.39841460210766, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2953,
+    "lastValue": 3061,
+    "year": 2018,
+    "colour": "hsl(77.71425798596348, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2899,
+    "lastValue": 2953,
+    "year": 2018,
+    "colour": "hsl(308.5081884507244, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2931,
+    "lastValue": 2899,
+    "year": 2018,
+    "colour": "hsl(115.18893562362068, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2953,
+    "lastValue": 2931,
+    "year": 2018,
+    "colour": "hsl(138.23366729558958, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3128,
+    "lastValue": 2953,
+    "year": 2018,
+    "colour": "hsl(35.16355275697626, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3239,
+    "lastValue": 3128,
+    "year": 2018,
+    "colour": "hsl(28.29037148408154, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3189,
+    "lastValue": 3239,
+    "year": 2018,
+    "colour": "hsl(154.70373861576343, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3296,
+    "lastValue": 3189,
+    "year": 2018,
+    "colour": "hsl(0.8812013386732698, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3230,
+    "lastValue": 3296,
+    "year": 2018,
+    "colour": "hsl(236.97495920902617, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3353,
+    "lastValue": 3230,
+    "year": 2018,
+    "colour": "hsl(98.01044631965719, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3443,
+    "lastValue": 3353,
+    "year": 2018,
+    "colour": "hsl(170.76820476591632, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3357,
+    "lastValue": 3443,
+    "year": 2018,
+    "colour": "hsl(296.74406734577076, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3334,
+    "lastValue": 3357,
+    "year": 2018,
+    "colour": "hsl(172.58726759539252, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3351,
+    "lastValue": 3334,
+    "year": 2018,
+    "colour": "hsl(126.72171385438676, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3464,
+    "lastValue": 3351,
+    "year": 2019,
+    "colour": "hsl(161.24712412117094, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3257,
+    "lastValue": 3464,
+    "year": 2019,
+    "colour": "hsl(198.51035987226638, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3138,
+    "lastValue": 3257,
+    "year": 2019,
+    "colour": "hsl(150.35972716156326, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2986,
+    "lastValue": 3138,
+    "year": 2019,
+    "colour": "hsl(304.6094333035776, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3073,
+    "lastValue": 2986,
+    "year": 2019,
+    "colour": "hsl(339.27872353829446, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3040,
+    "lastValue": 3073,
+    "year": 2019,
+    "colour": "hsl(50.452224541819525, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3152,
+    "lastValue": 3040,
+    "year": 2019,
+    "colour": "hsl(328.1708579500774, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3010,
+    "lastValue": 3152,
+    "year": 2019,
+    "colour": "hsl(181.93128904280005, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2918,
+    "lastValue": 3010,
+    "year": 2019,
+    "colour": "hsl(172.72074537988257, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2906,
+    "lastValue": 2918,
+    "year": 2019,
+    "colour": "hsl(44.91189016909505, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3117,
+    "lastValue": 2906,
+    "year": 2019,
+    "colour": "hsl(48.81870515380846, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3191,
+    "lastValue": 3117,
+    "year": 2019,
+    "colour": "hsl(285.601571356545, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3179,
+    "lastValue": 3191,
+    "year": 2019,
+    "colour": "hsl(297.3424485668509, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3268,
+    "lastValue": 3179,
+    "year": 2019,
+    "colour": "hsl(241.15765712652168, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3403,
+    "lastValue": 3268,
+    "year": 2019,
+    "colour": "hsl(27.155474524360883, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3362,
+    "lastValue": 3403,
+    "year": 2019,
+    "colour": "hsl(107.35539241839213, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3344,
+    "lastValue": 3362,
+    "year": 2019,
+    "colour": "hsl(272.8070763899349, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3468,
+    "lastValue": 3344,
+    "year": 2019,
+    "colour": "hsl(143.896261674337, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3316,
+    "lastValue": 3468,
+    "year": 2019,
+    "colour": "hsl(199.26316013666533, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3434,
+    "lastValue": 3316,
+    "year": 2019,
+    "colour": "hsl(194.85962593822453, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3386,
+    "lastValue": 3434,
+    "year": 2019,
+    "colour": "hsl(37.443041980744695, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3409,
+    "lastValue": 3386,
+    "year": 2019,
+    "colour": "hsl(42.38836762974464, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3428,
+    "lastValue": 3409,
+    "year": 2019,
+    "colour": "hsl(202.21055935690512, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3359,
+    "lastValue": 3428,
+    "year": 2019,
+    "colour": "hsl(36.1206664564287, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3414,
+    "lastValue": 3359,
+    "year": 2019,
+    "colour": "hsl(186.44889195425594, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3527,
+    "lastValue": 3414,
+    "year": 2019,
+    "colour": "hsl(340.5163031841943, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3418,
+    "lastValue": 3527,
+    "year": 2020,
+    "colour": "hsl(258.26371131058147, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3251,
+    "lastValue": 3418,
+    "year": 2020,
+    "colour": "hsl(296.19580895109107, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3206,
+    "lastValue": 3251,
+    "year": 2020,
+    "colour": "hsl(352.99310948955997, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3281,
+    "lastValue": 3206,
+    "year": 2020,
+    "colour": "hsl(79.57745363490051, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3199,
+    "lastValue": 3281,
+    "year": 2020,
+    "colour": "hsl(74.57768282750087, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3242,
+    "lastValue": 3199,
+    "year": 2020,
+    "colour": "hsl(335.72334282482103, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3285,
+    "lastValue": 3242,
+    "year": 2020,
+    "colour": "hsl(199.94547848460695, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3244,
+    "lastValue": 3285,
+    "year": 2020,
+    "colour": "hsl(234.19537527433158, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3070,
+    "lastValue": 3244,
+    "year": 2020,
+    "colour": "hsl(245.7031570211583, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3104,
+    "lastValue": 3070,
+    "year": 2020,
+    "colour": "hsl(13.567900922782368, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2936,
+    "lastValue": 3104,
+    "year": 2020,
+    "colour": "hsl(199.22363520463628, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3107,
+    "lastValue": 2936,
+    "year": 2020,
+    "colour": "hsl(63.86750199894667, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3105,
+    "lastValue": 3107,
+    "year": 2020,
+    "colour": "hsl(339.43030295064545, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 2990,
+    "lastValue": 3105,
+    "year": 2020,
+    "colour": "hsl(277.33977260959216, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3055,
+    "lastValue": 2990,
+    "year": 2020,
+    "colour": "hsl(252.9570520616904, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3157,
+    "lastValue": 3055,
+    "year": 2020,
+    "colour": "hsl(20.31472798479819, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3064,
+    "lastValue": 3157,
+    "year": 2020,
+    "colour": "hsl(283.87978596108513, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3107,
+    "lastValue": 3064,
+    "year": 2020,
+    "colour": "hsl(326.21108120227103, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3216,
+    "lastValue": 3107,
+    "year": 2020,
+    "colour": "hsl(53.7411274127419, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3188,
+    "lastValue": 3216,
+    "year": 2020,
+    "colour": "hsl(73.615778131313, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3324,
+    "lastValue": 3188,
+    "year": 2020,
+    "colour": "hsl(108.93147632206654, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3289,
+    "lastValue": 3324,
+    "year": 2020,
+    "colour": "hsl(298.1982855165162, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3288,
+    "lastValue": 3289,
+    "year": 2020,
+    "colour": "hsl(262.07508676385214, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3245,
+    "lastValue": 3288,
+    "year": 2020,
+    "colour": "hsl(324.8556605705344, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3205,
+    "lastValue": 3245,
+    "year": 2020,
+    "colour": "hsl(107.09434325330986, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3383,
+    "lastValue": 3205,
+    "year": 2020,
+    "colour": "hsl(122.98580584792818, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3374,
+    "lastValue": 3383,
+    "year": 2020,
+    "colour": "hsl(228.60105769250583, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3322,
+    "lastValue": 3374,
+    "year": 2020,
+    "colour": "hsl(323.43368321941745, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3382,
+    "lastValue": 3322,
+    "year": 2020,
+    "colour": "hsl(64.92599822987188, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3313,
+    "lastValue": 3382,
+    "year": 2020,
+    "colour": "hsl(251.4687025774114, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3241,
+    "lastValue": 3313,
+    "year": 2020,
+    "colour": "hsl(336.23238598720235, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3268,
+    "lastValue": 3241,
+    "year": 2020,
+    "colour": "hsl(82.30898681452686, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3337,
+    "lastValue": 3268,
+    "year": 2021,
+    "colour": "hsl(247.75463378465506, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3352,
+    "lastValue": 3337,
+    "year": 2021,
+    "colour": "hsl(59.36486552632743, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3355,
+    "lastValue": 3352,
+    "year": 2021,
+    "colour": "hsl(332.10723474259265, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3349,
+    "lastValue": 3355,
+    "year": 2021,
+    "colour": "hsl(295.90666636774876, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3490,
+    "lastValue": 3349,
+    "year": 2021,
+    "colour": "hsl(171.02615607157819, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3374,
+    "lastValue": 3490,
+    "year": 2021,
+    "colour": "hsl(70.03962718182832, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3461,
+    "lastValue": 3374,
+    "year": 2021,
+    "colour": "hsl(300.1964641818471, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3466,
+    "lastValue": 3461,
+    "year": 2021,
+    "colour": "hsl(71.2353874574933, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3494,
+    "lastValue": 3466,
+    "year": 2021,
+    "colour": "hsl(268.3066612844112, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3528,
+    "lastValue": 3494,
+    "year": 2021,
+    "colour": "hsl(283.6938259907691, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3648,
+    "lastValue": 3528,
+    "year": 2021,
+    "colour": "hsl(237.6032870177864, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3659,
+    "lastValue": 3648,
+    "year": 2021,
+    "colour": "hsl(266.74692519120583, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3707,
+    "lastValue": 3659,
+    "year": 2021,
+    "colour": "hsl(99.97006365640263, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3720,
+    "lastValue": 3707,
+    "year": 2021,
+    "colour": "hsl(67.05311532767999, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3712,
+    "lastValue": 3720,
+    "year": 2021,
+    "colour": "hsl(133.56981233476424, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3550,
+    "lastValue": 3712,
+    "year": 2021,
+    "colour": "hsl(220.6231038905712, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3574,
+    "lastValue": 3550,
+    "year": 2021,
+    "colour": "hsl(199.843853342515, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3538,
+    "lastValue": 3574,
+    "year": 2021,
+    "colour": "hsl(289.8552501934957, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3511,
+    "lastValue": 3538,
+    "year": 2021,
+    "colour": "hsl(325.2437061370128, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3511,
+    "lastValue": 3511,
+    "year": 2021,
+    "colour": "hsl(235.395836826169, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3655,
+    "lastValue": 3511,
+    "year": 2021,
+    "colour": "hsl(121.86117072870111, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3627,
+    "lastValue": 3655,
+    "year": 2021,
+    "colour": "hsl(264.00662716373796, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3562,
+    "lastValue": 3627,
+    "year": 2021,
+    "colour": "hsl(285.6506745496656, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3366,
+    "lastValue": 3562,
+    "year": 2021,
+    "colour": "hsl(293.4863072937318, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3525,
+    "lastValue": 3366,
+    "year": 2021,
+    "colour": "hsl(100.30223017217695, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3418,
+    "lastValue": 3525,
+    "year": 2021,
+    "colour": "hsl(62.17256357045433, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3405,
+    "lastValue": 3418,
+    "year": 2021,
+    "colour": "hsl(189.37279396286866, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3469,
+    "lastValue": 3405,
+    "year": 2021,
+    "colour": "hsl(146.2484036478995, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3545,
+    "lastValue": 3469,
+    "year": 2022,
+    "colour": "hsl(168.51892610107615, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3548,
+    "lastValue": 3545,
+    "year": 2022,
+    "colour": "hsl(220.92340929094024, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3404,
+    "lastValue": 3548,
+    "year": 2022,
+    "colour": "hsl(268.45094184379224, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3444,
+    "lastValue": 3404,
+    "year": 2022,
+    "colour": "hsl(241.35300846672956, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3399,
+    "lastValue": 3444,
+    "year": 2022,
+    "colour": "hsl(223.5777633483915, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3287,
+    "lastValue": 3399,
+    "year": 2022,
+    "colour": "hsl(167.22364130361373, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3149,
+    "lastValue": 3287,
+    "year": 2022,
+    "colour": "hsl(37.9254462274757, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3379,
+    "lastValue": 3149,
+    "year": 2022,
+    "colour": "hsl(247.19846670891746, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3406,
+    "lastValue": 3379,
+    "year": 2022,
+    "colour": "hsl(348.2543389354654, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3442,
+    "lastValue": 3406,
+    "year": 2022,
+    "colour": "hsl(329.18067586178597, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3406,
+    "lastValue": 3442,
+    "year": 2022,
+    "colour": "hsl(306.49695825581966, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3438,
+    "lastValue": 3406,
+    "year": 2022,
+    "colour": "hsl(210.0128310248793, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3528,
+    "lastValue": 3438,
+    "year": 2022,
+    "colour": "hsl(350.2262324682808, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3492,
+    "lastValue": 3528,
+    "year": 2023,
+    "colour": "hsl(274.215903948586, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3535,
+    "lastValue": 3492,
+    "year": 2023,
+    "colour": "hsl(270.50506995827, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3602,
+    "lastValue": 3535,
+    "year": 2023,
+    "colour": "hsl(91.17396037990362, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3515,
+    "lastValue": 3602,
+    "year": 2023,
+    "colour": "hsl(101.63966206951449, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3319,
+    "lastValue": 3515,
+    "year": 2023,
+    "colour": "hsl(162.6225248903738, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3436,
+    "lastValue": 3319,
+    "year": 2023,
+    "colour": "hsl(296.5949353834037, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3515,
+    "lastValue": 3436,
+    "year": 2023,
+    "colour": "hsl(210.1449910774615, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3350,
+    "lastValue": 3515,
+    "year": 2023,
+    "colour": "hsl(5.569135696641556, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3279,
+    "lastValue": 3350,
+    "year": 2023,
+    "colour": "hsl(51.20361467000948, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3342,
+    "lastValue": 3279,
+    "year": 2023,
+    "colour": "hsl(45.74968933565547, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3438,
+    "lastValue": 3342,
+    "year": 2023,
+    "colour": "hsl(74.01623104434718, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3598,
+    "lastValue": 3438,
+    "year": 2023,
+    "colour": "hsl(256.9574962407144, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3709,
+    "lastValue": 3598,
+    "year": 2023,
+    "colour": "hsl(326.9028031422378, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3740,
+    "lastValue": 3709,
+    "year": 2023,
+    "colour": "hsl(64.12635829379707, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3651,
+    "lastValue": 3740,
+    "year": 2023,
+    "colour": "hsl(188.2393277035233, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3752,
+    "lastValue": 3651,
+    "year": 2023,
+    "colour": "hsl(249.31845607852574, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3714,
+    "lastValue": 3752,
+    "year": 2023,
+    "colour": "hsl(83.46730020102457, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3648,
+    "lastValue": 3714,
+    "year": 2023,
+    "colour": "hsl(3.315361935690353, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3759,
+    "lastValue": 3648,
+    "year": 2023,
+    "colour": "hsl(294.59014498443054, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3606,
+    "lastValue": 3759,
+    "year": 2023,
+    "colour": "hsl(112.91282472801339, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3376,
+    "lastValue": 3606,
+    "year": 2024,
+    "colour": "hsl(344.9527411227405, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3532,
+    "lastValue": 3376,
+    "year": 2024,
+    "colour": "hsl(304.65682228515817, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3611,
+    "lastValue": 3532,
+    "year": 2024,
+    "colour": "hsl(246.5282039318249, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3521,
+    "lastValue": 3611,
+    "year": 2024,
+    "colour": "hsl(68.64340545690195, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3509,
+    "lastValue": 3521,
+    "year": 2024,
+    "colour": "hsl(169.03619835201525, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3373,
+    "lastValue": 3509,
+    "year": 2024,
+    "colour": "hsl(160.88332680312195, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3542,
+    "lastValue": 3373,
+    "year": 2024,
+    "colour": "hsl(139.26816322282636, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3522,
+    "lastValue": 3542,
+    "year": 2024,
+    "colour": "hsl(142.4911503145847, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3582,
+    "lastValue": 3522,
+    "year": 2024,
+    "colour": "hsl(211.50254760245656, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3646,
+    "lastValue": 3582,
+    "year": 2024,
+    "colour": "hsl(224.15213970165948, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3646,
+    "lastValue": 3646,
+    "year": 2024,
+    "colour": "hsl(130.40905959389914, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3633,
+    "lastValue": 3646,
+    "year": 2024,
+    "colour": "hsl(92.57575784737662, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3627,
+    "lastValue": 3633,
+    "year": 2024,
+    "colour": "hsl(83.30980466771827, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3483,
+    "lastValue": 3627,
+    "year": 2024,
+    "colour": "hsl(182.17318934242024, 75%, 75%)"
+  },
+  {
+    "name": "radewoosh",
+    "value": 3410,
+    "lastValue": 3483,
+    "year": 2024,
+    "colour": "hsl(124.42990290457004, 75%, 75%)"
+  }
+]

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import fs from 'fs'; // Node.js fs for caching data
 
 // Define interfaces for type safety
 interface BrandData {
@@ -12,6 +13,15 @@ interface BrandData {
   colour: string;
   rank?: number;
 }
+
+const convertUnixToYearDecimal = (unixTime: number): number => {
+  const date = new Date(unixTime * 1000); // Convert to milliseconds
+  const year = date.getFullYear();
+  const startOfYear = new Date(year, 0, 1).getTime();
+  const endOfYear = new Date(year + 1, 0, 1).getTime();
+  const yearFraction = (unixTime * 1000 - startOfYear) / (endOfYear - startOfYear);
+  return year + yearFraction;
+};
 
 // const halo = (text: d3.Selection<SVGTextElement, unknown, null, undefined>, strokeWidth: number): void => {
 //   text.each(function () {
@@ -189,7 +199,7 @@ const D3BarChart: React.FC = () => {
                 .sort((a, b) => b.value - a.value)
                 // set the values of the undefined to 0
                 
-                .slice(0, top_n)
+                .slice(0, top_n)  
                 .map((d, i) => ({ ...d, rank: i }));
 
         // yearSlice.forEach((d, i) => (d.rank = i));
