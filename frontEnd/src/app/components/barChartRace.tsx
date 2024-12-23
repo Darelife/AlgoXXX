@@ -13,14 +13,14 @@ interface BrandData {
   rank?: number;
 }
 
-const convertUnixToYearDecimal = (unixTime: number): number => {
-  const date = new Date(unixTime * 1000); // Convert to milliseconds
-  const year = date.getFullYear();
-  const startOfYear = new Date(year, 0, 1).getTime();
-  const endOfYear = new Date(year + 1, 0, 1).getTime();
-  const yearFraction = (unixTime * 1000 - startOfYear) / (endOfYear - startOfYear);
-  return year + yearFraction;
-};
+// const convertUnixToYearDecimal = (unixTime: number): number => {
+//   const date = new Date(unixTime * 1000); // Convert to milliseconds
+//   const year = date.getFullYear();
+//   const startOfYear = new Date(year, 0, 1).getTime();
+//   const endOfYear = new Date(year + 1, 0, 1).getTime();
+//   const yearFraction = (unixTime * 1000 - startOfYear) / (endOfYear - startOfYear);
+//   return year + yearFraction;
+// };
 
 // const halo = (text: d3.Selection<SVGTextElement, unknown, null, undefined>, strokeWidth: number): void => {
 //   text.each(function () {
