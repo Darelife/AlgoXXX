@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import fs from 'fs'; // Node.js fs for caching data
 
 // Define interfaces for type safety
 interface BrandData {
