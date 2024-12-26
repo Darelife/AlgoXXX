@@ -56,6 +56,24 @@ router.get("/", (req, res, next) => {
     });
 });
 
+// router.get("/deleteAll", (req, res, next) => {
+//   User.deleteMany({})
+//     .exec()
+//     .then((result) => {
+//       console.log(result);
+//       res.status(200).json({
+//         message: "All users deleted successfully!",
+//         result: result,
+//       });
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       res.status(500).json({
+//         error: error,
+//       });
+//     });
+// });
+
 router.get("/:userId", (req, res, next) => {
   const id = req.params.userId;
   User.findById(id)
