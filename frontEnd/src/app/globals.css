@@ -2,16 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-}
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 .yearText {
   font-size: 64px;
   font-weight: 900;
@@ -22,4 +12,46 @@ body {
   display: border-box;
   /* make it more thick */
   text-shadow: 0 0 10px var(--foreground);
+}
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+}
+
+.dark {
+  --background: #121212;
+  --foreground: #ffffff;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(-101%); /* Start slightly offscreen */
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(101%); /* Exit fully offscreen */
+  }
+}
+
+.animate-slide {
+  animation: slide 1s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform; /* Optimize for smoother rendering */
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: transparent; /* Dynamic color set via inline styles */
+  margin: 0;
+  border: none; /* Ensure no border */
+  outline: none; /* Ensure no outline */
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
 }
