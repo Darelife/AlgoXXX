@@ -1,2 +1,4 @@
 *.json
 *.py
+*.csv
+*.txt

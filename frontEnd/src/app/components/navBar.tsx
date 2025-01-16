@@ -28,29 +28,36 @@ const NavBar = ({ toggleTheme }: { toggleTheme: () => void }) => {
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left">
+        {/* <SheetContent side="left" className="bg-white shadow-lg"> */}
+        <SheetContent side="left" className="bg-white dark:bg-gray-800 shadow-lg !backdrop-blur-none !bg-opacity-100">
           <nav className="flex flex-col space-y-4">
             <Link href="/" className="text-lg font-medium" prefetch={false}>
-              Home
+              AlgoX
             </Link>
             <Link href="/about" className="text-lg font-medium" prefetch={false}>
               About
             </Link>
-            <Link href="/contact" className="text-lg font-medium" prefetch={false}>
-              Contact
+            <Link href="/members" className="text-lg font-medium" prefetch={false}>
+              Members
+            </Link>
+            <Link href="/bootcamp" className="text-lg font-medium" prefetch={false}>
+              Bootcamp
             </Link>
           </nav>
         </SheetContent>
       </Sheet>
       <div className="hidden lg:flex space-x-6">
         <Link href="/" className="text-lg font-medium" prefetch={false}>
-          Home
+          AlgoX
         </Link>
         <Link href="/about" className="text-lg font-medium" prefetch={false}>
           About
         </Link>
-        <Link href="/contact" className="text-lg font-medium" prefetch={false}>
-          Contact
+        <Link href="/members" className="text-lg font-medium" prefetch={false}>
+          Members
+        </Link>
+        <Link href="/bootcamp" className="text-lg font-medium" prefetch={false}>
+          Bootcamp
         </Link>
       </div>
       <Button

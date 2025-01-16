@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const databaseRoutes = require("./api/routes/database");
+const currentInfoRoutes = require("./api/routes/currentInfo");
 
 mongoose.connect(
   "mongodb+srv://aglomaniax:" +
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use("/database", databaseRoutes);
+app.use("/currentInfo", currentInfoRoutes);
 
 app.use((req, res, next) => {
   //all the requests and responses have to pass through our app and the next parameter allows us to pass them to the next middleware to be processed/executed
