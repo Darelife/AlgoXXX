@@ -6,25 +6,35 @@ const TypeIntoView: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const section = document.getElementById("typingSection");
-      if (!section) return;
+    let timer: NodeJS.Timeout;
 
-      const rect = section.getBoundingClientRect();
-      if (rect.top < window.innerHeight && !isVisible) {
-        setIsVisible(true);
-      }
+    const handleScroll = () => {
+      // Debounce the scroll event
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const section = document.getElementById("typingSection");
+        if (!section) return;
+
+        const rect = section.getBoundingClientRect();
+        // Check if at least 50% of the section is visible
+        if (rect.top < window.innerHeight * 0.75 && !isVisible) {
+          setIsVisible(true);
+        }
+      }, 50); // 50ms debounce
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [isVisible]);
 
   return (
     <div>
       <section
         id="typingSection"
-        className={`transition-opacity transform duration-3000 ease-in-out ${
+        className={`transition-opacity transform duration-1000 ease-in-out ${
           isVisible
             ? "opacity-100 translate-x-0"
             : "opacity-0 -translate-x-12"
