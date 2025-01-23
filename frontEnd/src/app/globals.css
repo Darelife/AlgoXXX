@@ -13,15 +13,73 @@
   /* make it more thick */
   text-shadow: 0 0 10px var(--foreground);
 }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
+#metaBox {
+  background-color: #121212;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+}
+
+body.dark #metaBox {
+  background-color: #fff;
+  color: #121212;
+  border-radius: 5px;
+  border: none;
+}
+
+#metaBox:hover {
+  background-color: #8c8c8c;
+  color: #fff;
+}
+
+body.dark #metaBox:hover {
+  background-color: #ffcc00;
+  color: #121212;
+}
+
+.yearText {
+  font-size: 64px;
+  font-weight: 900;
+  /* color: var(--foreground); */
+  text-align: center;
+  color: blue;
+  margin-top: 1rem;
+  display: border-box;
+  /* make it more thick */
+  text-shadow: 0 0 10px var(--foreground);
+}
 :root {
   --background: #ffffff;
   --foreground: #000000;
 }
-
 .dark {
   --background: #121212;
   --foreground: #ffffff;
 }
+
+body ::selection {
+  background: #ffcc00;
+  /* color: #121212; */
+}
+body.dark ::selection {
+  background: #8c8c8c;
+  /* color: #121212; */
+}
+/* 
+::selection {
+  background: var(--selection-background);
+  text-decoration: inherit;
+  background: var(--background) == '#121212'? 'yellow' : '#8c8c8c';
+} */
 
 @keyframes slide {
   0% {
