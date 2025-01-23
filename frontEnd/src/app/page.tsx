@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import NavBar from "./components/navBar";
+import TypeIntoView from "./components/typeIntoView";
 // import AddButton from "./components/AddButton";
 // import Functionality from "./components/functionality";
 // import Dashboard from "./components/DashBoard";
@@ -73,6 +74,7 @@ export default function Home() {
       >
         <h1 className="md:text-9xl text-6xl font-sans font-black">ALGOX</h1>
       </div>
+      <TypeIntoView />
       {/* <Functionality /> */}
       {/* <AddButton /> */}
       {/* <Dashboard /> */}
