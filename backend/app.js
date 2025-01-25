@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 require("dotenv").config();
 
 const databaseRoutes = require("./api/routes/database");
@@ -14,6 +15,7 @@ mongoose.connect(
 );
 
 const app = express();
+app.use(cors());
 app.use(morgan("dev")); //middleware that logs requests to the console
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

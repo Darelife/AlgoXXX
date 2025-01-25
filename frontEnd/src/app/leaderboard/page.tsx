@@ -98,9 +98,9 @@ const SampleTable: React.FC = () => {
     setFilteredUsers(sortedUsers);
   };
 
-  useEffect(() => {
-    filterUsers(searchTerm, ratingRange, selectedYear, selectedRank);
-  }, [searchTerm, ratingRange, selectedYear, selectedRank]);
+  // useEffect(() => {
+  //   filterUsers(searchTerm, ratingRange, selectedYear, selectedRank);
+  // }, [searchTerm, ratingRange, selectedYear, selectedRank]);
 
   const filterUsers = (
     searchTerm: string,

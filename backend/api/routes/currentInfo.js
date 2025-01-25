@@ -17,9 +17,7 @@ const User = require("../models/users");
 // });
 
 // get the rating history of all users
-router.get("/", (req, res, next) => {
-  
-});
+router.get("/", (req, res, next) => {});
 
 // get the [bitsid, cfid, name, rating, rank, creationTime] of all users
 router.get("/all", async (req, res, next) => {
@@ -70,6 +68,7 @@ router.get("/all", async (req, res, next) => {
         creationTime: cfData.registrationTimeSeconds
           ? new Date(cfData.registrationTimeSeconds * 1000)
           : "N/A", // Default to "N/A" if registrationTimeSeconds is undefined
+        titlePhoto: cfData.titlePhoto || "N/A",
       };
     });
 
