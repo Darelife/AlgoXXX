@@ -1,5 +1,5 @@
 import React from 'react';
-import UserTable from '../components/UserTable.jsx'
+import UserTable from '../components/UserTable'
 
 interface User {
   handle: string;
