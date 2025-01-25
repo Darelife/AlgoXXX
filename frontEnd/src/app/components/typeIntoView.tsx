@@ -2,7 +2,19 @@
 
 import React, { useEffect, useState } from "react";
 
-const TypeIntoView: React.FC = () => {
+interface TypeIntoViewProps {
+  id:string;
+  heading?: string; // Optional heading
+  text?: string; // Optional text below the heading
+  align?: "left" | "right"; // Alignment direction
+}
+
+const TypeIntoView: React.FC<TypeIntoViewProps> = ({
+  id,
+  heading = "Welcome to AlgoManiax", // Default heading
+  text = "Explore the world of competitive programming with us. We are a group of passionate programmers who love to solve problems and learn new techniques to improve our skills. Join us and be a part of the community!", // Default text
+  align = "left", // Default alignment
+}) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -12,15 +24,29 @@ const TypeIntoView: React.FC = () => {
       // Debounce the scroll event
       clearTimeout(timer);
       timer = setTimeout(() => {
-        const section = document.getElementById("typingSection");
+        const section = document.getElementById(id);
         if (!section) return;
-
         const rect = section.getBoundingClientRect();
+        // Check if at least 50% of the section is visible
+        if (rect.top < window.innerHeight * 0.75 && rect.bottom > window.innerHeight * 0.25) {
+          if (!isVisible) {
+            setIsVisible(true);
+          }
+        } else {
+          if (isVisible) {
+            setIsVisible(false);
+          }
+        }
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (!isMobile && rect.top < window.innerHeight * 0.35 && rect.bottom > window.innerHeight * 0.65) {
+          section.scrollIntoView({ behavior: "smooth" });
+        }
+
         // Check if at least 50% of the section is visible
         if (rect.top < window.innerHeight * 0.75 && !isVisible) {
           setIsVisible(true);
         }
-      }, 50); // 50ms debounce
+      }, 10); // 50ms debounce
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -31,21 +57,23 @@ const TypeIntoView: React.FC = () => {
   }, [isVisible]);
 
   return (
-    <div>
+    <div
+    className={`flex ${align === "right" ? "justify-end" : "justify-start"} min-h-screen px-10`}
+    >
       <section
-        id="typingSection"
-        className={`transition-opacity transform duration-1000 ease-in-out ${
+        id={id}
+        className={`transition-opacity transform duration-1000 ease-in-out max-w-[700px] ${
           isVisible
             ? "opacity-100 translate-x-0"
-            : "opacity-0 -translate-x-12"
-        } flex flex-col justify-center items-start min-h-screen px-10`}
+            : align === "left"
+            ? "opacity-0 -translate-x-12"
+            : "opacity-0 translate-x-12"
+        } flex flex-col justify-center items-start min-h-screen px-10 ${
+          align === "right" ? "items-end text-right" : "items-start text-left"
+        }`}
       >
-        <h1 className="text-4xl font-bold">Welcome to ALGOX</h1>
-        <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-[600px]">
-          Explore the world of competitive programming with us. We are a group of
-          passionate programmers who love to solve problems and learn new techniques to
-          improve our skills. Join us and be a part of the community!
-        </p>
+        <h1 className="text-4xl font-bold">{heading}</h1>
+        <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">{text}</p>
       </section>
     </div>
   );

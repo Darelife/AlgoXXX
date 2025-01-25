@@ -47,6 +47,9 @@ const NavBar = ({ toggleTheme }: { toggleTheme: () => void }) => {
       <Link href="/about" className="text-lg font-medium" prefetch={false}>
         About
       </Link>
+      <Link href="/codeforces" className="text-lg font-medium" prefetch={false}>
+        Leaderboard
+      </Link>
       </div>
       <div className="flex items-center space-x-4">
       <div className="hidden lg:block">
