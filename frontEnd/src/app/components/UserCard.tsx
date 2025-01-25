@@ -2,20 +2,23 @@ import { ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
-export default function UserCard({ ...user }) {
-  // interface User {
-  //   bitsId: string;
-  //   pfp: string;
-  //   name: string;
-  //   handle: string;
-  //   currentRating: number;
-  //   peakRating: number;
-  // }
+interface User {
+  bitsid: string;
+  cfid: string;
+  name: string;
+  rating: number;
+  maxRating: number;
+  titlePhoto: string;
+}
 
+// <UserCard key={user.bitsid} data={user} />
+const UserCard: React.FC<{ user: User }> = ({ user }) => {
   interface Rank {
     name: string;
     color: string;
   }
+
+  console.log(user);
 
   const getRank = (rating: number): Rank => {
     if (rating < 1200) return { name: 'Newbie', color: 'text-gray-500' }
@@ -31,29 +34,29 @@ export default function UserCard({ ...user }) {
   }
 
   return (
-    <Card key={user.bitsId}>
+    <Card key={user.bitsid}>
       <CardHeader>
-        <Image src={user.pfp} alt={user.name} width={64} height={64} className='w-16 h-16 mx-auto' />
+        <Image src={user.titlePhoto==='N/A'?"https://userpic.codeforces.org/no-title.jpg":user.titlePhoto} alt={user.name} width={64} height={64} className='w-16 h-16 mx-auto' />
         {/* <Image src={user.pfp} alt={user.name} width={64} height={64} className='w-16 h-16 mx-auto' /> */}
         <CardTitle className='mt-2 text-center text-[#dcdada]'>{user.name}</CardTitle>
-        <p className='text-center text-gray-500'>{user.handle}</p>
+        <p className='text-center text-gray-500'>{user.cfid}</p>
       </CardHeader>
       <CardContent className='text-center'>
         <p>
           Rank:{' '}
-          <span className={getRank(user.currentRating).color}>
-            {getRank(user.currentRating).name}
+          <span className={getRank(user.rating).color}>
+            {getRank(user.rating).name}
           </span>
         </p>
-        <p>Student ID: {user.bitsId}</p>
+        <p>Student ID: {user.bitsid}</p>
         <div className='flex justify-center space-x-6'>
-          <p>Rating: {user.currentRating}</p>
-          <p>Peak Rating: {user.peakRating}</p>
+          <p>Rating: {user.rating}</p>
+          <p>Peak Rating: {user.maxRating}</p>
         </div>
       </CardContent>
       <CardFooter className='flex justify-center'>
         <a
-          href={`https://codeforces.com/profile/${user.handle}`}
+          href={`https://codeforces.com/profile/${user.cfid}`}
           target='_blank'
           rel='noopener noreferrer'
           className='flex items-center text-blue-500 hover:underline'
@@ -64,3 +67,5 @@ export default function UserCard({ ...user }) {
     </Card>
   )
 }
+
+export default UserCard

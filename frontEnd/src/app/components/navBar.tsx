@@ -36,6 +36,9 @@ const NavBar = ({ toggleTheme }: { toggleTheme: () => void }) => {
         <Link href="/about" className="text-lg font-medium" prefetch={false}>
           About
         </Link>
+        <Link href="/leaderboard" className="text-lg font-medium" prefetch={false}>
+          Leaderboard
+        </Link>
         <ConnectWalletButton />
         </nav>
       </SheetContent>
@@ -47,7 +50,7 @@ const NavBar = ({ toggleTheme }: { toggleTheme: () => void }) => {
       <Link href="/about" className="text-lg font-medium" prefetch={false}>
         About
       </Link>
-      <Link href="/codeforces" className="text-lg font-medium" prefetch={false}>
+      <Link href="/leaderboard" className="text-lg font-medium" prefetch={false}>
         Leaderboard
       </Link>
       </div>

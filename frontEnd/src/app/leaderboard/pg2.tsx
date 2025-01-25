@@ -19,7 +19,7 @@ import UserCard from '../components/UserCard';
 
 interface User {
   bitsid: string;
-  cfid: string;
+  handle: string;
   name: string;
   rating: number;
   maxRating: number;
@@ -43,17 +43,13 @@ const SampleTable: React.FC = () => {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const response = await axios.get('http://10.30.80.131:5000/currentinfo/all', {
+        const response = await axios.get('http://10.30.80.131:5000/database', {
           headers: {
             'Content-Type': 'application/json',
           },
         });
         const data = response.data;
-        const sanitizedData = data.map((user: User) => ({
-          ...user,
-          titlePhoto: user.titlePhoto === 'N/A' ? 'https://userpic.codeforces.org/no-title.jpg' : user.titlePhoto,
-        }));
-        setUsers(sanitizedData);
+        setUsers(data);
         setFilteredUsers(data);
         setLoading(false);
       } catch (error) {
@@ -66,22 +62,22 @@ const SampleTable: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const cfidSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
     filterUsers(event.target.value, ratingRange, selectedYear, selectedRank);
   };
 
-  // const cfidYearChange = (value: string) => {
+  // const handleYearChange = (value: string) => {
   //   setSelectedYear(value);
   //   filterUsers(searchTerm, ratingRange, value, selectedRank);
   // };
 
-  const cfidRankChange = (value: string) => {
+  const handleRankChange = (value: string) => {
     setSelectedRank(value);
     filterUsers(searchTerm, ratingRange, selectedYear, value);
   };
 
-  const cfidSort = (field: keyof User) => {
+  const handleSort = (field: keyof User) => {
     const order = sortBy === field && sortOrder === 'desc' ? 'asc' : 'desc';
     setSortBy(field);
     setSortOrder(order);
@@ -146,7 +142,7 @@ const SampleTable: React.FC = () => {
     return { name: 'Legendary Grandmaster', color: 'text-red-600' };
   };
 
-  const cfidMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     if (isNaN(value)) {
       setMinRating(0);
@@ -156,7 +152,7 @@ const SampleTable: React.FC = () => {
     filterUsers(searchTerm, ratingRange, selectedYear, selectedRank);
   };
 
-  const cfidMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     if (isNaN(value)) {
       setMaxRating(4000);
@@ -200,7 +196,7 @@ const SampleTable: React.FC = () => {
               id='search'
               placeholder='Search users...'
               value={searchTerm}
-              onChange={cfidSearch}
+              onChange={handleSearch}
               className='pl-8 bg-[#070707] border-[#292929] text-[#dcdada] '
             />
           </div>
@@ -215,7 +211,7 @@ const SampleTable: React.FC = () => {
                 min={0}
                 max={4000}
                 value={minRating}
-                onChange={cfidMinChange}
+                onChange={handleMinChange}
                 className='bg-[#070707] border-[#292929] text-[#dcdada]'
               />
             </div>
@@ -227,7 +223,7 @@ const SampleTable: React.FC = () => {
                 min={0}
                 max={4000}
                 value={maxRating}
-                onChange={cfidMaxChange}
+                onChange={handleMaxChange}
                 className='bg-[#070707] border-[#292929] text-[#dcdada]'
               />
             </div>
@@ -235,7 +231,7 @@ const SampleTable: React.FC = () => {
         </div>
         <div>
           <Label htmlFor='rank'>Rank</Label>
-          <Select value={selectedRank} onValueChange={cfidRankChange}>
+          <Select value={selectedRank} onValueChange={handleRankChange}>
             <SelectTrigger id='rank'>
               <SelectValue placeholder='Select Rank' />
             </SelectTrigger>
@@ -252,10 +248,10 @@ const SampleTable: React.FC = () => {
         </div>
       </div>
       <div className='flex flex-col gap-2 mb-4 sm:flex-row sm:gap-4'>
-        <Button variant='outline' onClick={() => cfidSort('rating')}>
+        <Button variant='outline' onClick={() => handleSort('rating')}>
           Sort by Rating <ArrowUpDown className='w-4 h-4 ml-2' />
         </Button>
-        <Button variant='outline' onClick={() => cfidSort('maxRating')}>
+        <Button variant='outline' onClick={() => handleSort('maxRating')}>
           Sort by Peak Rating <ArrowUpDown className='w-4 h-4 ml-2' />
         </Button>
       </div>
@@ -269,7 +265,7 @@ const SampleTable: React.FC = () => {
       ) : (
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
           {filteredUsers.map(user => (
-            <UserCard key={user.bitsid} user={user} />
+            <UserCard key={user.bitsid} {...user} />
           ))}
         </div>
       )}
