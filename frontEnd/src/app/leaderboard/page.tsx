@@ -43,7 +43,7 @@ const SampleTable: React.FC = () => {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const response = await axios.get('http://10.30.80.131:5000/currentinfo/all', {
+        const response = await axios.get('https://algoxxx.onrender.com/currentinfo/all', {
           headers: {
             'Content-Type': 'application/json',
           },
