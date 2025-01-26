@@ -37,10 +37,13 @@ const TypeIntoView: React.FC<TypeIntoViewProps> = ({
             setIsVisible(false);
           }
         }
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        if (!isMobile && rect.top < window.innerHeight * 0.35 && rect.bottom > window.innerHeight * 0.65) {
-          section.scrollIntoView({ behavior: "smooth" });
-        }
+        // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+        // REMOVING SNAP SCROLLING
+        // if (!isMobile && rect.top < window.innerHeight * 0.05 && rect.bottom > window.innerHeight * 0.95) {
+        //   section.scrollIntoView({ behavior: "smooth" });
+        // }
+
 
         // Check if at least 50% of the section is visible
         if (rect.top < window.innerHeight * 0.75 && !isVisible) {
