@@ -68,7 +68,7 @@ export default function Home() {
         ></div>
       )}
 
-      <NavBar toggleTheme={toggleTheme} />
+      <NavBar toggleTheme={toggleTheme} fixed={true}/>
       <div
         className="flex justify-center items-center min-h-screen"
         style={{ transform: `translate(${transform.x}px, ${transform.y}px)` }}

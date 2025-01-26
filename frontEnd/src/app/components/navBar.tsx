@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ConnectWalletButton from "./cfLogin";
 
-const NavBar = ({ toggleTheme }: { toggleTheme: () => void }) => {
+const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boolean }) => {
+  console.log(fixed);
   return (
-    <header className="fixed top-0 left-0 right-0 flex h-20 w-full shrink-0 items-center justify-between px-4 md:px-6 z-50">
+    <header className={`${fixed?"fixed":""} top-0 left-0 right-0 flex h-20 w-full shrink-0 items-center justify-between px-4 md:px-6 z-50`}>
       <Sheet>
       <SheetTrigger asChild>
         <Button variant="outline" size="icon" className="lg:hidden">

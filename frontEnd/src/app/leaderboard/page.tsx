@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import UserCard from '../components/UserCard';
+import NavBar from '../components/navBar';
 
 interface User {
   bitsid: string;
@@ -39,6 +40,37 @@ const SampleTable: React.FC = () => {
   const [maxRating, setMaxRating] = useState(3500);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [theme, setTheme] = useState("light");
+  const [isAnimating, setIsAnimating] = useState(false); // Controls sheet visibility
+  const [overlayColor, setOverlayColor] = useState("#121212"); // Default dark theme overlay
+
+  // Load the initial theme from localStorage
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme") || "light";
+    setTheme(storedTheme);
+    document.documentElement.classList.toggle("dark", storedTheme === "dark");
+    document.body.classList.toggle("dark", storedTheme === "dark");
+  }, []);
+
+  // Handle theme toggle with animation
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setOverlayColor(newTheme === "dark" ? "#121212" : "#ffffff"); // Set overlay color to match new theme
+    setIsAnimating(true); // Start the animation
+
+    setTimeout(() => {
+      setTheme(newTheme);
+      document.documentElement.classList.toggle("dark", newTheme === "dark");
+      document.body.classList.toggle("dark", newTheme === "dark");
+
+      localStorage.setItem("theme", newTheme);
+    }, 500); // Change theme halfway through the animation
+
+    setTimeout(() => {
+      setIsAnimating(false); // End the animation
+    }, 1000); // Match the animation duration
+  };
 
   useEffect(() => {
     async function fetchUsers() {
@@ -178,102 +210,112 @@ const SampleTable: React.FC = () => {
   // const maxRank = getRank(maxRating);
 
   return (
-    <div className='container p-4 mx-auto'>
+    <>
+    {isAnimating && (
+        <div
+          className="fixed inset-0 z-50 transition-transform duration-[1000ms] ease-[cubic-bezier(0.4, 0, 0.2, 1)] transform translate-x-0 animate-slide"
+          style={{ backgroundColor: overlayColor }}
+        ></div>
+      )}
+    <NavBar toggleTheme={toggleTheme} fixed={false}/>
+    <div className='container p-4 mx-auto' style={{ marginTop: '-5rem' }}>
       <div className='text-center'>
-        <Link href="/">
-          <Image
-            src="/algoDarkX.png"
-            alt='Codeforces'
-            className='h-32 mx-auto mb-4'
-            width={200}
-            height={200}
-          />
-        </Link>
-        <br />
+      <Link href="/">
+        <Image
+        src="/algoDarkX.png"
+        alt='Codeforces'
+        className='h-32 mx-auto mb-4'
+        layout="intrinsic"
+        width={218}
+        height={128}
+        />
+      </Link>
+      <br />
       </div>
       <div className='grid gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3'>
-        <div>
-          <Label htmlFor='search'>Search by Name</Label>
-          <div className='relative'>
-            <Search className='absolute left-2 top-2.5 h-4 w-4 text-muted-foreground bg-[#070707]' />
-            <Input
-              id='search'
-              placeholder='Search users...'
-              value={searchTerm}
-              onChange={cfidSearch}
-              className='pl-8 bg-[#070707] border-[#292929] text-[#dcdada] '
-            />
-          </div>
-        </div>
-        <div>
-          <div className='grid grid-cols-2 gap-2'>
-            <div>
-              <Label htmlFor='min-rating'>Min Rating</Label>
-              <Input
-                id='min-rating'
-                type='number'
-                min={0}
-                max={4000}
-                value={minRating}
-                onChange={cfidMinChange}
-                className='bg-[#070707] border-[#292929] text-[#dcdada]'
-              />
-            </div>
-            <div>
-              <Label htmlFor='max-rating'>Max Rating</Label>
-              <Input
-                id='max-rating'
-                type='number'
-                min={0}
-                max={4000}
-                value={maxRating}
-                onChange={cfidMaxChange}
-                className='bg-[#070707] border-[#292929] text-[#dcdada]'
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <Label htmlFor='rank'>Rank</Label>
-          <Select value={selectedRank} onValueChange={cfidRankChange}>
-            <SelectTrigger id='rank'>
-              <SelectValue placeholder='Select Rank' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='all'>All Ranks</SelectItem>
-              <SelectItem value='Newbie'>Newbie</SelectItem>
-              <SelectItem value='Pupil'>Pupil</SelectItem>
-              <SelectItem value='Specialist'>Specialist</SelectItem>
-              <SelectItem value='Expert'>Expert</SelectItem>
-              <SelectItem value='Candidate Master'>Candidate Master</SelectItem>
-              <SelectItem value='Master'>Master</SelectItem>
-            </SelectContent>
-          </Select>
+      <div>
+        <Label htmlFor='search'>Search by Name</Label>
+        <div className='relative'>
+        <Search className='absolute left-2 top-2.5 h-4 w-4 text-muted-foreground bg-[#ffffff] dark:bg-[#121212]' />
+        <Input
+          id='search'
+          placeholder='Search users...'
+          value={searchTerm}
+          onChange={cfidSearch}
+          className='pl-8 bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#dcdada] '
+        />
         </div>
       </div>
-      <div className='flex flex-col gap-2 mb-4 sm:flex-row sm:gap-4'>
-        <Button variant='outline' onClick={() => cfidSort('rating')}>
-          Sort by Rating <ArrowUpDown className='w-4 h-4 ml-2' />
-        </Button>
-        <Button variant='outline' onClick={() => cfidSort('maxRating')}>
-          Sort by Peak Rating <ArrowUpDown className='w-4 h-4 ml-2' />
-        </Button>
+      <div>
+        <div className='grid grid-cols-2 gap-2'>
+        <div>
+          <Label htmlFor='min-rating'>Min Rating</Label>
+          <Input
+          id='min-rating'
+          type='number'
+          min={0}
+          max={4000}
+          value={minRating}
+          onChange={cfidMinChange}
+          className='bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#dcdada]'
+          />
+        </div>
+        <div>
+          <Label htmlFor='max-rating'>Max Rating</Label>
+          <Input
+          id='max-rating'
+          type='number'
+          min={0}
+          max={4000}
+          value={maxRating}
+          onChange={cfidMaxChange}
+          className='bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#dcdada]'
+          />
+        </div>
+        </div>
+      </div>
+      <div>
+        <Label htmlFor='rank'>Rank</Label>
+        <Select value={selectedRank} onValueChange={cfidRankChange}>
+        <SelectTrigger id='rank' className='bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#dcdada]'>
+          <SelectValue placeholder='Select Rank' />
+        </SelectTrigger>
+        <SelectContent className='bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#dcdada]'>
+          <SelectItem value='all'>All Ranks</SelectItem>
+          <SelectItem value='Newbie'>Newbie</SelectItem>
+          <SelectItem value='Pupil'>Pupil</SelectItem>
+          <SelectItem value='Specialist'>Specialist</SelectItem>
+          <SelectItem value='Expert'>Expert</SelectItem>
+          <SelectItem value='Candidate Master'>Candidate Master</SelectItem>
+          <SelectItem value='Master'>Master</SelectItem>
+        </SelectContent>
+        </Select>
+      </div>
+      </div>
+      <div className='flex flex-col gap-2 mb-4 sm:flex-row sm:gap-4 '>
+      <Button className="border-[#292929]" onClick={() => cfidSort('rating')}>
+        Sort by Rating <ArrowUpDown className='w-4 h-4 ml-2' />
+      </Button>
+      <Button className="border-[#292929]" onClick={() => cfidSort('maxRating')}>
+        Sort by Peak Rating <ArrowUpDown className='w-4 h-4 ml-2' />
+      </Button>
       </div>
 
       {loading ? (
-        <p className='text-center text-gray-500'>Loading...</p>
+      <p className='text-center text-gray-500'>Loading...</p>
       ) : error ? (
-        <p className='text-center text-red-500'>{error}</p>
+      <p className='text-center text-red-500'>{error}</p>
       ) : filteredUsers.length === 0 ? (
-        <p className='text-center text-gray-500'>No users found</p>
+      <p className='text-center text-gray-500'>No users found</p>
       ) : (
-        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-          {filteredUsers.map(user => (
-            <UserCard key={user.bitsid} user={user} />
-          ))}
-        </div>
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+        {filteredUsers.map(user => (
+        <UserCard key={user.bitsid} user={user} />
+        ))}
+      </div>
       )}
     </div>
+    </>
   );
 };
 
