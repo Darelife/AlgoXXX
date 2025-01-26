@@ -76,7 +76,8 @@ export default function Home() {
         <h1 className="md:text-9xl text-6xl font-sans font-black">ALGOX</h1>
       </div>
       <TypeIntoView align="left" id="oneType"/>
-      <TypeIntoView align="left" id="twoType"/>
+      {/* <TypeIntoView align="left" id="twoType"/> */}
+      
       {/* <TypeIntoView align="left" id="threeType"/> */}
       {/* <Functionality /> */}
       {/* <AddButton /> */}

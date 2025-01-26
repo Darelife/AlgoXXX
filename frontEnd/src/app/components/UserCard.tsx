@@ -38,14 +38,14 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
       <CardHeader>
         <Image src={user.titlePhoto==='N/A'?"https://userpic.codeforces.org/no-title.jpg":user.titlePhoto} alt={user.name} width={64} height={64} className='w-16 h-16 mx-auto' />
         {/* <Image src={user.pfp} alt={user.name} width={64} height={64} className='w-16 h-16 mx-auto' /> */}
-        <CardTitle className='mt-2 text-center text-[#dcdada]'>{user.name}</CardTitle>
+        <CardTitle className='mt-2 text-center text-[#323232] dark:text-[#dcdada]'>{user.name}</CardTitle>
         <p className='text-center text-gray-500'>{user.cfid}</p>
       </CardHeader>
       <CardContent className='text-center'>
         <p>
           Rank:{' '}
           <span className={getRank(user.rating).color}>
-            {getRank(user.rating).name}
+            <b>{getRank(user.rating).name}</b>
           </span>
         </p>
         <p>Student ID: {user.bitsid}</p>

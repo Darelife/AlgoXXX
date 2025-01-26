@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+
 import {
   Select,
   SelectContent,
@@ -191,7 +192,7 @@ const SampleTable: React.FC = () => {
   const cfidMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     if (isNaN(value)) {
-      setMaxRating(4000);
+      setMaxRating(0);
     } else {
       setMaxRating(Math.max(0, Math.min(value, 4000)));
     }
@@ -277,10 +278,10 @@ const SampleTable: React.FC = () => {
       <div>
         <Label htmlFor='rank'>Rank</Label>
         <Select value={selectedRank} onValueChange={cfidRankChange}>
-        <SelectTrigger id='rank' className='bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#dcdada]'>
+        <SelectTrigger id='rank' className='bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#121212] dark:text-[#dcdada]'>
           <SelectValue placeholder='Select Rank' />
         </SelectTrigger>
-        <SelectContent className='bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#dcdada]'>
+        <SelectContent className='bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#121212] dark:text-[#898888]'>
           <SelectItem value='all'>All Ranks</SelectItem>
           <SelectItem value='Newbie'>Newbie</SelectItem>
           <SelectItem value='Pupil'>Pupil</SelectItem>
