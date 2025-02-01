@@ -4,7 +4,7 @@ import React from "react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import ConnectWalletButton from "./cfLogin";
+import AddCfButton from "./cfLogin";
 
 const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boolean }) => {
   console.log(fixed);
@@ -40,7 +40,7 @@ const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boole
         <Link href="/leaderboard" className="text-lg font-medium" prefetch={false}>
           Leaderboard
         </Link>
-        <ConnectWalletButton />
+        <AddCfButton />
         </nav>
       </SheetContent>
       </Sheet>
@@ -57,7 +57,7 @@ const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boole
       </div>
       <div className="flex items-center space-x-4">
       <div className="hidden lg:block">
-        <ConnectWalletButton />
+        <AddCfButton />
       </div>
       <Button
         variant="outline"

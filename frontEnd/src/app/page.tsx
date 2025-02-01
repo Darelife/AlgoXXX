@@ -9,7 +9,7 @@ import TypeIntoView from "./components/typeIntoView";
 // import Dashboard from "./components/dashboard";
 // import PlusButton from "./components/PlusButton";
 // import FadingText from "./components/fadingText";
-// import ConnectWalletButton from "./components/metaaaa";
+// import AddCfButton from "./components/metaaaa";
 
 export default function Home() {
   const [theme, setTheme] = useState("light");
