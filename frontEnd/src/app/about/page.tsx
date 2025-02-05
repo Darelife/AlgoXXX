@@ -11,6 +11,17 @@ export default function Home() {
   const [overlayColor, setOverlayColor] = useState("#121212"); // Default dark theme overlay
   const [transform, setTransform] = useState({ x: 0, y: 0 });
 
+
+  const crew2024_25 = [
+    { name: "Prakhar Bhandari", link: "darelife" },
+    { name: "Harsh Bhatia", link: "harshb" },
+    { name: "Parth Jhalani", link: "sankabapur" }
+  ];
+  const core2024_25 = [
+    { name: "Yash Pratap Singh", link: "mathmath33" },
+    { name: "Anwesh Das", link: "unbased" }
+  ];
+
   // Load the initial theme from localStorage
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme") || "light";
@@ -67,23 +78,74 @@ export default function Home() {
         className="flex justify-center items-center min-h-screen"
         style={{ transform: `translate(${transform.x}px, ${transform.y}px)` }}
       >
-        <h1 className="md:text-9xl text-6xl font-sans font-black">About Us</h1>
+        <h1 className="md:text-9xl text-6xl font-sans font-black mt-[-10rem]">About Us</h1>
       </div>
-
-      <h1 className="text-4xl font-bold mx-4 sm:mx-7">2024-25 Academic Year</h1>
       
-      <br />
+      {/* <h1 className="text-4xl font-bold text-gray-500 border-b-4 border-gray-500 inline-block w-[40vw] ml-5">2024-25</h1> */}
+      {/* <br />
+      <br /> */}
+<div className="grid grid-cols-1 sm:grid-cols-3 gap-8 items-start mx-4 sm:mx-10 p-8 bg-white dark:bg-[#1a1b2e] rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl">
+  {/* Image Section */}
+  <div className="flex justify-center sm:justify-start sm:col-span-1 group">
+    <Image
+      src="/algoCoordis2024.jpg"
+      alt="Algomaniax 2024 Coordinators"
+      layout="responsive"
+      width={300}
+      height={300}
+      className="max-w-[85%] sm:max-w-[80%] rounded-xl shadow-md transition-transform duration-300 group-hover:scale-[1.02]"
+    />
+  </div>
 
-      <div className="flex justify-center items-center">
-      <Image
-        src="/algoCoordis2024.jpg"
-        alt="Algomaniax 2024 Coordinators"
-        layout="responsive"
-        width={300}
-        height={100}
-        className="max-w-[90%] sm:max-w-[35%]"
-        />
+  {/* Text Section */}
+  <div className="sm:col-span-2 space-y-8 text-center sm:text-left">
+    {/* Year Header */}
+    <h1 className="text-4xl font-bold text-gray-700 dark:text-gray-200 border-b-4 border-gray-500 dark:border-gray-400 inline-block pb-2 w-[20vw]">
+      2024-25
+    </h1>
+
+    {/* Cores Section */}
+    <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-[#1e1f35] dark:to-[#2a2b45] p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-3">Cores</h2>
+      <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+        {core2024_25.map((member, index) => (
+          <span key={member.name}>
+            <a 
+              href={`https://codeforces.com/profile/${member.link}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 dark:text-gray-300 text-lg hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200"
+            >
+              {member.name}
+            </a>
+            {index < core2024_25.length - 1 && <span className="text-gray-400">, </span>}
+          </span>
+        ))}
       </div>
+    </div>
+
+    {/* Crew Section */}
+    <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-[#1e1f35] dark:to-[#2a2b45] p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-3">Crew</h2>
+      <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+        {crew2024_25.map((member, index) => (
+          <span key={member.name}>
+            <a 
+              href={`https://codeforces.com/profile/${member.link}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 dark:text-gray-300 text-lg hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200"
+            >
+              {member.name}
+            </a>
+            {index < crew2024_25.length - 1 && <span className="text-gray-400">, </span>}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
         
 
     </div>
