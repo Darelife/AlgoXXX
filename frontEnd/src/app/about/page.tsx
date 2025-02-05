@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/navBar";
 import Image from "next/image";
-import TextIntoView from "../components/typeIntoView";
+// import TextIntoView from "../components/typeIntoView";
 
 export default function Home() {
   const [theme, setTheme] = useState("light");
