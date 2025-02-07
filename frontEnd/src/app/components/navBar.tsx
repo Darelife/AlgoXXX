@@ -40,6 +40,9 @@ const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boole
         <Link href="/leaderboard" className="text-lg font-medium" prefetch={false}>
           Leaderboard
         </Link>
+        <Link href="/bootcamp" className="text-lg font-medium" prefetch={false}>
+          Bootcamp
+        </Link>
         <AddCfButton />
         </nav>
       </SheetContent>
@@ -54,6 +57,10 @@ const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boole
       <Link href="/leaderboard" className="text-lg font-medium" prefetch={false}>
         Leaderboard
       </Link>
+      <Link href="/bootcamp" className="text-lg font-medium" prefetch={false}>
+        Bootcamp
+      </Link>
+      
       </div>
       <div className="flex items-center space-x-4">
       <div className="hidden lg:block">
