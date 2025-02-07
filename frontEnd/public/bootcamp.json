@@ -1,0 +1,85 @@
+{
+  "Getting Started": {
+    "Introduction": {
+      "What is CP?": "https://www.geeksforgeeks.org/how-to-prepare-for-competitive-programming/",
+      "Time & Space Complexity": "https://www.geeksforgeeks.org/understanding-time-complexity-simple-examples/",
+      "Practice Platforms": {
+        "Codeforces": "https://codeforces.com/",
+        "AtCoder": "https://atcoder.jp/",
+        "CSES Problem Set": "https://cses.fi/problemset/"
+      }
+    },
+    "Basic Tools": {
+      "C++ STL": {
+        "Vectors": "https://www.geeksforgeeks.org/vector-in-cpp-stl/",
+        "Sets & Maps": "https://www.geeksforgeeks.org/set-in-cpp-stl/",
+        "Priority Queue": "https://www.geeksforgeeks.org/priority-queue-in-cpp-stl/"
+      },
+      "Fast I/O": "https://www.geeksforgeeks.org/fast-io-for-competitive-programming/"
+    }
+  },
+  "Core Algorithms": {
+    "Searching": {
+      "Binary Search": "https://cp-algorithms.com/num_methods/binary_search.html",
+      "Ternary Search": "https://cp-algorithms.com/num_methods/ternary_search.html"
+    },
+    "Sorting": {
+      "Merge Sort": "https://cp-algorithms.com/sorting/merge_sort.html",
+      "Quick Sort": "https://cp-algorithms.com/sorting/quick_sort.html"
+    },
+    "Dynamic Programming": {
+      "Introduction": "https://cp-algorithms.com/dynamic_programming/intro-to-dp.html",
+      "Common Patterns": {
+        "0/1 Knapsack": "https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/",
+        "LCS": "https://cp-algorithms.com/sequences/longest_common_subsequence.html",
+        "Grid DP": "https://www.geeksforgeeks.org/dynamic-programming-on-grids/"
+      }
+    }
+  },
+  "Advanced Topics": {
+    "Graph Theory": {
+      "Basic Concepts": "https://cp-algorithms.com/graph/basic-graphs.html",
+      "DFS & BFS": "https://cp-algorithms.com/graph/breadth-first-search.html",
+      "Shortest Paths": {
+        "Dijkstra": "https://cp-algorithms.com/graph/dijkstra.html",
+        "Floyd Warshall": "https://cp-algorithms.com/graph/floyd-warshall.html"
+      },
+      "Trees": {
+        "Basic Tree Algorithms": "https://cp-algorithms.com/graph/tree_basics.html",
+        "LCA": "https://cp-algorithms.com/graph/lca.html"
+      }
+    },
+    "Mathematics": {
+      "Number Theory": {
+        "Prime Numbers": "https://cp-algorithms.com/algebra/primality_tests.html",
+        "GCD & LCM": "https://cp-algorithms.com/algebra/euclid-algorithm.html",
+        "Modular Arithmetic": "https://cp-algorithms.com/algebra/module-arithmetic.html"
+      },
+      "Combinatorics": {
+        "Basic Principles": "https://cp-algorithms.com/combinatorics/basics.html",
+        "Permutations & Combinations": "https://cp-algorithms.com/combinatorics/permutations.html"
+      }
+    },
+    "Data Structures": {
+      "Segment Trees": "https://cp-algorithms.com/data_structures/segment_tree.html",
+      "Fenwick Trees": "https://cp-algorithms.com/data_structures/fenwick.html",
+      "Disjoint Set Union": "https://cp-algorithms.com/data_structures/disjoint_set_union.html"
+    }
+  },
+  "Practice Strategy": {
+    "Problem Classifications": {
+      "Implementation": "https://codeforces.com/problemset?tags=implementation",
+      "Greedy": "https://codeforces.com/problemset?tags=greedy",
+      "DP": "https://codeforces.com/problemset?tags=dp"
+    },
+    "Contest Practice": {
+      "Virtual Contests": "https://codeforces.com/contests",
+      "Educational Rounds": "https://codeforces.com/edu/courses"
+    },
+    "Training Resources": {
+      "USACO Guide": "https://usaco.guide/",
+      "CP Handbook": "https://cses.fi/book/book.pdf",
+      "Competitive Programmer's Handbook": "https://usaco.guide/CPH.pdf"
+    }
+  }
+}

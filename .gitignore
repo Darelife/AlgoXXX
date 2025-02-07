@@ -1,5 +1,6 @@
 *.json
 !team.json
+!bootcamp.json
 *.py
 *.csv
 *.txt
