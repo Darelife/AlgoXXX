@@ -159,7 +159,7 @@ export default function Home() {
             {teamData[year].roles["Crew"] && (
               <div className="mt-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-[#383a59] dark:to-[#44466b] p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-3 text-center sm:text-left">
-                  Crew
+                  Crew Members
                 </h2>
                 <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
                   {teamData[year].roles["Crew"].map((member, index) => (
