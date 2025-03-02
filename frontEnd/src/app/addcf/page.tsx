@@ -102,50 +102,46 @@ const CodeforcesPage: NextPage = () => {
   };
 
   const handleSubmission = async () => {
+    setUserData(prev => ({
+      ...prev,
+      bitsId: "2023A7PS0000G",
+      name: "Test User",
+      handle: "datedare"
+    }));
+
     if (!userData.bitsId || !userData.name || !userData.handle) {
       setError("Please fill in all fields");
       return;
     }
 
     try {
-      const response = await fetch(`https://codeforces.com/api/user.status?handle=${userData.handle}`);
-      const data = await response.json();
-
-      if (data.status === "OK") {
-        const hasCompilationError = data.result.some(
-          (submission: { problem: { contestId: number; index: string }; verdict: string }) =>
-            submission.problem.contestId === problem?.contestId &&
-            submission.problem.index === problem?.index &&
-            submission.verdict === "COMPILATION_ERROR"
-        );
-
-        if (!hasCompilationError) {
-          setError("Please submit a compilation error for the given problem.");
-          return;
-        }
-
-        const backendResponse = await fetch("https://your-backend-url.com/api/verify-submission", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...userData,
-            contestId: problem?.contestId,
-            index: problem?.index,
-          }),
-        });
-
-        if (backendResponse.status === 200) {
-          router.push("/");
-        } else {
-          setError("Submission failed. Please try again.");
-        }
-      } else {
-        setError("Failed to verify submission. Please try again.");
+      const url = "https://algoxxx.onrender.com/verify";
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          bitsid: userData.bitsId,
+          name: userData.name,
+          cfid: userData.handle,
+          contestId: problem?.contestId.toString(),
+          index: problem?.index,
+        }),
+      });
+      console.log(problem?.contestId);
+      console.log(problem?.index);
+      console.log(response);
+      const responseData = await response.json();
+      console.log(responseData.message);
+      if (response.status === 201) {
+        router.push("/");
+      }
+      else {
+        setError("Submission failed. Please try again.");
       }
     } catch {
-      setError("Failed to verify submission");
+      setError("Invalid Request");
     }
   };
 
