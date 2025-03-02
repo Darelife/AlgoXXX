@@ -102,12 +102,6 @@ const CodeforcesPage: NextPage = () => {
   };
 
   const handleSubmission = async () => {
-    setUserData(prev => ({
-      ...prev,
-      bitsId: "2023A7PS0000G",
-      name: "Test User",
-      handle: "datedare"
-    }));
 
     if (!userData.bitsId || !userData.name || !userData.handle) {
       setError("Please fill in all fields");
