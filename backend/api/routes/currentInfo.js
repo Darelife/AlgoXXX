@@ -30,7 +30,7 @@ router.get("/all", async (req, res, next) => {
     }
 
     // Create a semicolon-separated string of Codeforces IDs (cfid)
-    const userString = docs.map((user) => user.cfid).join(";");
+    const userString = docs.map((user) => user.cfid.toLowerCase()).join(";");
 
     // Define the URL to fetch user data from Codeforces API
     const url = `https://codeforces.com/api/user.info?handles=${userString}`;
@@ -51,11 +51,11 @@ router.get("/all", async (req, res, next) => {
 
     const cfDataMap = new Map();
     data.result.forEach((cfData) => {
-      cfDataMap.set(cfData.handle, cfData);
+      cfDataMap.set(cfData.handle.toLowerCase(), cfData);
     });
 
     const updatedDocs = docs.map((user) => {
-      const cfData = cfDataMap.get(user.cfid) || {}; // Use cfid to find corresponding data or default to an empty object
+      const cfData = cfDataMap.get(user.cfid.toLowerCase()) || {}; // Use cfid to find corresponding data or default to an empty object
 
       return {
         bitsid: user.bitsid,
