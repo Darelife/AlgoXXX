@@ -86,6 +86,10 @@ const SampleTable: React.FC = () => {
           ...user,
           titlePhoto: user.titlePhoto === 'N/A' ? 'https://userpic.codeforces.org/no-title.jpg' : user.titlePhoto,
         }));
+        // sanitizedData = sanitizedData.sort(
+        //   (a: User, b: User) => b.rating - a.rating
+        // );
+        // sortUsers(sanitizedData, 'rating', 'desc');
         setUsers(sanitizedData);
         setFilteredUsers(data);
         setLoading(false);
@@ -115,7 +119,6 @@ const SampleTable: React.FC = () => {
     setSortOrder(order);
     sortUsers(filteredUsers, field, order);
   };
-
   const sortUsers = (users: User[], field: keyof User, order: 'asc' | 'desc') => {
     const sortedUsers = [...users].sort((a, b) => {
       if (order === 'asc') {
@@ -125,6 +128,10 @@ const SampleTable: React.FC = () => {
     });
     setFilteredUsers(sortedUsers);
   };
+
+  useEffect(() => {
+    sortUsers(users, 'rating', 'desc');
+  }, [users]);
 
   const filterUsers = (
     searchTerm: string,
