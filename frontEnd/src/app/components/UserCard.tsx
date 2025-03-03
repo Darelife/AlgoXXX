@@ -18,7 +18,7 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
     color: string;
   }
 
-  console.log(user);
+  // console.log(user);
 
   const getRank = (rating: number): Rank => {
     if (rating < 1200) return { name: 'Newbie', color: 'text-gray-500' }

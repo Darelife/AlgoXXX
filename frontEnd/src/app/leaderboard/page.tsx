@@ -1,5 +1,8 @@
 "use client";
 
+// import { useMemo } from "react";
+// import { useRef } from "react";
+import { Slider } from "@mui/material";
 import { ArrowUpDown, Search } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -7,15 +10,15 @@ import axios from 'axios';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+// import { Label } from '@/components/ui/label';
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from '@/components/ui/select';
 import UserCard from '../components/UserCard';
 import NavBar from '../components/navBar';
 
@@ -32,13 +35,17 @@ const SampleTable: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [ratingRange] = useState<[number, number]>([0, 3500]);
+  const [cfHandleSearch, setCfHandleSearch] = useState('');
+  // const [ratingRange, setRatingRange] = useState<[number, number]>([0, 4000]);
+  const [sliderValue, setSliderValue] = useState<number[]>([0, 4000]); // For visual updates
+  const [ratingRange, setRatingRange] = useState<[number, number]>([0, 4000]); // For state updates
+  // const sliderTimeout = useRef<NodeJS.Timeout | null>(null);
   const [selectedYear] = useState('');
   const [sortBy, setSortBy] = useState<keyof User>('rating');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
-  const [selectedRank, setSelectedRank] = useState('all');
-  const [minRating, setMinRating] = useState(0);
-  const [maxRating, setMaxRating] = useState(3500);
+  // const [selectedRank, setSelectedRank] = useState('all');
+  // const [minRating, setMinRating] = useState(0);
+  // const [maxRating, setMaxRating] = useState(3500);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -103,14 +110,14 @@ const SampleTable: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const cfidSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-    filterUsers(event.target.value, ratingRange, selectedYear, selectedRank);
+  const handleCfHandleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCfHandleSearch(event.target.value);
+    filterUsers(searchTerm, ratingRange, selectedYear, event.target.value);
   };
 
-  const cfidRankChange = (value: string) => {
-    setSelectedRank(value);
-    filterUsers(searchTerm, ratingRange, selectedYear, value);
+  const cfidSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    filterUsers(event.target.value, ratingRange, selectedYear, cfHandleSearch);
   };
 
   const cfidSort = (field: keyof User) => {
@@ -134,75 +141,78 @@ const SampleTable: React.FC = () => {
   }, [users]);
 
   const filterUsers = (
-    searchTerm: string,
-    ratingRange: [number, number],
-    selectedYear: string,
-    selectedRank: string
-  ) => {
-    let filtered = users;
+  searchTerm: string, 
+  ratingRange: [number, number], 
+  selectedYear: string, 
+  cfHandleSearch: string = ''
+) => {
+  let filtered = users;
 
-    if (searchTerm) {
-      filtered = filtered.filter(user =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (selectedYear) {
-      filtered = filtered.filter(user => (user.bitsid.substring(0, 4)) === (selectedYear));
-    }
-    filtered = filtered.filter(
-      user => user.rating >= minRating && user.rating <= maxRating
+  if (searchTerm) {
+    filtered = filtered.filter((user) =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+  }
 
-    if (selectedRank && selectedRank !== 'all') {
-      filtered = filtered.filter(
-        user => getRank(user.rating).name === selectedRank
-      );
-    }
+  if (cfHandleSearch) {
+    filtered = filtered.filter((user) =>
+      user.cfid.toLowerCase().includes(cfHandleSearch.toLowerCase())
+    );
+  }
 
-    sortUsers(filtered, sortBy, sortOrder);
-  };
+  if (selectedYear) {
+    filtered = filtered.filter(
+      (user) => user.bitsid.substring(0, 4) === selectedYear
+    );
+  }
 
-  const getRank = (rating: number) => {
-    if (rating < 1200) return { name: 'Newbie', color: 'text-gray-500' };
-    if (rating < 1400) return { name: 'Pupil', color: 'text-green-500' };
-    if (rating < 1600) return { name: 'Specialist', color: 'text-cyan-500' };
-    if (rating < 1900) return { name: 'Expert', color: 'text-blue-700' };
-    if (rating < 2100) return { name: 'Candidate Master', color: 'text-purple-700' };
-    if (rating < 2300) return { name: 'Master', color: 'text-orange-500' };
-    if (rating < 2400) return { name: 'International Master', color: 'text-orange-500' };
-    if (rating < 2600) return { name: 'Grandmaster', color: 'text-red-500' };
-    if (rating < 3000) return { name: 'International Grandmaster', color: 'text-red-500' };
-    return { name: 'Legendary Grandmaster', color: 'text-red-600' };
-  };
+  if (ratingRange) {
+    filtered = filtered.filter(
+      (user) => user.rating >= ratingRange[0] && user.rating <= ratingRange[1]
+    );
+  }
 
-  const cfidMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (isNaN(value)) {
-      setMinRating(0);
-    } else {
-      setMinRating(Math.max(0, Math.min(value, 4000)));
-    }
-    filterUsers(searchTerm, ratingRange, selectedYear, selectedRank);
-  };
+  sortUsers(filtered, sortBy, sortOrder);
+};
 
-  const cfidMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (isNaN(value)) {
-      setMaxRating(0);
-    } else {
-      setMaxRating(Math.max(0, Math.min(value, 4000)));
-    }
-    filterUsers(searchTerm, ratingRange, selectedYear, selectedRank);
+const handleSliderChangeCommitted = (
+  _: React.SyntheticEvent | Event,
+  newValue: number | number[]
+) => {
+  if (!Array.isArray(newValue)) return;
+  
+  const min = Math.max(0, newValue[0]);
+  const max = Math.min(4000, newValue[1]);
+  
+  setRatingRange([min, max] as [number, number]);
+  filterUsers(searchTerm, [min, max] as [number, number], selectedYear, cfHandleSearch);
+};
+
+  const handleSliderChange = (
+    _: React.SyntheticEvent | Event,
+    newValue: number | number[]
+  ) => {
+    if (!Array.isArray(newValue)) return;
+    
+    // Update local visual state only
+    setSliderValue([
+      Math.max(0, newValue[0]), 
+      Math.min(4000, newValue[1])
+    ]);
   };
 
   useEffect(() => {
-    if (minRating > maxRating) {
+    console.log("rerendered", ratingRange);
+  }, [ratingRange]);
+
+
+  useEffect(() => {
+    if (ratingRange[0] > ratingRange[1]) {
       setError('Minimum rating cannot be greater than maximum rating');
     } else {
       setError(null);
     }
-  }, [minRating, maxRating]);
+  }, [ratingRange]);
 
   return (
     <>
@@ -228,63 +238,136 @@ const SampleTable: React.FC = () => {
           <br />
         </div>
         <div className='grid gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3'>
-          <div>
-            <Label htmlFor='search'>Search by Name</Label>
-            <div className='relative'>
-              <Search className='absolute left-2 top-2.5 h-4 w-4 text-muted-foreground bg-[#ffffff] dark:bg-[#121212]' />
+          <div className="w-full flex flex-col gap-4 items-center px-4 py-6 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
+            <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-3">
+              Search by Name
+            </div>
+            <div className="relative w-full">
+              <div className="absolute left-6 top-1/2 transform -translate-y-1/2 flex items-center justify-center h-5 w-5 bg-blue-100 dark:bg-indigo-900/30 rounded-full p-0.5">
+                <Search className="h-3 w-3 text-blue-600 dark:text-indigo-400" />
+              </div>
+              
               <Input
-                id='search'
-                placeholder='Search users...'
+                id="search"
+                placeholder="Search users..."
                 value={searchTerm}
                 onChange={cfidSearch}
-                className='pl-8 bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#dcdada] '
+                className="pl-12 h-12 w-[95%] mx-auto bg-white dark:bg-gray-800/40 border-blue-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 
+                  focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 dark:focus-visible:ring-indigo-500 
+                  focus-visible:border-transparent transition-all duration-200
+                  shadow-sm hover:shadow-md rounded-xl"
               />
             </div>
+            {searchTerm && (
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Searching for:</span>
+                <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium">
+                  &quot;{searchTerm}&quot;
+                </span>
+              </div>
+            )}
           </div>
           <div>
-            <div className='grid grid-cols-2 gap-2'>
-              <div>
-                <Label htmlFor='min-rating'>Min Rating</Label>
-                <Input
-                  id='min-rating'
-                  type='number'
-                  min={0}
-                  max={4000}
-                  value={minRating}
-                  onChange={cfidMinChange}
-                  className='bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#dcdada]'
-                />
+            <div className="w-full flex flex-col gap-4 items-center px-4 py-6 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
+              <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-3">
+                Rating Range
               </div>
-              <div>
-                <Label htmlFor='max-rating'>Max Rating</Label>
-                <Input
-                  id='max-rating'
-                  type='number'
-                  min={0}
-                  max={4000}
-                  value={maxRating}
-                  onChange={cfidMaxChange}
-                  className='bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#dcdada]'
-                />
+              <Slider
+                value={ratingRange}
+                onChange={handleSliderChange}
+                onChangeCommitted={handleSliderChangeCommitted}
+                valueLabelDisplay="auto"
+                min={0}
+                max={4000}
+                step={100}
+                marks={[
+                  { value: 800, label: '800' },
+                  // { value: 1200, label: '1200' },
+                  { value: 1600, label: '1600' },
+                  { value: 2400, label: '2400' },
+                  { value: 3200, label: '3200' }
+                ]}
+                sx={{
+                  width: "95%",
+                  color: theme === "dark" ? "#4f46e5" : "#3b82f6", // Different color based on theme
+                  '& .MuiSlider-thumb': {
+                    height: 24,
+                    width: 24,
+                    backgroundColor: '#fff',
+                    border: '2px solid currentColor',
+                    boxShadow: '0 3px 6px rgba(0,0,0,0.16)',
+                    '&:hover, &.Mui-focusVisible': {
+                      boxShadow: '0 0 0 8px rgba(59, 130, 246, 0.16)',
+                    },
+                  },
+                  '& .MuiSlider-valueLabel': {
+                    backgroundColor: theme === "dark" ? "#4f46e5" : "#3b82f6",
+                  },
+                  '& .MuiSlider-track': {
+                    height: 8,
+                    borderRadius: 4,
+                  },
+                  '& .MuiSlider-rail': {
+                    height: 8,
+                    borderRadius: 4,
+                    opacity: 0.3,
+                  },
+                  '& .MuiSlider-mark': {
+                    backgroundColor: '#bfdbfe',
+                    height: 12,
+                    width: 2,
+                    marginTop: -2,
+                  },
+                  '& .MuiSlider-markLabel': {
+                    fontSize: '0.75rem',
+                    color: theme === "dark" ? "#d1d5db" : "#6b7280",
+                  },
+                  '& .MuiSlider-markLabelActive': {
+                    color: theme === "dark" ? "#f3f4f6" : "#374151",
+                  },
+                }}
+              />
+              
+
+              
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Rating Range:</span>
+                <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium">
+                  {/* {ratingRange[0]} - {ratingRange[1]} */}
+                  {sliderValue[0]} - {sliderValue[1]}  {/* Change from ratingRange to sliderValue */}
+                </span>
               </div>
             </div>
           </div>
-          <div>
-            <Label htmlFor='rank'>Rank</Label>
-            <Select value={selectedRank} onValueChange={cfidRankChange}>
-              <SelectTrigger id='rank' className='bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#121212] dark:text-[#dcdada]'>
-                <SelectValue placeholder='Select Rank' />
-              </SelectTrigger>
-              <SelectContent className='bg-[#ffffff] dark:bg-[#121212] border-[#292929] text-[#121212] dark:text-[#898888]'>
-                <SelectItem value='all'>All Ranks</SelectItem>
-                <SelectItem value='Newbie'>Newbie</SelectItem>
-                <SelectItem value='Pupil'>Pupil</SelectItem>
-                <SelectItem value='Specialist'>Specialist</SelectItem>
-                <SelectItem value='Expert'>Expert</SelectItem>
-                <SelectItem value='Candidate Master'>Candidate Master</SelectItem>
-                <SelectItem value='Master'>Master</SelectItem>
-              </SelectContent>
-            </Select>
+          <div className="w-full flex flex-col gap-4 items-center px-4 py-6 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
+            <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-3">
+              Search by CF Handle
+            </div>
+            <div className="relative w-full">
+              <div className="absolute left-6 top-1/2 transform -translate-y-1/2 flex items-center justify-center h-5 w-5 bg-blue-100 dark:bg-indigo-900/30 rounded-full p-0.5">
+                <Search className="h-3 w-3 text-blue-600 dark:text-indigo-400" />
+              </div>
+              
+              <Input
+                id="search"
+                placeholder="Search users..."
+                value={cfHandleSearch}
+                onChange={handleCfHandleSearch}
+                className="pl-12 h-12 w-[95%] mx-auto bg-white dark:bg-gray-800/40 border-blue-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 
+                  focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 dark:focus-visible:ring-indigo-500 
+                  focus-visible:border-transparent transition-all duration-200
+                  shadow-sm hover:shadow-md rounded-xl"
+              />
+            </div>
+            
+            {cfHandleSearch && (
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">CF Handle:</span>
+                <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium">
+                  {cfHandleSearch}
+                </span>
+              </div>
+            )}
           </div>
         </div>
         <div className='flex flex-col gap-2 mb-4 sm:flex-row sm:gap-4 '>
