@@ -17,17 +17,15 @@ const ResourceItem = ({ name, content }: { name: string; content: string | Bootc
   if (isNested) {
     return (
       <div className="space-y-2">
-        <div
-          className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-[#383a59] dark:to-[#44466b] p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
-        >
+        <div className="bg-white/80 dark:bg-gray-800/20 backdrop-blur-sm p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 border border-blue-100/50 dark:border-gray-700/30">
           <button
             onClick={toggleOpen}
             className="flex items-center gap-2 w-full text-left"
           >
             {isOpen ? (
-              <ChevronDown className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+              <ChevronDown className="w-4 h-4 text-blue-600 dark:text-indigo-400" />
             ) : (
-              <ChevronRight className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+              <ChevronRight className="w-4 h-4 text-blue-600 dark:text-indigo-400" />
             )}
             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
               {name}
@@ -51,8 +49,9 @@ const ResourceItem = ({ name, content }: { name: string; content: string | Bootc
       href={content}
       target="_blank"
       rel="noopener noreferrer"
-      className="block py-2 px-3 rounded-md text-gray-600 dark:text-gray-300 text-sm hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200 hover:bg-gray-50 dark:hover:bg-gray-800"
+      className="flex py-2 px-3 rounded-md text-gray-700 dark:text-gray-300 text-sm hover:text-blue-600 dark:hover:text-indigo-400 transition-colors duration-200 hover:bg-blue-50/50 dark:hover:bg-gray-800/50 border border-transparent hover:border-blue-100 dark:hover:border-gray-700/50 items-center"
     >
+      <div className="w-1 h-1 bg-blue-500 dark:bg-indigo-400 rounded-full mr-2"></div>
       {name}
     </a>
   );
@@ -126,21 +125,23 @@ export default function Home() {
 
       <NavBar toggleTheme={toggleTheme} fixed={false} />
       <div
-        className="flex justify-center items-center min-h-screen"
-        style={{ transform: `translate(${transform.x}px, ${transform.y}px)` }}
-      >
-        <h1 className="md:text-9xl text-6xl font-sans font-black mt-[-10rem]">
-          Bootcamp
-        </h1>
-      </div>
+  className="flex justify-center items-center min-h-screen"
+  style={{ transform: `translate(${transform.x}px, ${transform.y}px)` }}
+>
+  <div className="text-center">
+    <h1 className="md:text-8xl text-5xl font-sans font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 mt-[-10rem]">
+      Bootcamp
+    </h1>
+    <p className="mt-4 text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+      Resources for competitive programming and algorithmic challenges
+    </p>
+  </div>
+</div>
 
       <div className="space-y-8 mb-12">
-        <div
-          className="max-w-4xl mx-auto px-4 sm:px-6"
-        >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div 
-            className="p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl space-y-4"
-            style={{ backgroundColor: theme === "dark" ? "#282a3e" : "white" }}
+            className="bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10 p-6 transition-all duration-300 hover:shadow-lg space-y-4"
           >
             {Object.entries(bootcampData).map(([key, value]) => (
               <ResourceItem key={key} name={key} content={value} />
