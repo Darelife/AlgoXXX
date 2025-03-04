@@ -69,25 +69,6 @@ export default function Home() {
       
       {/* Hero section with background elements */}
       <div className="relative">
-        {/* Background decoration */}
-        <div className="absolute w-full h-full overflow-hidden">
-  <div 
-    className="absolute top-1/4 -left-24 w-72 h-72 rounded-full filter blur-3xl" 
-    style={{ 
-      background: theme === "dark" 
-        ? "rgba(251, 146, 60, 0.1)" // bg-orange-400/10
-        : "linear-gradient(to bottom right, rgba(249, 115, 22, 0.1), rgba(245, 158, 11, 0.2))" // from-orange-500/10 to-amber-500/20
-    }}
-  ></div>
-  <div 
-    className="absolute bottom-1/3 -right-24 w-80 h-80 rounded-full filter blur-3xl"
-    style={{ 
-      background: theme === "dark" 
-        ? "rgba(248, 113, 113, 0.1)" // bg-red-400/10
-        : "linear-gradient(to top left, rgba(239, 68, 68, 0.1), rgba(244, 63, 94, 0.2))" // from-red-500/10 to-rose-500/20  
-    }}
-  ></div>
-</div>
         
         <div
           className="flex flex-col justify-center items-center min-h-[100vh]"
