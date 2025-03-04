@@ -129,7 +129,7 @@ export default function Home() {
   style={{ transform: `translate(${transform.x}px, ${transform.y}px)` }}
 >
   <div className="text-center">
-    <h1 className="md:text-8xl text-5xl font-sans font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 mt-[-10rem]">
+    <h1 className="md:text-8xl text-5xl font-sans font-black bg-clip-text text-transparent  bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-400 dark:to-red-400  mt-[-10rem]">
       Bootcamp
     </h1>
     <p className="mt-4 text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto p-5">
