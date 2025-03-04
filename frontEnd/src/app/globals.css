@@ -67,11 +67,15 @@ body.dark #metaBox:hover {
 }
 
 body ::selection {
-  background: #ffcc00;
+  /* background: #ffcc00; */
+  background: rgba(249, 115, 22, 0.2);
+  color: inherit;
   /* color: #121212; */
 }
 body.dark ::selection {
-  background: #8c8c8c;
+  /* background: #8c8c8c; */
+  background: rgba(239, 68, 68, 0.2);
+  color: inherit;
   /* color: #121212; */
 }
 /* 

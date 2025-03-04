@@ -32,7 +32,7 @@ const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boole
       <SheetContent side="left" className="bg-white dark:bg-black shadow-lg !backdrop-blur-none !bg-opacity-100">
         <nav className="flex flex-col space-y-4">
         <Link href="/" className="text-lg font-medium" prefetch={false}>
-          Algox
+          AlgoManiaX
         </Link>
         <Link href="/about" className="text-lg font-medium" prefetch={false}>
           About
@@ -49,7 +49,7 @@ const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boole
       </Sheet>
       <div className="hidden lg:flex space-x-6 items-center">
       <Link href="/" className="text-lg font-medium" prefetch={false}>
-        Algox
+        AlgoManiaX
       </Link>
       <Link href="/about" className="text-lg font-medium" prefetch={false}>
         About

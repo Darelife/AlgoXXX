@@ -58,6 +58,7 @@ export default function Home() {
 
   return (
     <div className={`relative overflow-hidden ${theme === "dark" ? "dark" : ""}`}>
+    
       {isAnimating && (
         <div
           className="fixed inset-0 z-50 transition-transform duration-[1000ms] ease-[cubic-bezier(0.4, 0, 0.2, 1)] transform translate-x-0 animate-slide"
@@ -69,6 +70,8 @@ export default function Home() {
       
       {/* Hero section with background elements */}
       <div className="relative">
+
+        
         
         <div
           className="flex flex-col justify-center items-center min-h-[100vh]"
@@ -89,8 +92,8 @@ export default function Home() {
               ALGOX
             </motion.h1>
             
-            <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-md text-center">
-              Elevate your algorithmic journey with competitive programming resources
+            <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-md text-center px-5 ">
+              The Official Competitive Programming Club of BITS Goa; AlgoX aka AlgoManiaX
             </p>
             
             <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
@@ -110,6 +113,14 @@ export default function Home() {
                   <Sparkles className="h-4 w-4" /> Bootcamp Resources
                 </span>
               </Link>
+              {/* <Link 
+                href="/about"
+                className="w-full sm:w-auto px-6 py-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-xl font-medium text-center shadow-sm hover:shadow-md transition-all duration-300"
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <Sparkles className="h-4 w-4" /> About Us
+                </span>
+              </Link> */}
             </div>
           </motion.div>
         </div>
