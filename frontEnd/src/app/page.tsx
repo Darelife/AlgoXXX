@@ -186,7 +186,7 @@ export default function Home() {
                 />
               </div>
               <p className="text-gray-600 dark:text-gray-400 text-sm text-center md:text-left">
-                © {new Date().getFullYear()} AlgomaniaxX. All rights reserved.
+                © {new Date().getFullYear()} Algomaniax. All rights reserved.
               </p>
             </div>
             
