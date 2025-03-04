@@ -7,7 +7,7 @@ import { ArrowUpDown, Search } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 // import { Label } from '@/components/ui/label';
@@ -223,19 +223,17 @@ const handleSliderChangeCommitted = (
         ></div>
       )}
       <NavBar toggleTheme={toggleTheme} fixed={false} />
-      <div className='container p-4 mx-auto' style={{ marginTop: '-5rem' }}>
-        <div className='text-center'>
-            <Link href="/">
-            <Image
-              src={theme === "dark" ? "/algoLightX.png" : "/algoDarkX.png"}
-              alt='Codeforces'
-              className=' mx-auto mb-4'
-              layout="intrinsic"
-              width={218}
-              height={128}
-            />
-            </Link>
-          <br />
+      <div className='container p-4 mx-auto justify-center' style={{ marginTop: '-5rem' }}>
+        {/* <Link href="/" className="flex justify-center"> */}
+        <div className="flex justify-center">
+        <Image
+          src={theme === "dark" ? "/algoLightX.png" : "/algoDarkX.png"}
+          alt='AlgoX'
+          className='mb-4'
+          width={218}
+          height={128}
+          priority
+        />
         </div>
         <div className='grid gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3'>
           <div className="w-full flex flex-col gap-4 items-center px-4 py-6 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">

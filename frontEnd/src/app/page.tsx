@@ -1,15 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import NavBar from "./components/navBar";
 import TypeIntoView from "./components/typeIntoView";
-// import AddButton from "./components/AddButton";
-// import Functionality from "./components/functionality";
-// import Dashboard from "./components/DashBoard";
-// import Dashboard from "./components/dashboard";
-// import PlusButton from "./components/PlusButton";
-// import FadingText from "./components/fadingText";
-// import AddCfButton from "./components/metaaaa";
+import { motion } from "framer-motion";
+import { Sparkles, Globe, Trophy } from "lucide-react";
 
 export default function Home() {
   const [theme, setTheme] = useState("light");
@@ -68,25 +65,139 @@ export default function Home() {
         ></div>
       )}
 
-      <NavBar toggleTheme={toggleTheme} fixed={true}/>
-      <div
-        className="flex justify-center items-center min-h-screen"
-        style={{ transform: `translate(${transform.x}px, ${transform.y}px)` }}
-      >
-        <h1 className="md:text-9xl text-6xl font-sans font-black">ALGOX</h1>
-      </div>
-      <TypeIntoView align="left" id="oneType"/>
-      {/* <TypeIntoView align="left" id="twoType"/> */}
+      <NavBar toggleTheme={toggleTheme} fixed={false}/>
       
-      {/* <TypeIntoView align="left" id="threeType"/> */}
-      {/* <Functionality /> */}
-      {/* <AddButton /> */}
-      {/* <Dashboard /> */}
-      {/* <PlusButton onClick={() => console.log("Clicked")} /> */}
-      {/* <Subscriptions /> */}
-      {/* <Dashboard />
-      <div className="mb-[125px]">
-      </div> */}
+      {/* Hero section with background elements */}
+      <div className="relative">
+        {/* Background decoration */}
+        <div className="absolute w-full h-full overflow-hidden">
+  <div 
+    className="absolute top-1/4 -left-24 w-72 h-72 rounded-full filter blur-3xl" 
+    style={{ 
+      background: theme === "dark" 
+        ? "rgba(251, 146, 60, 0.1)" // bg-orange-400/10
+        : "linear-gradient(to bottom right, rgba(249, 115, 22, 0.1), rgba(245, 158, 11, 0.2))" // from-orange-500/10 to-amber-500/20
+    }}
+  ></div>
+  <div 
+    className="absolute bottom-1/3 -right-24 w-80 h-80 rounded-full filter blur-3xl"
+    style={{ 
+      background: theme === "dark" 
+        ? "rgba(248, 113, 113, 0.1)" // bg-red-400/10
+        : "linear-gradient(to top left, rgba(239, 68, 68, 0.1), rgba(244, 63, 94, 0.2))" // from-red-500/10 to-rose-500/20  
+    }}
+  ></div>
+</div>
+        
+        <div
+          className="flex flex-col justify-center items-center min-h-[100vh]"
+          style={{ transform: `translate(${transform.x}px, ${transform.y}px)` }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="flex flex-col items-center"
+          >
+            <motion.h1 
+              className="md:text-9xl text-6xl font-sans font-black bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-400 dark:to-red-400 mt-[-10rem]"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              ALGOX
+            </motion.h1>
+            
+            <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-md text-center">
+              Elevate your algorithmic journey with competitive programming resources
+            </p>
+            
+            <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
+              <Link 
+                href="/leaderboard"
+                className="w-full sm:w-auto px-6 py-3 bg-orange-600 dark:bg-red-600 text-white rounded-xl font-medium text-center shadow-md hover:shadow-lg transition-all duration-300 hover:bg-orange-700 dark:hover:bg-red-700"
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <Trophy className="h-4 w-4" /> Leaderboard
+                </span>
+              </Link>
+              <Link 
+                href="/bootcamp"
+                className="w-full sm:w-auto px-6 py-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-xl font-medium text-center shadow-sm hover:shadow-md transition-all duration-300"
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <Sparkles className="h-4 w-4" /> Bootcamp Resources
+                </span>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+      
+      <div className="max-w-6xl mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+        >
+          <TypeIntoView align="left" id="oneType"/>
+        </motion.div>
+        
+        {/* Features section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+          <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm p-6 border border-gray-100/50 dark:border-white/10 hover:shadow-md transition-all duration-300">
+            <div className="w-12 h-12 bg-orange-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
+              <Trophy className="w-6 h-6 text-orange-600 dark:text-red-400" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">Competitive Leaderboard</h3>
+            <p className="mt-2 text-gray-600 dark:text-gray-300">Track your progress and compare against peers in our constantly updated leaderboard.</p>
+          </div>
+          
+          <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm p-6 border border-gray-100/50 dark:border-white/10 hover:shadow-md transition-all duration-300">
+            <div className="w-12 h-12 bg-orange-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
+              <Sparkles className="w-6 h-6 text-orange-600 dark:text-red-400" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">Learning Resources</h3>
+            <p className="mt-2 text-gray-600 dark:text-gray-300">Access our curated collection of bootcamp materials designed to sharpen your algorithmic skills.</p>
+          </div>
+          
+          <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm p-6 border border-gray-100/50 dark:border-white/10 hover:shadow-md transition-all duration-300">
+            <div className="w-12 h-12 bg-orange-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
+              <Globe className="w-6 h-6 text-orange-600 dark:text-red-400" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">BITS Goa</h3>
+            <p className="mt-2 text-gray-600 dark:text-gray-300">The official competitive programming club of BITS Pilani, Goa Campus, fostering algorithmic problem-solving skills since its inception.</p>
+          </div>
+        </div>
+      </div>
+      
+      <footer className="mt-12 border-t border-gray-200 dark:border-gray-800 py-8">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-6 md:mb-0">
+              <div className="flex items-center justify-center md:justify-start">
+                <Image
+                  src={theme === "dark" ? "/algoLightX.png" : "/algoDarkX.png"}
+                  alt='AlgoX'
+                  width={120}
+                  height={70}
+                  className="mb-2"
+                />
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm text-center md:text-left">
+                © {new Date().getFullYear()} AlgomaniaxX. All rights reserved.
+              </p>
+            </div>
+            
+            <div className="flex space-x-8">
+              <Link href="/about" className="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-red-400 transition-colors">About</Link>
+              <Link href="/bootcamp" className="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-red-400 transition-colors">Bootcamp</Link>
+              <Link href="/leaderboard" className="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-red-400 transition-colors">Leaderboard</Link>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

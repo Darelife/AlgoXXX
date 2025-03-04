@@ -61,7 +61,7 @@ const TypeIntoView: React.FC<TypeIntoViewProps> = ({
 
   return (
     <div
-    className={`flex ${align === "right" ? "justify-end" : "justify-start"} min-h-screen px-10`}
+    className={`flex ${align === "right" ? "justify-end" : "justify-start"} min-h-screen px-[2vw]`}
     >
       <section
         id={id}
@@ -71,7 +71,7 @@ const TypeIntoView: React.FC<TypeIntoViewProps> = ({
             : align === "left"
             ? "opacity-0 -translate-x-12"
             : "opacity-0 translate-x-12"
-        } flex flex-col justify-center items-start min-h-screen px-10 ${
+        } flex flex-col justify-center items-start min-h-screen px-[2vw] ${
           align === "right" ? "items-end text-right" : "items-start text-left"
         }`}
       >
