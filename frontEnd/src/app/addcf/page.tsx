@@ -138,48 +138,17 @@ const CodeforcesPage: NextPage = () => {
           style={{ backgroundColor: overlayColor }}
         ></div>
       )}
-
-      {/* C++ code brackets and symbols */}
-      <div className="absolute bottom-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <svg 
-          width="100%" 
-          height="100%" 
-          viewBox="0 0 1000 800" 
-          xmlns="http://www.w3.org/2000/svg"
-          opacity={theme === "dark" ? "0.08" : "0.05"}
-        >
-          {/* C++ Logo */}
-          <g transform="translate(180, 300) scale(0.6)">
-            <path d="M302.107,258.262c2.401-4.159,3.893-8.845,3.893-13.053V98.546c0-4.208-1.49-8.893-3.892-13.052L153,172.175L302.107,258.262z" 
-              fill={theme === "dark" ? "#ffffff" : "#000000"} opacity="0.7" />
-            <path d="M166.25,341.193l126.5-73.034c3.644-2.104,6.956-5.737,9.357-9.897L153,172.175L3.893,258.263c2.401,4.159,5.714,7.793,9.357,9.896l126.5,73.034C147.037,345.401,158.963,345.401,166.25,341.193z" 
-              fill={theme === "dark" ? "#ffffff" : "#000000"} opacity="0.7" />
-            <path d="M302.108,85.493c-2.402-4.16-5.715-7.793-9.358-9.897L166.25,2.562c-7.287-4.208-19.213-4.208-26.5,0L13.25,75.596c-7.287,4.208-13.249,14.423-13.249,22.949v146.124c0,4.208,1.491,8.894,3.893,13.053L153,172.175L302.108,85.493z" 
-              fill={theme === "dark" ? "#ffffff" : "#000000"} opacity="0.7" />
-          </g>
-          
-          {/* C++ Syntax Elements */}
-          <text x="50" y="100" fontFamily="monospace" fontSize="60" fontWeight="bold" fill={theme === "dark" ? "#ffffff" : "#000000"} opacity="0.8">{'{}'}</text>
-          <text x="250" y="200" fontFamily="monospace" fontSize="72" fontWeight="bold" fill={theme === "dark" ? "#ffffff" : "#000000"} opacity="0.7">( )</text>
-          <text x="500" y="150" fontFamily="monospace" fontSize="65" fontWeight="bold" fill={theme === "dark" ? "#ffffff" : "#000000"} opacity="0.6">[ ]</text>
-          <text x="750" y="250" fontFamily="monospace" fontSize="80" fontWeight="bold" fill={theme === "dark" ? "#ffffff" : "#000000"} opacity="0.7">;</text>
-          <text x="150" y="400" fontFamily="monospace" fontSize="90" fontWeight="bold" fill={theme === "dark" ? "#ffffff" : "#000000"} opacity="0.7">*</text>
-          <text x="300" y="500" fontFamily="monospace" fontSize="70" fontWeight="bold" fill={theme === "dark" ? "#ffffff" : "#000000"} opacity="0.6">&amp;</text>
-          <text x="600" y="450" fontFamily="monospace" fontSize="75" fontWeight="bold" fill={theme === "dark" ? "#ffffff" : "#000000"} opacity="0.7">-&gt;</text>
-          <text x="800" y="600" fontFamily="monospace" fontSize="65" fontWeight="bold" fill={theme === "dark" ? "#ffffff" : "#000000"} opacity="0.8">::</text>
-          <text x="400" y="650" fontFamily="monospace" fontSize="100" fontWeight="bold" fill={theme === "dark" ? "#ffffff" : "#000000"} opacity="0.9">++</text>
-        </svg>
+      <div style={{zIndex: 1000}}>
+        <NavBar toggleTheme={toggleTheme} fixed={false} />
       </div>
 
-      <NavBar toggleTheme={toggleTheme} fixed={false} />
-      
-      {/* Hero section with gradient title - adjusted positioning */}
+            {/* Hero section with gradient title - adjusted positioning */}
 <div
-  className="flex justify-center items-center min-h-screen pt-24 pb-10 mt-[-7rem]" // Reduced height and added padding
+  className="flex justify-center items-center min-h-screen pt-24 pb-10" // Reduced height and added padding
   style={{ transform: `translate(${transform.x}px, ${transform.y}px)` }}
 >
   <div className="text-center">
-    <h1 className="md:text-8xl text-6xl font-sans font-black bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-400 dark:to-red-400">
+    <h1 className="md:text-8xl text-6xl font-sans font-black bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-400 dark:to-red-400 mt-[-10rem]">
       Connect Codeforces
     </h1>
     <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-5">
