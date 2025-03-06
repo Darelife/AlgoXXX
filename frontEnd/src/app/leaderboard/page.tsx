@@ -10,6 +10,8 @@ import axios from 'axios';
 // import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+// import { debounce } from 'lodash';
+// import { useMemo } from "react";
 // import { Label } from '@/components/ui/label';
 
 // import {
@@ -110,6 +112,41 @@ const SampleTable: React.FC = () => {
     fetchUsers();
   }, []);
 
+  // const debouncedFilterUsers = debounce((
+  //   searchTerm: string, 
+  //   ratingRange: [number, number], 
+  //   selectedYear: string, 
+  //   cfHandleSearch: string
+  // ) => {
+  //   let filtered = users;
+
+  //   if (searchTerm) {
+  //     filtered = filtered.filter((user) =>
+  //       user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  //     );
+  //   }
+
+  //   if (cfHandleSearch) {
+  //     filtered = filtered.filter((user) =>
+  //       user.cfid.toLowerCase().includes(cfHandleSearch.toLowerCase())
+  //     );
+  //   }
+
+  //   if (selectedYear) {
+  //     filtered = filtered.filter(
+  //       (user) => user.bitsid.substring(0, 4) === selectedYear
+  //     );
+  //   }
+
+  //   if (ratingRange) {
+  //     filtered = filtered.filter(
+  //       (user) => user.rating >= ratingRange[0] && user.rating <= ratingRange[1]
+  //     );
+  //   }
+
+  //   sortUsers(filtered, sortBy, sortOrder);
+  // }, 150);
+
   const handleCfHandleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCfHandleSearch(event.target.value);
     filterUsers(searchTerm, ratingRange, selectedYear, event.target.value);
@@ -175,6 +212,23 @@ const SampleTable: React.FC = () => {
   sortUsers(filtered, sortBy, sortOrder);
 };
 
+const handleSliderChange = (
+  _: React.SyntheticEvent | Event,
+  newValue: number | number[]
+) => {
+  if (!Array.isArray(newValue)) return;
+  
+  // Update local visual state immediately
+  const min = Math.max(0, newValue[0]);
+  const max = Math.min(4000, newValue[1]);
+  
+  setSliderValue([min, max]);
+  
+  // Use debounced filter function instead of direct filtering
+  // debouncedFilterUsers(searchTerm, [min, max] as [number, number], selectedYear, cfHandleSearch);
+};
+
+// Remove filterUsers from handleSliderChangeCommitted since it's redundant
 const handleSliderChangeCommitted = (
   _: React.SyntheticEvent | Event,
   newValue: number | number[]
@@ -185,26 +239,12 @@ const handleSliderChangeCommitted = (
   const max = Math.min(4000, newValue[1]);
   
   setRatingRange([min, max] as [number, number]);
-  filterUsers(searchTerm, [min, max] as [number, number], selectedYear, cfHandleSearch);
+  // No need to call filterUsers here as it's already handled by the debounced function
 };
 
-  const handleSliderChange = (
-    _: React.SyntheticEvent | Event,
-    newValue: number | number[]
-  ) => {
-    if (!Array.isArray(newValue)) return;
-    
-    // Update local visual state only
-    setSliderValue([
-      Math.max(0, newValue[0]), 
-      Math.min(4000, newValue[1])
-    ]);
-    filterUsers(searchTerm, [sliderValue[0], sliderValue[1]] as [number, number], selectedYear, cfHandleSearch);
-  };
-
-  useEffect(() => {
-    console.log("rerendered", ratingRange);
-  }, [ratingRange]);
+  // useEffect(() => {
+  //   console.log("rerendered", ratingRange);
+  // }, [ratingRange]);
 
 
   useEffect(() => {
