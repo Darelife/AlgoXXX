@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Algomaniax",
   description: "The Official Competitive Programming Club of BITS Goa",
+  openGraph: {
+    images: "/algoDarkLogo.png",
+  },
 };
 
 export default function RootLayout({
