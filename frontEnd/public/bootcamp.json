@@ -1,85 +1,60 @@
 {
-  "Getting Started": {
-    "Introduction": {
-      "What is CP?": "https://www.geeksforgeeks.org/how-to-prepare-for-competitive-programming/",
-      "Time & Space Complexity": "https://www.geeksforgeeks.org/understanding-time-complexity-simple-examples/",
-      "Practice Platforms": {
-        "Codeforces": "https://codeforces.com/",
-        "AtCoder": "https://atcoder.jp/",
-        "CSES Problem Set": "https://cses.fi/problemset/"
-      }
+  "Set Up" : {
+    "Installing C++" : {
+      "GFG Guide" : "https://www.geeksforgeeks.org/setting-c-development-environment/"
     },
-    "Basic Tools": {
-      "C++ STL": {
-        "Vectors": "https://www.geeksforgeeks.org/vector-in-cpp-stl/",
-        "Sets & Maps": "https://www.geeksforgeeks.org/set-in-cpp-stl/",
-        "Priority Queue": "https://www.geeksforgeeks.org/priority-queue-in-cpp-stl/"
+    "Extensions" : {
+      "Competitive Companion" : {
+        "Chrome" : "https://chrome.google.com/webstore/detail/competitive-companion/cjnmckjndlpiamhfimnnjmnckgghkjbl",
+        "Firefox" : "https://addons.mozilla.org/en-US/firefox/addon/competitive-companion/"
       },
-      "Fast I/O": "https://www.geeksforgeeks.org/fast-io-for-competitive-programming/"
-    }
-  },
-  "Core Algorithms": {
-    "Searching": {
-      "Binary Search": "https://cp-algorithms.com/num_methods/binary_search.html",
-      "Ternary Search": "https://cp-algorithms.com/num_methods/ternary_search.html"
-    },
-    "Sorting": {
-      "Merge Sort": "https://cp-algorithms.com/sorting/merge_sort.html",
-      "Quick Sort": "https://cp-algorithms.com/sorting/quick_sort.html"
-    },
-    "Dynamic Programming": {
-      "Introduction": "https://cp-algorithms.com/dynamic_programming/intro-to-dp.html",
-      "Common Patterns": {
-        "0/1 Knapsack": "https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/",
-        "LCS": "https://cp-algorithms.com/sequences/longest_common_subsequence.html",
-        "Grid DP": "https://www.geeksforgeeks.org/dynamic-programming-on-grids/"
-      }
-    }
-  },
-  "Advanced Topics": {
-    "Graph Theory": {
-      "Basic Concepts": "https://cp-algorithms.com/graph/basic-graphs.html",
-      "DFS & BFS": "https://cp-algorithms.com/graph/breadth-first-search.html",
-      "Shortest Paths": {
-        "Dijkstra": "https://cp-algorithms.com/graph/dijkstra.html",
-        "Floyd Warshall": "https://cp-algorithms.com/graph/floyd-warshall.html"
+      "Codeforces Helper" : {
+        "Chrome" : "https://chromewebstore.google.com/detail/codeforces-helper/ahoeafmlmoohkkalcickdnkifpfnolpj",
+        "Firefox" : "https://addons.mozilla.org/en-US/firefox/addon/codeforces-helper/"
       },
-      "Trees": {
-        "Basic Tree Algorithms": "https://cp-algorithms.com/graph/tree_basics.html",
-        "LCA": "https://cp-algorithms.com/graph/lca.html"
+      "CF Analytics" : {
+        "Chrome" : "https://chromewebstore.google.com/detail/cf-analytics/hhljbjodjdbjbggddjaidojnlmaobcpo",
+        "Firefox" : "https://addons.mozilla.org/en-US/firefox/addon/cf-analytics/"
       }
     },
-    "Mathematics": {
-      "Number Theory": {
-        "Prime Numbers": "https://cp-algorithms.com/algebra/primality_tests.html",
-        "GCD & LCM": "https://cp-algorithms.com/algebra/euclid-algorithm.html",
-        "Modular Arithmetic": "https://cp-algorithms.com/algebra/module-arithmetic.html"
-      },
-      "Combinatorics": {
-        "Basic Principles": "https://cp-algorithms.com/combinatorics/basics.html",
-        "Permutations & Combinations": "https://cp-algorithms.com/combinatorics/permutations.html"
-      }
+    "VS Code" : {
+      "CPH Judge" : "https://marketplace.visualstudio.com/items?itemName=DivyanshuAgrawal.competitive-programming-helper"
     },
-    "Data Structures": {
-      "Segment Trees": "https://cp-algorithms.com/data_structures/segment_tree.html",
-      "Fenwick Trees": "https://cp-algorithms.com/data_structures/fenwick.html",
-      "Disjoint Set Union": "https://cp-algorithms.com/data_structures/disjoint_set_union.html"
+    "CP Practice" : {
+      "Codeforces" : "https://codeforces.com/",
+      "AtCoder" : "https://atcoder.jp/",
+      "CodeChef" : "https://www.codechef.com/",
+      "LeetCode" : "https://leetcode.com/",
+      "HackerRank" : "https://www.hackerrank.com/",
+      "TopCoder" : "https://www.topcoder.com/",
+      "SPOJ" : "https://www.spoj.com/",
+      "HackerEarth" : "https://www.hackerearth.com/"
+    },
+    "CP Resources" : {
+      "GFG" : "https://www.geeksforgeeks.org/",
+      "CP Algorithms" : "https://cp-algorithms.com/",
+      "CSES Handbook" : "https://cses.fi/book/book.pdf",
+      "Luv YT CP" : "https://www.youtube.com/playlist?list=PLauivoElc3ggagradg8MfOZreCMmXMmJ-"
     }
+  }, 
+  "C++ Basics" : {
+    "Hello World" : "https://www.geeksforgeeks.org/writing-first-c-program-hello-world-example/",
+    "GFG Tutorial Set" : "https://www.geeksforgeeks.org/c-plus-plus/"
   },
-  "Practice Strategy": {
-    "Problem Classifications": {
-      "Implementation": "https://codeforces.com/problemset?tags=implementation",
-      "Greedy": "https://codeforces.com/problemset?tags=greedy",
-      "DP": "https://codeforces.com/problemset?tags=dp"
+  "C++ STL" : {
+    "Thory" : {
+      "GFG STL" : "https://www.geeksforgeeks.org/the-c-standard-template-library-stl/"
     },
-    "Contest Practice": {
-      "Virtual Contests": "https://codeforces.com/contests",
-      "Educational Rounds": "https://codeforces.com/edu/courses"
-    },
-    "Training Resources": {
-      "USACO Guide": "https://usaco.guide/",
-      "CP Handbook": "https://cses.fi/book/book.pdf",
-      "Competitive Programmer's Handbook": "https://usaco.guide/CPH.pdf"
+    "Problems" : {
+      "1D Eraser" : "https://codeforces.com/problemset/problem/1873/D",
+      "Ski Resort" : "https://codeforces.com/problemset/problem/1840/C",
+      "Collecting Game" : "https://codeforces.com/problemset/problem/1904/B",
+      "Dora & Search" : "https://codeforces.com/problemset/problem/1793/C",
+      "Same Differences" : "https://codeforces.com/problemset/problem/1520/D",
+      "Progressive Square" : "https://codeforces.com/problemset/problem/1955/B",
+      "Longest Strike" : "https://codeforces.com/problemset/problem/1676/F",
+      "Rudolf and the Another Competition" : "https://codeforces.com/problemset/problem/1846/C",
+      "Subtract Operation" : "https://codeforces.com/problemset/problem/1656/B"
     }
   }
 }
