@@ -199,6 +199,7 @@ const handleSliderChangeCommitted = (
       Math.max(0, newValue[0]), 
       Math.min(4000, newValue[1])
     ]);
+    filterUsers(searchTerm, [sliderValue[0], sliderValue[1]] as [number, number], selectedYear, cfHandleSearch);
   };
 
   useEffect(() => {
@@ -274,7 +275,7 @@ const handleSliderChangeCommitted = (
                 Rating Range
               </div>
               <Slider
-                value={ratingRange}
+                value={sliderValue}
                 onChange={handleSliderChange}
                 onChangeCommitted={handleSliderChangeCommitted}
                 valueLabelDisplay="auto"

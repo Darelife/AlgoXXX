@@ -1,6 +1,7 @@
 import { ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import React from 'react'
 
 interface User {
   bitsid: string;
@@ -11,8 +12,12 @@ interface User {
   titlePhoto: string;
 }
 
+interface UserCardProps {
+  user: User;
+}
+
 // <UserCard key={user.bitsid} data={user} />
-const UserCard: React.FC<{ user: User }> = ({ user }) => {
+const UserCard: React.FC<UserCardProps> = React.memo(({ user }) => {
   interface Rank {
     name: string;
     color: string;
@@ -107,5 +112,8 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
 </Card>
   )
 }
+);
+
+UserCard.displayName = 'UserCard';
 
 export default UserCard
