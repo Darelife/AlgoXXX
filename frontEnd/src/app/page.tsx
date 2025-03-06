@@ -89,12 +89,23 @@ export default function Home() {
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              ALGOX
+              {/* ALGOX */}
+              <Image 
+                src={theme === "dark" 
+                  ? "/logos/AlgoManiaXLogoWhitePoster.png" 
+                  : "/logos/AlgoManiaXLogoBlackPoster.png"
+                }
+                alt="AlgoManiaX"
+                width={600}
+                height={200}
+                className="max-w-56"
+                priority
+              />
             </motion.h1>
             
-            <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-md text-center px-5 ">
+            {/* <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-md text-center px-5 ">
               The Official Competitive Programming Club of BITS Goa; AlgoX aka AlgoManiaX
-            </p>
+            </p> */}
             
             <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
               <Link 

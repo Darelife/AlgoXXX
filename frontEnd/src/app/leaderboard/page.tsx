@@ -227,11 +227,14 @@ const handleSliderChangeCommitted = (
         {/* <Link href="/" className="flex justify-center"> */}
         <div className="flex justify-center">
         <Image
-          src={theme === "dark" ? "/algoLightX.png" : "/algoDarkX.png"}
+          src={theme === "dark" 
+                  ? "/logos/AlgoManiaXLogoWhitePoster.png" 
+                  : "/logos/AlgoManiaXLogoBlackPoster.png"
+                }
           alt='AlgoX'
-          className='mb-4'
           width={218}
           height={128}
+          className='mb-4 max-w-40'
           priority
         />
         </div>
