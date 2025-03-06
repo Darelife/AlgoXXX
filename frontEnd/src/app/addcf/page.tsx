@@ -177,7 +177,7 @@ const CodeforcesPage: NextPage = () => {
                         value={userData.bitsId}
                         onChange={handleInputChange}
                         placeholder="Your Bits ID (in Caps)"
-                        className="bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700"
+                        className="bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700 rounded-xl"
                       />
                     </div>
                     
@@ -189,7 +189,7 @@ const CodeforcesPage: NextPage = () => {
                         value={userData.name}
                         onChange={handleInputChange}
                         placeholder="Your Name"
-                        className="bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700"
+                        className="bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700 rounded-xl"
                       />
                     </div>
                     
@@ -201,7 +201,7 @@ const CodeforcesPage: NextPage = () => {
                         value={userData.handle}
                         onChange={handleInputChange}
                         placeholder="Your Codeforces Handle"
-                        className="bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700"
+                        className="bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700 rounded-xl"
                       />
                     </div>
                   </div>
