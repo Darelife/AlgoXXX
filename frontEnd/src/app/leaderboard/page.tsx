@@ -10,7 +10,7 @@ import axios from 'axios';
 // import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-// import { debounce } from 'lodash';
+import { debounce } from 'lodash';
 // import { useMemo } from "react";
 // import { Label } from '@/components/ui/label';
 
@@ -112,40 +112,40 @@ const SampleTable: React.FC = () => {
     fetchUsers();
   }, []);
 
-  // const debouncedFilterUsers = debounce((
-  //   searchTerm: string, 
-  //   ratingRange: [number, number], 
-  //   selectedYear: string, 
-  //   cfHandleSearch: string
-  // ) => {
-  //   let filtered = users;
+  const debouncedFilterUsers = debounce((
+    searchTerm: string, 
+    ratingRange: [number, number], 
+    selectedYear: string, 
+    cfHandleSearch: string
+  ) => {
+    let filtered = users;
 
-  //   if (searchTerm) {
-  //     filtered = filtered.filter((user) =>
-  //       user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  //     );
-  //   }
+    if (searchTerm) {
+      filtered = filtered.filter((user) =>
+        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
 
-  //   if (cfHandleSearch) {
-  //     filtered = filtered.filter((user) =>
-  //       user.cfid.toLowerCase().includes(cfHandleSearch.toLowerCase())
-  //     );
-  //   }
+    if (cfHandleSearch) {
+      filtered = filtered.filter((user) =>
+        user.cfid.toLowerCase().includes(cfHandleSearch.toLowerCase())
+      );
+    }
 
-  //   if (selectedYear) {
-  //     filtered = filtered.filter(
-  //       (user) => user.bitsid.substring(0, 4) === selectedYear
-  //     );
-  //   }
+    if (selectedYear) {
+      filtered = filtered.filter(
+        (user) => user.bitsid.substring(0, 4) === selectedYear
+      );
+    }
 
-  //   if (ratingRange) {
-  //     filtered = filtered.filter(
-  //       (user) => user.rating >= ratingRange[0] && user.rating <= ratingRange[1]
-  //     );
-  //   }
+    if (ratingRange) {
+      filtered = filtered.filter(
+        (user) => user.rating >= ratingRange[0] && user.rating <= ratingRange[1]
+      );
+    }
 
-  //   sortUsers(filtered, sortBy, sortOrder);
-  // }, 150);
+    sortUsers(filtered, sortBy, sortOrder);
+  }, 150);
 
   const handleCfHandleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCfHandleSearch(event.target.value);
@@ -225,7 +225,6 @@ const handleSliderChange = (
   setSliderValue([min, max]);
   
   // Use debounced filter function instead of direct filtering
-  // debouncedFilterUsers(searchTerm, [min, max] as [number, number], selectedYear, cfHandleSearch);
 };
 
 // Remove filterUsers from handleSliderChangeCommitted since it's redundant
@@ -239,7 +238,7 @@ const handleSliderChangeCommitted = (
   const max = Math.min(4000, newValue[1]);
   
   setRatingRange([min, max] as [number, number]);
-  // No need to call filterUsers here as it's already handled by the debounced function
+  debouncedFilterUsers(searchTerm, [min, max] as [number, number], selectedYear, cfHandleSearch);
 };
 
   // useEffect(() => {
