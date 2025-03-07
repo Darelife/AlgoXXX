@@ -63,24 +63,58 @@ const SampleTable: React.FC = () => {
     document.body.classList.toggle("dark", storedTheme === "dark");
   }, []);
 
-  // Handle theme toggle with animation
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setOverlayColor(newTheme === "dark" ? "#121212" : "#ffffff"); // Set overlay color to match new theme
-    setIsAnimating(true); // Start the animation
+ // Update your toggleTheme function with this elegant implementation:
+const toggleTheme = () => {
+  const newTheme = theme === "light" ? "dark" : "light";
+  // First slider uses current theme color
+  const currentColor = theme === "light" ? "#ffffff" : "#121212";
+  // Second slider uses new theme color
+  const newColor = newTheme === "light" ? "#ffffff" : "#121212";
+  
+  setOverlayColor(currentColor); // Set color for first slider
+  setIsAnimating(true); // Start the first animation
 
+  // Create the second overlay with new theme color
+  const secondOverlay = document.createElement('div');
+  secondOverlay.className = "fixed inset-0 z-50";
+  secondOverlay.style.backgroundColor = newColor;
+  secondOverlay.style.transform = "translateX(-130%)"; // Start further off-screen (wider)
+  secondOverlay.style.transition = "transform 950ms cubic-bezier(0.6, 0, 0.4, 1)"; // Slightly faster and different easing
+  
+  // Add transitionend listener to remove element when animation completes
+  secondOverlay.addEventListener('transitionend', function onTransitionEnd() {
+    // Only remove when it's moving out (not when it reaches center)
+    if (secondOverlay.style.transform === "translateX(130%)") {
+      document.body.removeChild(secondOverlay);
+      secondOverlay.removeEventListener('transitionend', onTransitionEnd);
+    }
+  });
+  
+  document.body.appendChild(secondOverlay);
+
+  // Start moving the second overlay with perfect timing
+  setTimeout(() => {
+    secondOverlay.style.transform = "translateX(0)";
+    
+    // Change theme exactly when second overlay covers the screen
     setTimeout(() => {
       setTheme(newTheme);
       document.documentElement.classList.toggle("dark", newTheme === "dark");
       document.body.classList.toggle("dark", newTheme === "dark");
-
       localStorage.setItem("theme", newTheme);
-    }, 500); // Change theme halfway through the animation
-
+    }, 475); // Half of the second slider's animation time
+    
+    // Continue sliding the second overlay out
     setTimeout(() => {
-      setIsAnimating(false); // End the animation
-    }, 1000); // Match the animation duration
-  };
+      secondOverlay.style.transform = "translateX(130%)"; // Move further right (wider)
+    }, 475); // Start moving out right after theme change
+  }, 300); // Start when first animation is at 30%
+
+  // End the first animation
+  setTimeout(() => {
+    setIsAnimating(false);
+  }, 2000);
+};
 
   useEffect(() => {
     async function fetchUsers() {
@@ -257,11 +291,11 @@ const handleSliderChangeCommitted = (
   return (
     <>
       {isAnimating && (
-        <div
-          className="fixed inset-0 z-50 transition-transform duration-[1000ms] ease-[cubic-bezier(0.4, 0, 0.2, 1)] transform translate-x-0 animate-slide"
-          style={{ backgroundColor: overlayColor }}
-        ></div>
-      )}
+  <div
+    className="fixed inset-0 z-50 animate-slide"
+    style={{ backgroundColor: overlayColor }}
+  ></div>
+)}
       <NavBar toggleTheme={toggleTheme} fixed={false} />
       <div className='container p-4 mx-auto justify-center' style={{ marginTop: '-5rem' }}>
         {/* <Link href="/" className="flex justify-center"> */}

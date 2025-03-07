@@ -34,11 +34,11 @@ export default function Home() {
       document.body.classList.toggle("dark", newTheme === "dark");
 
       localStorage.setItem("theme", newTheme);
-    }, 500); // Change theme halfway through the animation
+    }, 900); // Change theme halfway through the animation
 
     setTimeout(() => {
       setIsAnimating(false); // End the animation
-    }, 1000); // Match the animation duration
+    }, 2000); // Match the animation duration
   };
 
   useEffect(() => {

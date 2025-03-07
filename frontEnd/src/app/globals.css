@@ -87,19 +87,21 @@ body.dark ::selection {
 
 @keyframes slide {
   0% {
-    transform: translateX(-101%); /* Start slightly offscreen */
+    transform: translateX(-130%);
   }
-  50% {
+  45% {
+    /* End slightly earlier at 45% */
     transform: translateX(0);
   }
   100% {
-    transform: translateX(101%); /* Exit fully offscreen */
+    transform: translateX(130%);
   }
 }
 
 .animate-slide {
-  animation: slide 1s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform; /* Optimize for smoother rendering */
+  animation: slide 2s cubic-bezier(0.7, 0, 0.3, 1);
+  will-change: transform;
+  pointer-events: none;
 }
 
 .overlay {

@@ -67,11 +67,11 @@ const CodeforcesPage: NextPage = () => {
       document.documentElement.classList.toggle("dark", newTheme === "dark");
       document.body.classList.toggle("dark", newTheme === "dark");
       localStorage.setItem("theme", newTheme);
-    }, 500);
+    }, 900);
 
     setTimeout(() => {
       setIsAnimating(false);
-    }, 1000);
+    }, 2000);
   };
 
   const fetchRandomProblem = async () => {
