@@ -54,7 +54,7 @@ router.get("/all", async (req, res, next) => {
       cfDataMap.set(cfData.handle.toLowerCase(), cfData);
     });
 
-    const updatedDocs = docs.map((user) => {
+    let updatedDocs = docs.map((user) => {
       const cfData = cfDataMap.get(user.cfid.toLowerCase()) || {}; // Use cfid to find corresponding data or default to an empty object
 
       return {
@@ -71,6 +71,9 @@ router.get("/all", async (req, res, next) => {
         titlePhoto: cfData.titlePhoto || "N/A",
       };
     });
+
+    // Sort the updatedDocs array in descending order based on current rating
+    updatedDocs.sort((a, b) => b.rating - a.rating);
 
     // Return the updated user data as a JSON response
     res.status(200).json(updatedDocs);

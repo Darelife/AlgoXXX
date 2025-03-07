@@ -64,57 +64,57 @@ const SampleTable: React.FC = () => {
   }, []);
 
  // Update your toggleTheme function with this elegant implementation:
-const toggleTheme = () => {
-  const newTheme = theme === "light" ? "dark" : "light";
-  // First slider uses current theme color
-  const currentColor = theme === "light" ? "#ffffff" : "#121212";
-  // Second slider uses new theme color
-  const newColor = newTheme === "light" ? "#ffffff" : "#121212";
-  
-  setOverlayColor(currentColor); // Set color for first slider
-  setIsAnimating(true); // Start the first animation
-
-  // Create the second overlay with new theme color
-  const secondOverlay = document.createElement('div');
-  secondOverlay.className = "fixed inset-0 z-50";
-  secondOverlay.style.backgroundColor = newColor;
-  secondOverlay.style.transform = "translateX(-130%)"; // Start further off-screen (wider)
-  secondOverlay.style.transition = "transform 950ms cubic-bezier(0.6, 0, 0.4, 1)"; // Slightly faster and different easing
-  
-  // Add transitionend listener to remove element when animation completes
-  secondOverlay.addEventListener('transitionend', function onTransitionEnd() {
-    // Only remove when it's moving out (not when it reaches center)
-    if (secondOverlay.style.transform === "translateX(130%)") {
-      document.body.removeChild(secondOverlay);
-      secondOverlay.removeEventListener('transitionend', onTransitionEnd);
-    }
-  });
-  
-  document.body.appendChild(secondOverlay);
-
-  // Start moving the second overlay with perfect timing
-  setTimeout(() => {
-    secondOverlay.style.transform = "translateX(0)";
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    // First slider uses current theme color
+    const currentColor = theme === "light" ? "#ffffff" : "#121212";
+    // Second slider uses new theme color
+    const newColor = newTheme === "light" ? "#ffffff" : "#121212";
     
-    // Change theme exactly when second overlay covers the screen
-    setTimeout(() => {
-      setTheme(newTheme);
-      document.documentElement.classList.toggle("dark", newTheme === "dark");
-      document.body.classList.toggle("dark", newTheme === "dark");
-      localStorage.setItem("theme", newTheme);
-    }, 475); // Half of the second slider's animation time
-    
-    // Continue sliding the second overlay out
-    setTimeout(() => {
-      secondOverlay.style.transform = "translateX(130%)"; // Move further right (wider)
-    }, 475); // Start moving out right after theme change
-  }, 300); // Start when first animation is at 30%
+    setOverlayColor(currentColor); // Set color for first slider
+    setIsAnimating(true); // Start the first animation
 
-  // End the first animation
-  setTimeout(() => {
-    setIsAnimating(false);
-  }, 2000);
-};
+    // Create the second overlay with new theme color
+    const secondOverlay = document.createElement('div');
+    secondOverlay.className = "fixed inset-0 z-50";
+    secondOverlay.style.backgroundColor = newColor;
+    secondOverlay.style.transform = "translateX(-130%)"; // Start further off-screen (wider)
+    secondOverlay.style.transition = "transform 950ms cubic-bezier(0.6, 0, 0.4, 1)"; // Slightly faster and different easing
+    
+    // Add transitionend listener to remove element when animation completes
+    secondOverlay.addEventListener('transitionend', function onTransitionEnd() {
+      // Only remove when it's moving out (not when it reaches center)
+      if (secondOverlay.style.transform === "translateX(130%)") {
+        document.body.removeChild(secondOverlay);
+        secondOverlay.removeEventListener('transitionend', onTransitionEnd);
+      }
+    });
+    
+    document.body.appendChild(secondOverlay);
+
+    // Start moving the second overlay with perfect timing
+    setTimeout(() => {
+      secondOverlay.style.transform = "translateX(0)";
+      
+      // Change theme exactly when second overlay covers the screen
+      setTimeout(() => {
+        setTheme(newTheme);
+        document.documentElement.classList.toggle("dark", newTheme === "dark");
+        document.body.classList.toggle("dark", newTheme === "dark");
+        localStorage.setItem("theme", newTheme);
+      }, 475); // Half of the second slider's animation time
+      
+      // Continue sliding the second overlay out
+      setTimeout(() => {
+        secondOverlay.style.transform = "translateX(130%)"; // Move further right (wider)
+      }, 1500); // Start moving out right after theme change
+    }, 400); // Start when first animation is at 40%
+
+    // End the first animation
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 1500);
+  };
 
   useEffect(() => {
     async function fetchUsers() {
@@ -133,8 +133,12 @@ const toggleTheme = () => {
         //   (a: User, b: User) => b.rating - a.rating
         // );
         // sortUsers(sanitizedData, 'rating', 'desc');
+        // sortUsers(sanitizedData, 'rating', 'desc');
+        // sortUsers(data, 'rating', 'desc');
         setUsers(sanitizedData);
         setFilteredUsers(data);
+        // sort by rating -> both of them
+        
         setLoading(false);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -454,19 +458,141 @@ const handleSliderChangeCommitted = (
           </Button>
         </div>
 
-        {loading ? (
-          <p className='text-center text-gray-500'>Loading...</p>
-        ) : error ? (
-          <p className='text-center text-red-500'>{error}</p>
-        ) : filteredUsers.length === 0 ? (
-          <p className='text-center text-gray-500'>No users found</p>
-        ) : (
-          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-            {filteredUsers.map(user => (
-              <UserCard key={user.bitsid} user={user} />
+       {loading ? (
+        <div className="py-12">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="animate-pulse bg-gradient-to-br from-white to-blue-50/60 dark:bg-gradient-to-br dark:from-gray-800/20 dark:to-blue-900/10 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10 overflow-hidden">
+                {/* Card Header */}
+                <div className="flex justify-center items-center">
+                  <div className="flex flex-row items-center gap-5 pb-3 px-5 pt-4 w-full">
+                    <div className="relative">
+                      <div className="w-16 h-16 rounded-md bg-slate-200 dark:bg-slate-700 border-2 border-white dark:border-gray-700 shadow-md"></div>
+                    </div>
+                    <div className="flex-1 min-w-0 space-y-2">
+                      <div className="h-5 bg-slate-200 dark:bg-slate-700 rounded w-3/4"></div>
+                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2"></div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Divider */}
+                <div className="h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent"></div>
+                
+                {/* Card Content */}
+                <div className="pt-3 px-5">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="text-left space-y-1">
+                      <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-14"></div>
+                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20"></div>
+                    </div>
+                    
+                    <div className="text-right space-y-1">
+                      <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-10"></div>
+                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24"></div>
+                    </div>
+                  </div>
+                  
+                  {/* Rating box */}
+                  <div className="mt-2 bg-gray-100/50 dark:bg-gray-800/30 rounded-lg p-2">
+                    <div className="flex justify-between items-center">
+                      <div className="text-center space-y-1 flex-1">
+                        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded mx-auto w-16"></div>
+                        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded mx-auto w-10"></div>
+                      </div>
+                      
+                      <div className="h-8 w-px bg-gray-200 dark:bg-gray-700"></div>
+                      
+                      <div className="text-center space-y-1 flex-1">
+                        <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded mx-auto w-10"></div>
+                        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded mx-auto w-10"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Card Footer */}
+                <div className="flex justify-end pb-4 px-5 pt-2">
+                  <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-32"></div>
+                </div>
+              </div>
             ))}
           </div>
-        )}
+          
+          {/* Loading indicator */}
+          <div className="mt-10 flex flex-col items-center">
+            <div className="relative h-16 w-16 mb-4">
+              <div className="absolute h-16 w-16 rounded-full border-4 border-blue-200 dark:border-blue-900/30 opacity-25"></div>
+              <div className="absolute h-16 w-16 rounded-full border-4 border-transparent border-t-blue-600 dark:border-t-blue-400 animate-spin"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                </svg>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <p className="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
+                Loading Participants
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Please wait while we fetch the leaderboard data</p>
+            </div>
+          </div>
+        </div>
+      ) : error ? (
+        // Keep your existing error state
+        <div className="flex flex-col items-center justify-center py-10 text-center">
+          <div className="rounded-full bg-red-100 dark:bg-red-900/20 p-4">
+            <svg className="h-10 w-10 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <p className="mt-4 text-lg font-medium text-red-600 dark:text-red-400">{error}</p>
+          <p className="mt-2 text-gray-500 dark:text-gray-400">Please try again later</p>
+        </div>
+      ) : filteredUsers.length === 0 ? (
+        // Keep your existing empty state
+        <div className="flex flex-col items-center justify-center py-10 text-center">
+          <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-4">
+            <svg className="h-10 w-10 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+            </svg>
+          </div>
+          <p className="mt-4 text-lg font-medium text-gray-900 dark:text-gray-100">No users found</p>
+          <p className="mt-2 text-gray-500 dark:text-gray-400">Try adjusting your search filters</p>
+        </div>
+      ) : (
+        // Keep your existing user cards with animation fix
+        <>
+          <style jsx global>{`
+            @keyframes fadeInUp {
+              from {
+                opacity: 0;
+                transform: translateY(20px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+          `}</style>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {filteredUsers.map((user, index) => (
+              <div 
+                key={user.bitsid} 
+                className="transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+                style={{
+                  opacity: 0,
+                  animation: `fadeInUp 0.5s ease-out forwards`,
+                  animationDelay: `${index * 0.1}s`
+                }}
+              >
+                <UserCard user={user} />
+              </div>
+            ))}
+          </div>
+        </>
+      )}
       </div>
     </>
   );
