@@ -50,9 +50,16 @@ export default function Home() {
       setTransform({ x: offsetX, y: offsetY });
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    const isPhone = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (!isPhone) {
+      window.addEventListener("mousemove", handleMouseMove);
+    }
+
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+      if (!isPhone) {
+        window.removeEventListener("mousemove", handleMouseMove);
+      }
     };
   }, []);
 

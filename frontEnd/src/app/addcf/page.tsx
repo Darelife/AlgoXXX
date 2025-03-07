@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Code } from "lucide-react";
+import Image from "next/image";
 
 interface Problem {
   contestId: number;
@@ -148,9 +149,13 @@ const CodeforcesPage: NextPage = () => {
   style={{ transform: `translate(${transform.x}px, ${transform.y}px)` }}
 >
   <div className="text-center">
-    <h1 className="md:text-8xl text-6xl font-sans font-black bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-400 dark:to-red-400 mt-[-10rem]">
-      Connect Codeforces
-    </h1>
+    <Image 
+      src="/logos/cflogo.png" 
+      alt="Connect Codeforces" 
+      className="w-[10rem] mx-auto mt-[-10rem]"
+      width={300}
+      height={300}
+    />
     <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-5">
       Submit a compile error to verify your Codeforces handle
     </p>
