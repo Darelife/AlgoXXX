@@ -111,7 +111,9 @@ export default function Home() {
   }, []);
 
   if (!bootcampData) {
-    return <div>Loading...</div>;
+    return (
+      "Loading..."
+    );
   }
 
   return (
