@@ -18,6 +18,8 @@
     "@radix-ui/react-slider": "^1.2.2",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-visually-hidden": "^1.1.1",
+    "@supabase/auth-js": "^2.68.0",
+    "@supabase/auth-ui-react": "^0.4.7",
     "@vercel/analytics": "^1.4.1",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
