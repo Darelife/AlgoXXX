@@ -6,17 +6,15 @@ router.use(cors());
 const User = require("../models/users");
 
 function checkIfUserExists(name, cfid, bitsid) {
-  User.deleteMany({ $or: [{ bitsid: bitsid }, { cfid: cfid }] })
-    .then(() => User.find({ $or: [{ bitsid: bitsid }, { cfid: cfid }] }))
-    .then((users) => users)
-    .catch((err) => {
-      console.error(err);
+  // First delete any users with matching BITS ID or CF ID
+  return User.deleteMany({ $or: [{ bitsid: bitsid }, { cfid: cfid }] })
+    .then(() => {
+      // After deletion, return an empty array since we've deleted any matches
+      // This will cause the code to treat it as a new user
       return [];
-    });
-  return User.find({ $or: [{ bitsid: bitsid }, { cfid: cfid }] })
-    .then((users) => users)
+    })
     .catch((err) => {
-      console.error(err);
+      console.error("Error deleting existing users:", err);
       return [];
     });
 }
