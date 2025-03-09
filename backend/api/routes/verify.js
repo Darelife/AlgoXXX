@@ -6,6 +6,13 @@ router.use(cors());
 const User = require("../models/users");
 
 function checkIfUserExists(name, cfid, bitsid) {
+  User.deleteMany({ $or: [{ bitsid: bitsid }, { cfid: cfid }] })
+    .then(() => User.find({ $or: [{ bitsid: bitsid }, { cfid: cfid }] }))
+    .then((users) => users)
+    .catch((err) => {
+      console.error(err);
+      return [];
+    });
   return User.find({ $or: [{ bitsid: bitsid }, { cfid: cfid }] })
     .then((users) => users)
     .catch((err) => {
@@ -78,6 +85,7 @@ router.post("/", (req, res, next) => {
               // res.status(400).json({
               //   message: "User already exists",
               // });
+
               const user = users[0];
               user.name = name;
               user.cfid = cfid;
