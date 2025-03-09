@@ -587,7 +587,7 @@ const handleSliderChangeCommitted = (
                   animationDelay: `${index * 0.1}s`
                 }}
               >
-                <UserCard user={user} />
+                <UserCard user={user} userRank={index+1} />
               </div>
             ))}
           </div>
