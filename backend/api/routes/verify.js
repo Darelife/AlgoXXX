@@ -75,9 +75,27 @@ router.post("/", (req, res, next) => {
                   });
                 });
             } else {
-              res.status(400).json({
-                message: "User already exists",
-              });
+              // res.status(400).json({
+              //   message: "User already exists",
+              // });
+              const user = users[0];
+              user.name = name;
+              user.cfid = cfid;
+              user.bitsid = bitsid;
+
+              user
+                .save()
+                .then((result) => {
+                  res.status(200).json({
+                    message: "User details updated",
+                    updatedUser: result,
+                  });
+                })
+                .catch((error) => {
+                  res.status(500).json({
+                    error: error,
+                  });
+                });
             }
           })
           .catch((error) => {
