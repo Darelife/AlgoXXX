@@ -335,7 +335,7 @@ const handleSliderChangeCommitted = (
           alt='AlgoX'
           width={218}
           height={128}
-          className='mb-4 max-w-40'
+          className='mb-4 max-w-40 z-20'
           priority
         />
         </div>
