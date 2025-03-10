@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/navBar";
-import { ChevronRight, ChevronDown } from 'lucide-react';
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ChevronRight } from 'lucide-react';
 
 interface BootcampData {
   [key: string]: string | BootcampData;
@@ -16,44 +17,62 @@ const ResourceItem = ({ name, content }: { name: string; content: string | Bootc
 
   if (isNested) {
     return (
-      <div className="space-y-2">
-        <div className="bg-white/80 dark:bg-gray-800/20 backdrop-blur-sm p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 border border-blue-100/50 dark:border-gray-700/30">
+      <div className="mb-1">
+        <motion.div 
+          className="bg-white/25 dark:bg-gray-800/15 backdrop-blur-sm p-3 rounded-lg border border-orange-100/20 dark:border-red-900/10 hover:border-orange-200/30 dark:hover:border-red-800/20 transition-all duration-300"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
           <button
             onClick={toggleOpen}
-            className="flex items-center gap-2 w-full text-left"
+            className="flex items-center justify-between w-full text-left group"
           >
-            {isOpen ? (
-              <ChevronDown className="w-4 h-4 text-blue-600 dark:text-indigo-400" />
-            ) : (
-              <ChevronRight className="w-4 h-4 text-blue-600 dark:text-indigo-400" />
-            )}
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-              {name}
-            </h2>
+            <div className="flex items-center">
+              <motion.div
+                animate={{ rotate: isOpen ? 90 : 0 }}
+                transition={{ duration: 0.2 }}
+                className="mr-2 flex-shrink-0"
+              >
+                <ChevronRight className={`w-3.5 h-3.5 ${isOpen ? 'text-orange-600 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'} transition-colors`} />
+              </motion.div>
+              <h3 className="text-base font-medium text-gray-800 dark:text-gray-200 group-hover:text-orange-600 dark:group-hover:text-red-400 transition-colors">
+                {name}
+              </h3>
+            </div>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {Object.keys(content).length} items
+            </span>
           </button>
           
           {isOpen && (
-            <div className="mt-3 ml-6 space-y-1">
+            <motion.div 
+              className="mt-2 pl-3 space-y-0.5 border-l border-orange-100/30 dark:border-red-900/20 ml-1"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              transition={{ duration: 0.2 }}
+            >
               {Object.entries(content).map(([key, value]) => (
                 <ResourceItem key={key} name={key} content={value} />
               ))}
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <a
+    <motion.a
       href={content}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex py-2 px-3 rounded-md text-gray-700 dark:text-gray-300 text-sm hover:text-blue-600 dark:hover:text-indigo-400 transition-colors duration-200 hover:bg-blue-50/50 dark:hover:bg-gray-800/50 border border-transparent hover:border-blue-100 dark:hover:border-gray-700/50 items-center"
+      className="flex items-center py-1.5 px-2 rounded-md text-gray-700 dark:text-gray-300 text-sm hover:text-orange-600 dark:hover:text-red-400 transition-colors group"
+      whileHover={{ x: 2, transition: { duration: 0.2 } }}
     >
-      <div className="w-1 h-1 bg-blue-500 dark:bg-indigo-400 rounded-full mr-2"></div>
-      {name}
-    </a>
+      <div className="w-1 h-1 bg-orange-500/70 dark:bg-red-400/70 rounded-full mr-2 group-hover:scale-110 transition-transform"></div>
+      <span className="truncate">{name}</span>
+    </motion.a>
   );
 };
 
@@ -63,6 +82,31 @@ export default function Home() {
   const [overlayColor, setOverlayColor] = useState("#121212");
   const [transform, setTransform] = useState({ x: 0, y: 0 });
   const [bootcampData, setBootcampData] = useState<BootcampData | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile device on first render and window resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(/iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent) || window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
+
+  // Parallax scroll setup - disable on mobile
+  const { scrollY } = useScroll();
+  const headerY = useTransform(scrollY, [0, 300], isMobile ? [0, 0] : [0, -40]);
+  const headerScale = useTransform(scrollY, [0, 300], isMobile ? [1, 1] : [1, 0.95]);
+  const bgY = useTransform(scrollY, [0, 300], isMobile ? [0, 0] : [0, 80]);
+  
+  // Adding rotation transforms for SVG backgrounds
+  const rotateLeft = useTransform(scrollY, [0, 1000], isMobile ? [0, -5] : [0, -25]);
+  const rotateRight = useTransform(scrollY, [0, 1000], isMobile ? [0, 5] : [0, 25]);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme") || "light";
@@ -97,6 +141,8 @@ export default function Home() {
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
+      if (isMobile) return; // Don't apply mouse movement effect on mobile
+      
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
       const offsetX = (clientX / innerWidth - 0.5) * -20;
@@ -104,22 +150,43 @@ export default function Home() {
       setTransform({ x: offsetX, y: offsetY });
     };
 
-    const isPhone = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    if (!isPhone) {
-      window.addEventListener("mousemove", handleMouseMove);
-    }
-
+    window.addEventListener("mousemove", handleMouseMove);
+    
     return () => {
-      if (!isPhone) {
-        window.removeEventListener("mousemove", handleMouseMove);
-      }
+      window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [isMobile]);
 
   if (!bootcampData) {
     return (
-      "Loading..."
+      <div className={`relative overflow-hidden ${theme === "dark" ? "dark" : ""}`}>
+        <NavBar toggleTheme={toggleTheme} fixed={false} />
+        <div className="flex justify-center items-center min-h-screen">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop" }}
+            className="flex items-center gap-2"
+          >
+            <div className="text-2xl text-gray-600 dark:text-gray-300">Loading</div>
+            <motion.div 
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop" }}
+              className="w-2 h-2 rounded-full bg-orange-500 dark:bg-red-500"
+            ></motion.div>
+            <motion.div 
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 1.5, delay: 0.2, repeat: Infinity, repeatType: "loop" }}
+              className="w-2 h-2 rounded-full bg-orange-500 dark:bg-red-500"
+            ></motion.div>
+            <motion.div 
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 1.5, delay: 0.4, repeat: Infinity, repeatType: "loop" }}
+              className="w-2 h-2 rounded-full bg-orange-500 dark:bg-red-500"
+            ></motion.div>
+          </motion.div>
+        </div>
+      </div>
     );
   }
 
@@ -133,31 +200,154 @@ export default function Home() {
       )}
 
       <NavBar toggleTheme={toggleTheme} fixed={false} />
-      <div
-  className="flex justify-center items-center min-h-screen"
-  style={{ transform: `translate(${transform.x}px, ${transform.y}px)` }}
->
-  <div className="text-center">
-    <h1 className="md:text-8xl text-5xl font-sans font-black bg-clip-text text-transparent  bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-400 dark:to-red-400  mt-[-10rem]">
-      Bootcamp
-    </h1>
-    <p className="mt-4 text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto p-5">
-      Resources for competitive programming and algorithmic challenges
-    </p>
-  </div>
-</div>
-
-      <div className="space-y-8 mb-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div 
-            className="bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10 p-6 transition-all duration-300 hover:shadow-lg space-y-4"
+      
+      {/* SVG Background Elements with Parallax Rotation - matching orange/red scheme */}
+      <div className="fixed inset-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        {/* Top right rotating SVG */}
+        <motion.div 
+          className={`absolute -top-20 right-0 ${isMobile ? 'w-64 h-64' : 'w-80 h-80'} opacity-30 dark:opacity-15`}
+          style={{ 
+            y: bgY,
+            rotate: rotateRight,
+            willChange: "transform"
+          }}
+        >
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <path 
+              fill={theme === "dark" ? "#ff6b35" : "#ff8c4a"}
+              d="M66.4,-69.5C85.2,-55.6,99.7,-31.8,103.3,-6.5C106.9,18.8,99.5,45.5,82.2,61.2C64.9,76.9,37.8,81.5,14.5,77.9C-8.8,74.3,-28.3,62.4,-44.4,47.5C-60.5,32.6,-73.2,14.7,-75.2,-5.3C-77.2,-25.3,-68.3,-47.5,-52.9,-61.2C-37.4,-75,-18.7,-80.5,2.9,-83.9C24.5,-87.3,48.9,-88.7,66.4,-69.5Z" 
+              transform="translate(100 100)" 
+            />
+          </svg>
+        </motion.div>
+        
+        {/* Bottom left rotating SVG */}
+        <motion.div 
+          className={`absolute bottom-0 -left-20 ${isMobile ? 'w-64 h-64' : 'w-72 h-72'} opacity-30 dark:opacity-15`}
+          style={{ 
+            y: bgY,
+            rotate: rotateLeft,
+            willChange: "transform"
+          }}
+        >
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <path 
+              fill={theme === "dark" ? "#ff4500" : "#ff6347"}
+              d="M62.6,-37.8C76.4,-17.5,79.8,11.7,69.7,33.8C59.6,55.9,36.1,70.9,11.5,73.4C-13,75.9,-38.7,65.8,-54.3,47.1C-70,28.3,-75.7,0.8,-68,-20.9C-60.3,-42.6,-39.3,-58.4,-17.7,-65C3.9,-71.6,27.1,-69,62.6,-37.8Z" 
+              transform="translate(100 100)" 
+            />
+          </svg>
+        </motion.div>
+      </div>
+      
+      {/* Parallax background elements - with orange/red color scheme */}
+      <motion.div 
+        className="absolute inset-0 w-full h-screen pointer-events-none"
+        style={{ y: bgY }}
+      >
+        <div className={`absolute top-20 left-1/4 ${isMobile ? 'w-48 h-48' : 'w-64 h-64'} rounded-full bg-orange-500/10 dark:bg-orange-500/5 blur-3xl`}></div>
+        <div className={`absolute bottom-32 right-1/4 ${isMobile ? 'w-64 h-64' : 'w-96 h-96'} rounded-full bg-red-500/10 dark:bg-red-500/5 blur-3xl`}></div>
+      </motion.div>
+      
+      <motion.div
+        className="relative flex justify-center items-center min-h-screen mb-8"
+        style={{ 
+          transform: isMobile ? 'none' : `translate(${transform.x}px, ${transform.y}px)`,
+          willChange: isMobile ? 'auto' : 'transform'
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="flex flex-col items-center"
+          style={{ 
+            y: headerY,
+            scale: headerScale
+          }}
+        >
+          <motion.h1 
+            className="md:text-8xl text-5xl font-sans font-black bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-400 dark:to-red-400 mt-[-10rem]"
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            {Object.entries(bootcampData).map(([key, value]) => (
-              <ResourceItem key={key} name={key} content={value} />
+            Bootcamp
+          </motion.h1>
+          <motion.p 
+            className="mt-4 text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-5 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            Resources for competitive programming and algorithmic challenges
+          </motion.p>
+        </motion.div>
+      </motion.div>
+
+      <div className="space-y-4 mb-12">
+        <motion.div 
+          className="max-w-4xl mx-auto px-4 sm:px-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+        >
+          <motion.div 
+            className="bg-orange-50/50 dark:bg-gray-900/20 backdrop-blur-sm rounded-xl shadow-sm border border-orange-200/30 dark:border-red-900/20 p-4 transition-all duration-300 hover:shadow-lg"
+            whileHover={{ y: -2 }}
+            transition={{ duration: 0.3 }}
+          >
+            {Object.entries(bootcampData).map(([key, value], index) => (
+              <motion.div 
+                key={key}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.05 * index }}
+              >
+                <ResourceItem name={key} content={value} />
+              </motion.div>
             ))}
+          </motion.div>
+        </motion.div>
+      </div>
+      
+      {/* Footer matching homepage style */}
+      <motion.footer 
+        className="mt-12 border-t border-gray-200 dark:border-gray-800 py-8"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-6 md:mb-0">
+              <p className="text-gray-600 dark:text-gray-400 text-sm text-center md:text-left">
+                © {new Date().getFullYear()} Algomaniax. All rights reserved.
+              </p>
+            </div>
+            
+            <div className="flex space-x-6 md:space-x-8">
+              <motion.a 
+                href="/about" 
+                className="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-red-400 transition-colors"
+                whileHover={{ y: -3 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                About
+              </motion.a>
+              <motion.a 
+                href="/leaderboard" 
+                className="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-red-400 transition-colors"
+                whileHover={{ y: -3 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                Leaderboard
+              </motion.a>
+            </div>
           </div>
         </div>
-      </div>
+      </motion.footer>
     </div>
   );
 }
