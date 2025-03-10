@@ -54,6 +54,8 @@ const SampleTable: React.FC = () => {
   const [theme, setTheme] = useState("light");
   const [isAnimating, setIsAnimating] = useState(false); // Controls sheet visibility
   const [overlayColor, setOverlayColor] = useState("#121212"); // Default dark theme overlay
+  const [userRankMap, setUserRankMap] = useState<{[key: string]: number}>({});
+
 
   // Load the initial theme from localStorage
   useEffect(() => {
@@ -116,39 +118,60 @@ const SampleTable: React.FC = () => {
     }, 1500);
   };
 
-  useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const response = await axios.get('https://algoxxx.onrender.com/currentinfo/all', {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        const data = response.data;
-        const sanitizedData = data.map((user: User) => ({
-          ...user,
-          titlePhoto: user.titlePhoto === 'N/A' ? 'https://userpic.codeforces.org/no-title.jpg' : user.titlePhoto,
-        }));
-        // sanitizedData = sanitizedData.sort(
-        //   (a: User, b: User) => b.rating - a.rating
-        // );
-        // sortUsers(sanitizedData, 'rating', 'desc');
-        // sortUsers(sanitizedData, 'rating', 'desc');
-        // sortUsers(data, 'rating', 'desc');
-        setUsers(sanitizedData);
-        setFilteredUsers(data);
-        // sort by rating -> both of them
-        
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-        setError('Error fetching users. Please try again later.');
-        setLoading(false);
-      }
-    }
+  // Add this right after you fetch users and before setting the state
 
-    fetchUsers();
-  }, []);
+useEffect(() => {
+  async function fetchUsers() {
+    try {
+      const response = await axios.get('https://algoxxx.onrender.com/currentinfo/all', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = response.data;
+      const sanitizedData = data.map((user: User) => ({
+        ...user,
+        titlePhoto: user.titlePhoto === 'N/A' ? 'https://userpic.codeforces.org/no-title.jpg' : user.titlePhoto,
+      }));
+      
+      // Create a ranking map that handles ties properly
+      const rankMap: {[key: string]: number} = {};
+      
+      // First, sort all users by rating in descending order
+      const ratingOrdered = [...sanitizedData].sort((a, b) => b.rating - a.rating);
+      
+      // Then assign ranks with proper handling of ties
+      let currentRank = 1;
+      let currentRating = ratingOrdered[0]?.rating || 0;
+      let sameRatingCount = 0;
+      
+      ratingOrdered.forEach((user) => {
+        // If this user has a different rating than previous user
+        if (user.rating !== currentRating) {
+          // Skip ranks for all the tied users we've seen
+          currentRank += sameRatingCount;
+          currentRating = user.rating;
+          sameRatingCount = 0;
+        }
+        
+        // Assign current rank to this user
+        rankMap[user.bitsid] = currentRank;
+        sameRatingCount++;
+      });
+      
+      setUserRankMap(rankMap);
+      setUsers(sanitizedData);
+      setFilteredUsers(sanitizedData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      setError('Error fetching users. Please try again later.');
+      setLoading(false);
+    }
+  }
+
+  fetchUsers();
+}, []);
 
   const debouncedFilterUsers = debounce((
     searchTerm: string, 
@@ -576,19 +599,26 @@ const handleSliderChangeCommitted = (
               }
             }
           `}</style>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredUsers.map((user, index) => (
-              <div 
+          <div 
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            style = {{
+              opacity: 0,
+              animation: `fadeInUp 0.5s ease-out forwards`,
+              animationDelay: `0.5s`,
+            }}
+          >
+            {filteredUsers.map((user) => (
+                <div 
                 key={user.bitsid} 
                 className="transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
                 style={{
-                  opacity: 0,
-                  animation: `fadeInUp 0.5s ease-out forwards`,
-                  animationDelay: `${index * 0.1}s`
+                  // opacity: 0,
+                  // animation: `fadeInUp 0.5s ease-out forwards`,
+                  // animationDelay: `${index * 0.1}s`
                 }}
-              >
-                <UserCard user={user} userRank={index+1} />
-              </div>
+                >
+                <UserCard user={user} userRank={userRankMap[user.bitsid]} />
+                </div>
             ))}
           </div>
         </>
