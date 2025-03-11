@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Code } from "lucide-react";
 import Image from "next/image";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -40,7 +41,16 @@ const CodeforcesPage: NextPage = () => {
   const [overlayColor, setOverlayColor] = useState("#121212");
   const [transform, setTransform] = useState({ x: 0, y: 0 });
   const [isLoading, setIsLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
+
+  // Parallax scroll setup - disable on mobile
+  const { scrollY } = useScroll();
+  const bgY = useTransform(scrollY, [0, 300], isMobile ? [0, 0] : [0, 80]);
+  
+  // Adding rotation transforms for SVG backgrounds - reduced effect on mobile
+  const rotateLeft = useTransform(scrollY, [0, 1000], isMobile ? [0, -5] : [0, -25]);
+  const rotateRight = useTransform(scrollY, [0, 1000], isMobile ? [0, 5] : [0, 25]);
 
   // Check for auth session and stored data on mount
   useEffect(() => {
@@ -68,10 +78,24 @@ const CodeforcesPage: NextPage = () => {
       
       checkSession();
     }
+    
+    // Detect mobile device
+    const checkMobile = () => {
+      setIsMobile(/iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent) || window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
+      if (isMobile) return; // Don't apply mouse movement effect on mobile
+      
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
       const offsetX = (clientX / innerWidth - 0.5) * -20;
@@ -79,18 +103,12 @@ const CodeforcesPage: NextPage = () => {
       setTransform({ x: offsetX, y: offsetY });
     };
 
-    const isPhone = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    if (!isPhone) {
-      window.addEventListener("mousemove", handleMouseMove);
-    }
-
+    window.addEventListener("mousemove", handleMouseMove);
+    
     return () => {
-      if (!isPhone) {
-        window.removeEventListener("mousemove", handleMouseMove);
-      }
+      window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [isMobile]);
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -242,40 +260,119 @@ const CodeforcesPage: NextPage = () => {
           style={{ backgroundColor: overlayColor }}
         ></div>
       )}
+      
+      {/* SVG Background Elements with Parallax Rotation - similar to main page */}
+      <div className="fixed inset-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        {/* Top left rotating SVG */}
+        <motion.div 
+          className="absolute -top-32 -left-32 w-96 h-96 opacity-30 dark:opacity-15"
+          style={{ 
+            y: bgY,
+            rotate: rotateLeft,
+            scale: useTransform(scrollY, [0, 500], [1, 1.35])
+          }}
+        >
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <path 
+              fill={theme === "dark" ? "#ff4500" : "#ff6347"} 
+              d="M38.8,-66.8C51.9,-59.6,65.4,-51.8,71.2,-39.8C77,-27.9,75.1,-12,74.5,4.2C73.9,20.3,74.5,36.8,67.1,48.2C59.6,59.5,44.1,65.8,28.7,71.5C13.3,77.2,-2,82.3,-13.4,76.6C-24.9,70.9,-32.4,54.6,-40.6,42C-48.8,29.4,-57.7,20.5,-62.4,9.4C-67.1,-1.8,-67.5,-15,-64.7,-29.2C-61.9,-43.4,-55.9,-58.7,-44.6,-66.6C-33.3,-74.5,-16.7,-75.1,-1.4,-72.8C13.9,-70.6,27.7,-65.5,38.8,-66.8Z" 
+              transform="translate(100 100)" 
+            />
+          </svg>
+        </motion.div>
+        
+        {/* Bottom right rotating SVG */}
+        <motion.div 
+          className="absolute bottom-0 right-0 w-96 h-96 opacity-30 dark:opacity-15"
+          style={{ 
+            y: bgY,
+            rotate: rotateRight,
+            scale: useTransform(scrollY, [0, 500], [1, 0.85])
+          }}
+        >
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <path 
+              fill={theme === "dark" ? "#cc3300" : "#ff5722"} 
+              d="M44.1,-70.5C58.4,-62.3,72.1,-51.4,80.2,-36.6C88.3,-21.8,90.8,-3.2,85.8,12.7C80.7,28.5,68.2,41.7,54.3,53.8C40.5,65.9,25.3,77.1,7.3,79.8C-10.6,82.5,-31.5,76.8,-48.2,65.5C-64.9,54.2,-77.4,37.2,-81.7,18.6C-86.1,0,-82.3,-20.3,-72.3,-36.5C-62.2,-52.6,-45.9,-64.7,-29.9,-72.2C-13.9,-79.7,1.9,-82.7,15.7,-78.5C29.5,-74.4,44.1,-70.5,44.1,-70.5Z" 
+              transform="translate(100 100) scale(1.05)" 
+            />
+          </svg>
+        </motion.div>
+      </div>
+      
+      {/* Parallax background elements */}
+      <motion.div 
+        className="absolute inset-0 w-full h-screen pointer-events-none"
+        style={{ y: bgY }}
+      >
+        <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-orange-500/10 dark:bg-orange-500/5 blur-3xl"></div>
+        <div className="absolute bottom-32 right-1/4 w-96 h-96 rounded-full bg-red-500/10 dark:bg-red-500/5 blur-3xl"></div>
+      </motion.div>
+      
       <div style={{zIndex: 1000}}>
         <NavBar toggleTheme={toggleTheme} fixed={false} />
       </div>
 
-      {/* Hero section with gradient title - adjusted positioning */}
-      <div
-        className="flex justify-center items-center min-h-screen pt-24 pb-10" // Reduced height and added padding
-        style={{ transform: `translate(${transform.x}px, ${transform.y}px)` }}
+      {/* Hero section with logo and subtitle */}
+      <motion.div
+        className="flex justify-center items-center min-h-screen pt-24 pb-10"
+        style={{ 
+          y: useTransform(scrollY, [0, 300], [0, -30]),
+          transform: isMobile ? undefined : `translate(${transform.x}px, ${transform.y}px)` 
+        }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
       >
-        <div className="text-center">
-          <Image 
-            src="/logos/cflogo.png" 
-            alt="Connect Codeforces" 
-            className="w-[10rem] mx-auto mt-[-10rem]"
-            width={300}
-            height={300}
-          />
-          <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-5">
+        <div className="text-center mt-[-10rem]">
+          <motion.div
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <Image 
+              src="/logos/cflogo.png" 
+              alt="Connect Codeforces" 
+              className="w-[12rem] mx-auto"
+              width={300}
+              height={300}
+              priority
+            />
+          </motion.div>
+          <motion.p 
+            className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
             Submit a compile error to verify your Codeforces handle
-          </p>
+          </motion.p>
         </div>
-      </div>
+      </motion.div>
       
       {/* Main content */}
       <div className="max-w-4xl mx-auto px-4 pb-20">
-        <div className="bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-white/10 p-8 transition-all duration-300 hover:shadow-lg mb-8">
+        <motion.div 
+          className="bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-white/10 p-8 transition-all duration-300 hover:shadow-lg mb-8"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+        >
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
+              <motion.div 
+                className="space-y-4"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
                 <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4 border-l-4 border-orange-500 dark:border-red-500 pl-3">
                   Your Information
                 </h3>
                 
-                <div className="bg-white dark:bg-white/5 border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm">
+                <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm">
                   <div className="space-y-4">
                     <div>
                       <Label htmlFor="bitsId" className="text-gray-700 dark:text-gray-300">BITS ID</Label>
@@ -314,14 +411,21 @@ const CodeforcesPage: NextPage = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="space-y-4">
+              </motion.div>
+              
+              <motion.div 
+                className="space-y-4"
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
                 <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4 border-l-4 border-orange-500 dark:border-red-500 pl-3">
                   Verification Challenge
                 </h3>
                 
                 {problem ? (
-                  <div className="bg-white dark:bg-white/5 border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm flex flex-col justify-between h-auto">
+                  <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm flex flex-col justify-between h-auto transform hover:scale-[1.01] transition-all duration-300">
                     <div className="space-y-4">
                       <div className="flex items-center justify-center p-4 bg-orange-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4">
                         <Code className="w-8 h-8 text-orange-600 dark:text-red-400" />
@@ -364,7 +468,7 @@ const CodeforcesPage: NextPage = () => {
                     </Button>
                   </div>
                 ) : (
-                  <div className="bg-white dark:bg-white/5 border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm flex flex-col items-center justify-center h-auto">
+                  <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm flex flex-col items-center justify-center h-auto">
                     <div className="animate-pulse flex flex-col items-center">
                       <div className="h-12 w-12 bg-gray-200 dark:bg-gray-700 rounded-full mb-4"></div>
                       <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded mb-3"></div>
@@ -373,19 +477,31 @@ const CodeforcesPage: NextPage = () => {
                     <p className="text-gray-500 dark:text-gray-400 mt-4">Loading problem...</p>
                   </div>
                 )}
-              </div>
+              </motion.div>
             </div>
           </div>
-        </div>
+        </motion.div>
         
         {error && (
-          <Alert variant="destructive" className="animate-fadeIn">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Alert variant="destructive" className="animate-fadeIn">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          </motion.div>
         )}
         
         {/* Instructions card */}
-        <div className="bg-white/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-white/10 p-6">
+        <motion.div 
+          className="bg-white/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-white/10 p-6"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">
             How It Works
           </h3>
@@ -396,10 +512,38 @@ const CodeforcesPage: NextPage = () => {
             <li>After submitting, return here and click &quot;Verify Submission&quot;</li>
             <li>Once verified, you&apos;ll be redirected to the homepage</li>
           </ol>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Add some style */}
+      {/* Footer with animation */}
+      <motion.footer 
+        className="mt-12 border-t border-gray-200 dark:border-gray-800 py-8"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-6 md:mb-0">
+              <div className="flex items-center justify-center md:justify-start">
+                <Image
+                  src={theme === "dark" ? "/algoLightX.png" : "/algoDarkX.png"}
+                  alt="AlgoX"
+                  width={120}
+                  height={70}
+                  className="mb-2"
+                />
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm text-center md:text-left">
+                © {new Date().getFullYear()} Algomaniax. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </div>
+      </motion.footer>
+
+      {/* Animation styles */}
       <style jsx>{`
         @keyframes fadeIn {
           from { opacity: 0; }
