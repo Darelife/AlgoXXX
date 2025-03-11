@@ -327,6 +327,7 @@ export default function Home() {
               <Link href="/about" className="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-red-400 transition-colors">About</Link>
               <Link href="/bootcamp" className="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-red-400 transition-colors">Bootcamp</Link>
               <Link href="/leaderboard" className="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-red-400 transition-colors">Leaderboard</Link>
+              <Link href="https://github.com/darelife/algoxxx" className="text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-red-400 transition-colors">Github</Link>
             </div>
           </div>
         </div>
