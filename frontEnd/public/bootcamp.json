@@ -36,7 +36,10 @@
       "CSES Handbook" : "https://cses.fi/book/book.pdf",
       "Luv YT CP" : "https://www.youtube.com/playlist?list=PLauivoElc3ggagradg8MfOZreCMmXMmJ-"
     }
-  }, 
+  },
+  "Algo Resources" : {
+    "AlgoManiaX CP Guide" : "https://docs.google.com/document/d/1sT6ybwrSEn9237d4riTvvqUqU2AXuFtuZYSjzWEVoeo/edit?usp=sharing"
+  },
   "C++ Basics" : {
     "Hello World" : "https://www.geeksforgeeks.org/writing-first-c-program-hello-world-example/",
     "GFG Tutorial Set" : "https://www.geeksforgeeks.org/c-plus-plus/"
