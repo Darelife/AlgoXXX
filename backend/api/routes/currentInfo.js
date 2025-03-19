@@ -4,6 +4,20 @@ const router = express.Router();
 
 const User = require("../models/users");
 
+// Add CORS headers to all routes
+router.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH");
+    return res.status(200).json({});
+  }
+  next();
+});
+
 // router.get("/", (req, res, next) => {
 //   res.status(200).json({
 //     message: "Handling GET requests to /database route",
