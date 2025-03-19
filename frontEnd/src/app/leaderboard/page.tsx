@@ -55,6 +55,7 @@ const SampleTable: React.FC = () => {
   const [isAnimating, setIsAnimating] = useState(false); // Controls sheet visibility
   const [overlayColor, setOverlayColor] = useState("#121212"); // Default dark theme overlay
   const [userRankMap, setUserRankMap] = useState<{[key: string]: number}>({});
+  const [contestDeltaMap, setContestDeltaMap] = useState<{[key: string]: string}>({});
 
 
   // Load the initial theme from localStorage
@@ -163,6 +164,7 @@ useEffect(() => {
       setUsers(sanitizedData);
       setFilteredUsers(sanitizedData);
       setLoading(false);
+      fetchContestDelta();
     } catch (error) {
       console.error('Error fetching users:', error);
       setError('Error fetching users. Please try again later.');
@@ -172,6 +174,19 @@ useEffect(() => {
 
   fetchUsers();
 }, []);
+
+  const fetchContestDelta = async () => {
+    try {
+      const response = await axios.get('https://algoxxx.onrender.com/currentinfo/contestDelta', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      setContestDeltaMap(response.data);
+    } catch (error) {
+      console.error('Error fetching contest delta data:', error);
+    }
+  };
 
   const debouncedFilterUsers = debounce((
     searchTerm: string, 
@@ -617,7 +632,7 @@ const handleSliderChangeCommitted = (
                   // animationDelay: `${index * 0.1}s`
                 }}
                 >
-                <UserCard user={user} userRank={userRankMap[user.bitsid]} />
+                <UserCard user={user} userRank={userRankMap[user.bitsid]} contestDelta={contestDeltaMap[user.cfid] || "N/A"} />
                 </div>
             ))}
           </div>

@@ -15,10 +15,11 @@ interface User {
 interface UserCardProps {
   user: User;
   userRank: number;
+  contestDelta: string;
 }
 
 // <UserCard key={user.bitsid} data={user} />
-const UserCard: React.FC<UserCardProps> = React.memo(({ user, userRank}) => {
+const UserCard: React.FC<UserCardProps> = React.memo(({ user, userRank, contestDelta}) => {
   interface Rank {
     name: string;
     color: string;
@@ -43,6 +44,15 @@ const UserCard: React.FC<UserCardProps> = React.memo(({ user, userRank}) => {
     if (rank === 2) return 'text-gray-500 dark:text-gray-300';
     if (rank === 3) return 'text-amber-700 dark:text-amber-500';
     return 'text-gray-300 dark:text-gray-600';
+  }
+
+  // Get appropriate color for contest delta
+  const getContestDeltaColor = (delta: string): string => {
+    if (delta === '0') return 'text-green-600 dark:text-green-400';
+    if (delta === '1') return 'text-yellow-600 dark:text-yellow-400';
+    if (delta === '2') return 'text-orange-600 dark:text-orange-400';
+    if (delta === '10+' || parseInt(delta) >= 3) return 'text-red-600 dark:text-red-400';
+    return 'text-gray-600 dark:text-gray-400'; // Default color for N/A
   }
 
   return (
@@ -119,6 +129,17 @@ const UserCard: React.FC<UserCardProps> = React.memo(({ user, userRank}) => {
             <div className="text-center">
               <p className="text-xs text-gray-500 dark:text-gray-400">Peak Rating</p>
                 <p className="font-bold text-gray-800 dark:text-gray-200 text-right">{user.maxRating}</p>
+            </div>
+          </div>
+          
+          {/* New section for contest delta */}
+          <div className="mt-3 pt-2 border-t border-gray-100 dark:border-gray-800">
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-gray-500 dark:text-gray-400">Contests Missed</span>
+              <span className={`text-sm font-medium ${getContestDeltaColor(contestDelta)}`}>
+                {contestDelta === '10+' ? '10+' : contestDelta === 'N/A' ? 'N/A' : contestDelta}
+                {contestDelta === '0' && ' (Active)'}
+              </span>
             </div>
           </div>
         </CardContent>
