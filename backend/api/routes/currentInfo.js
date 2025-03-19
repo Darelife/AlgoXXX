@@ -96,13 +96,20 @@ router.get("/contestDelta", async (req, res, next) => {
 
   // for each user, from the top, add count till you find a contest in which he/she participated
   // then save the count with the userid in a map
+  // Convert all handles to lowercase for case-insensitive comparison
+  const normalizedContestParticipants = contestParticipants.map(
+    ([contestId, participants]) => {
+      return [contestId, participants.map((handle) => handle.toLowerCase())];
+    }
+  );
 
+  // Use the normalized contest participants for comparison
   const userContestCount = new Map();
   docs.forEach((user) => {
     let count = 0;
     userContestCount.set(user.cfid, -1);
-    for (const [_, participants] of contestParticipants) {
-      if (participants.includes(user.cfid)) {
+    for (const [_, participants] of normalizedContestParticipants) {
+      if (participants.includes(user.cfid.toLowerCase())) {
         userContestCount.set(user.cfid, count);
         break;
       }
