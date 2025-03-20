@@ -47,13 +47,13 @@ const UserCard: React.FC<UserCardProps> = React.memo(({ user, userRank, contestD
   }
 
   // Get appropriate color for contest delta
-  const getContestDeltaColor = (delta: string): string => {
-    if (delta === '0') return 'text-green-600 dark:text-green-400';
-    if (delta === '1') return 'text-yellow-600 dark:text-yellow-400';
-    if (delta === '2') return 'text-orange-600 dark:text-orange-400';
-    if (delta === '10+' || parseInt(delta) >= 3) return 'text-red-600 dark:text-red-400';
-    return 'text-gray-600 dark:text-gray-400'; // Default color for N/A
-  }
+  // const getContestDeltaColor = (delta: string): string => {
+  //   if (delta === '0') return 'text-green-600 dark:text-green-400';
+  //   if (delta === '1') return 'text-yellow-600 dark:text-yellow-400';
+  //   if (delta === '2') return 'text-orange-600 dark:text-orange-400';
+  //   if (delta === '10+' || parseInt(delta) >= 3) return 'text-red-600 dark:text-red-400';
+  //   return 'text-gray-600 dark:text-gray-400'; // Default color for N/A
+  // }
 
   return (
     <Card key={user.bitsid} className="dark:border-none overflow-hidden transition-all duration-300 hover:shadow-lg relative">
@@ -106,14 +106,14 @@ const UserCard: React.FC<UserCardProps> = React.memo(({ user, userRank, contestD
             <div className="text-left">
               <span className="text-xs text-gray-500 dark:text-gray-400">BITS ID</span>
               <p className="text-gray-700 dark:text-gray-300 font-medium text-sm mt-0.5 truncate max-w-[120px]">
-                {user.bitsid}
+          {user.bitsid}
               </p>
             </div>
             
             <div className="text-right">
               <span className="text-xs text-gray-500 dark:text-gray-400">CF Rank</span>
               <p className={`${getRank(user.rating).color} font-semibold text-sm mt-0.5`}>
-                {getRank(user.rating).name}
+          {getRank(user.rating).name}
               </p>
             </div>
           </div>
@@ -128,7 +128,7 @@ const UserCard: React.FC<UserCardProps> = React.memo(({ user, userRank, contestD
             
             <div className="text-center">
               <p className="text-xs text-gray-500 dark:text-gray-400">Peak Rating</p>
-                <p className="font-bold text-gray-800 dark:text-gray-200 text-right">{user.maxRating}</p>
+          <p className="font-bold text-gray-800 dark:text-gray-200 text-right">{user.maxRating}</p>
             </div>
           </div>
           
@@ -136,10 +136,23 @@ const UserCard: React.FC<UserCardProps> = React.memo(({ user, userRank, contestD
           <div className="mt-3 pt-2 border-t border-gray-100 dark:border-gray-800">
             <div className="flex justify-between items-center">
               <span className="text-xs text-gray-500 dark:text-gray-400">Contests Missed</span>
-              <span className={`text-sm font-medium ${getContestDeltaColor(contestDelta)}`}>
-                {contestDelta === '10+' ? '10+' : contestDelta === 'N/A' ? 'N/A' : contestDelta}
-                {contestDelta === '0' && ' (Active)'}
-              </span>
+                <span className={`text-sm font-medium ${
+              contestDelta === 'N/A' ? 'text-gray-600 dark:text-gray-400' :
+              contestDelta === '0' ? 'text-green-600 dark:text-green-400' :
+              contestDelta === '1' ? 'text-green-500 dark:text-green-500' :
+              contestDelta === '2' ? 'text-lime-600 dark:text-lime-500' :
+              contestDelta === '3' ? 'text-yellow-600 dark:text-yellow-500' : // Darker yellow for light mode
+              contestDelta === '4' ? 'text-amber-600 dark:text-amber-500' :
+              contestDelta === '5' ? 'text-orange-600 dark:text-orange-500' :
+              contestDelta === '6' ? 'text-orange-700 dark:text-orange-500' :
+              contestDelta === '7' ? 'text-red-600 dark:text-red-400' :
+              contestDelta === '8' ? 'text-red-700 dark:text-red-500' :
+              contestDelta === '9' ? 'text-red-800 dark:text-red-600' :
+              'text-red-900 dark:text-red-700' // For 10+ or anything higher
+                }`}>
+              {contestDelta === '10+' ? '10+' : contestDelta === 'N/A' ? 'N/A' : contestDelta}
+              {(contestDelta === '0' || contestDelta === '1') && ' (Active)'}
+                </span>
             </div>
           </div>
         </CardContent>

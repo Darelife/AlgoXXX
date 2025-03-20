@@ -182,7 +182,24 @@ useEffect(() => {
           'Content-Type': 'application/json',
         },
       });
-      setContestDeltaMap(response.data);
+      
+      // The API returns an array of objects with cfid and contestDelta properties
+      // Convert it to a map where the keys are the CF handles and the values are the contestDelta
+      const deltaData = response.data;
+      const deltaMap: {[key: string]: string} = {};
+      
+      if (Array.isArray(deltaData)) {
+        deltaData.forEach(item => {
+          if (item.cfid && item.contestDelta) {
+            deltaMap[item.cfid] = item.contestDelta;
+          }
+        });
+        
+        // console.log("Processed contest delta data:", deltaMap);
+        setContestDeltaMap(deltaMap);
+      } else {
+        console.error('Invalid contest delta data format:', deltaData);
+      }
     } catch (error) {
       console.error('Error fetching contest delta data:', error);
     }
