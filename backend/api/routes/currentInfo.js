@@ -156,6 +156,10 @@ router.get("/contestDeltaFetch", async (req, res, next) => {
       contestDeltaDocs.push(contestDelta);
     });
 
+    // push to the database
+    await ContestDelta.deleteMany({}).exec();
+    await ContestDelta.insertMany(contestDeltaDocs);
+
     return res.status(200).json(Object.fromEntries(userContestCount));
   } catch (error) {
     console.error(error);
