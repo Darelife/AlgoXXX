@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 
 const User = require("../models/users");
+const ContestDelta = require("../models/contestDelta");
 
 // Add CORS headers to all routes
 router.use((req, res, next) => {
@@ -33,101 +34,153 @@ router.use((req, res, next) => {
 // get the rating history of all users
 router.get("/", (req, res, next) => {});
 
-router.get("/contestDelta", async (req, res, next) => {
+router.get("/contestDeltaFetch", async (req, res, next) => {
   // Fetch all users from the database
-  const contestUrl = "https://codeforces.com/api/contest.list?gym=false";
-  const contestResponse = await fetch(contestUrl);
-  const contestData = await contestResponse.json();
+  try {
+    const contestUrl = "https://codeforces.com/api/contest.list?gym=false";
+    const contestResponse = await fetch(contestUrl);
+    const contestData = await contestResponse.json();
 
-  // Get current time in seconds
-  const currentTimeSeconds = Math.floor(Date.now() / 1000);
+    // Get current time in seconds
+    const currentTimeSeconds = Math.floor(Date.now() / 1000);
 
-  // Sort contests by start time (descending - latest first)
-  const sortedContests = contestData.result.sort(
-    (a, b) => b.startTimeSeconds - a.startTimeSeconds
-  );
-
-  // Take top 100 recent contests
-  const recentContests = sortedContests.slice(0, 100);
-
-  // Filter for div. 2, div. 3 and div. 4 contests that have already started
-  const contestIds = recentContests
-    .filter(
-      (contest) =>
-        (contest.name.includes("Div. 2") ||
-          contest.name.includes("Div. 3") ||
-          contest.name.includes("Div. 4")) &&
-        contest.startTimeSeconds <= currentTimeSeconds // Ignore contests that haven't started yet
-    )
-    .slice(0, 11) // Take only the top 11 matching contests
-    .map((contest) => contest.id);
-
-  console.log(contestIds);
-
-  // fetch all the people who participated in the contest in a vector of vectors of string
-  // Create arrays to store contest participants
-  // Structure: [ [contestId, [participant1, participant2, ...]], ... ]
-  const contestParticipants = [];
-
-  for (const contestId of contestIds) {
-    const url = `https://codeforces.com/api/contest.standings?contestId=${contestId}`;
-    const response = await fetch(url);
-    // Sleep for 2 seconds to avoid rate limiting
-    // await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log("contest number", contestId);
-    const data = await response.json();
-
-    if (data.status !== "OK" || !data.result) {
-      throw new Error("Invalid response from Codeforces API");
-    }
-
-    const participants = data.result.rows.map(
-      (row) => row.party.members[0].handle
+    // Sort contests by start time (descending - latest first)
+    const sortedContests = contestData.result.sort(
+      (a, b) => b.startTimeSeconds - a.startTimeSeconds
     );
-    contestParticipants.push([contestId, participants]);
-  }
 
-  // console.log("nice");
+    // Take top 100 recent contests
+    const recentContests = sortedContests.slice(0, 100);
 
-  const docs = await User.find().exec();
-  if (!docs.length) {
-    return res.status(404).json({ message: "No users found" });
-  }
+    // Filter for div. 2, div. 3 and div. 4 contests that have already started
+    const contestIds = recentContests
+      .filter(
+        (contest) =>
+          (contest.name.includes("Div. 2") ||
+            contest.name.includes("Div. 3") ||
+            contest.name.includes("Div. 4")) &&
+          contest.startTimeSeconds <= currentTimeSeconds // Ignore contests that haven't started yet
+      )
+      .slice(0, 11) // Take only the top 11 matching contests
+      .map((contest) => contest.id);
 
-  // for each user, from the top, add count till you find a contest in which he/she participated
-  // then save the count with the userid in a map
-  // Convert all handles to lowercase for case-insensitive comparison
-  const normalizedContestParticipants = contestParticipants.map(
-    ([contestId, participants]) => {
-      return [contestId, participants.map((handle) => handle.toLowerCase())];
-    }
-  );
+    console.log(contestIds);
 
-  // Use the normalized contest participants for comparison
-  const userContestCount = new Map();
-  docs.forEach((user) => {
-    let count = 0;
-    userContestCount.set(user.cfid, -1);
-    for (const [_, participants] of normalizedContestParticipants) {
-      if (participants.includes(user.cfid.toLowerCase())) {
-        userContestCount.set(user.cfid, count);
-        break;
+    // fetch all the people who participated in the contest in a vector of vectors of string
+    // Create arrays to store contest participants
+    // Structure: [ [contestId, [participant1, participant2, ...]], ... ]
+    const contestParticipants = [];
+
+    for (const contestId of contestIds) {
+      try {
+        const url = `https://codeforces.com/api/contest.standings?contestId=${contestId}`;
+        const response = await fetch(url);
+        // Sleep for 2 seconds to avoid rate limiting
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        console.log("contest number", contestId);
+
+        if (!response.ok) {
+          console.log(
+            `Error fetching contest ${contestId}: ${response.status}`
+          );
+          continue;
+        }
+
+        const data = await response.json();
+
+        if (data.status !== "OK" || !data.result) {
+          console.log(
+            `Invalid response from Codeforces API for contest ${contestId}`
+          );
+          continue;
+        }
+
+        const participants = data.result.rows.map(
+          (row) => row.party.members[0].handle
+        );
+        contestParticipants.push([contestId, participants]);
+      } catch (error) {
+        console.error(`Error processing contest ${contestId}:`, error.message);
+        continue; // Skip this contest and continue with the next one
       }
-      count++;
     }
-  });
 
-  // convert the values of the userContestCount map to a string, and if it's -1, convert it to "10+"
+    // console.log("nice");
 
-  userContestCount.forEach((value, key, map) => {
-    if (value == -1) {
-      map.set(key, "10+");
-    } else {
-      map.set(key, value.toString());
+    const docs = await User.find().exec();
+    if (!docs.length) {
+      return res.status(404).json({ message: "No users found" });
     }
-  });
 
-  return res.status(200).json(Object.fromEntries(userContestCount));
+    // for each user, from the top, add count till you find a contest in which he/she participated
+    // then save the count with the userid in a map
+    // Convert all handles to lowercase for case-insensitive comparison
+    const normalizedContestParticipants = contestParticipants.map(
+      ([contestId, participants]) => {
+        return [contestId, participants.map((handle) => handle.toLowerCase())];
+      }
+    );
+
+    // Use the normalized contest participants for comparison
+    const userContestCount = new Map();
+    docs.forEach((user) => {
+      let count = 0;
+      userContestCount.set(user.cfid, -1);
+      for (const [_, participants] of normalizedContestParticipants) {
+        if (participants.includes(user.cfid.toLowerCase())) {
+          userContestCount.set(user.cfid, count);
+          break;
+        }
+        count++;
+      }
+    });
+
+    // convert the values of the userContestCount map to a string, and if it's -1, convert it to "10+"
+
+    userContestCount.forEach((value, key, map) => {
+      if (value == -1) {
+        map.set(key, "10+");
+      } else {
+        map.set(key, value.toString());
+      }
+    });
+
+    // save it in ContestDelta model
+    const contestDeltaDocs = [];
+    userContestCount.forEach((value, key, map) => {
+      const contestDelta = new ContestDelta({
+        _id: new mongoose.Types.ObjectId(),
+        cfid: key,
+        contestDelta: value,
+      });
+      contestDeltaDocs.push(contestDelta);
+    });
+
+    return res.status(200).json(Object.fromEntries(userContestCount));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: error.message || "An unexpected error occurred",
+      probableReason: "Failed to fetch contest data from Codeforces API",
+    });
+  }
+});
+
+router.get("/contestDelta", async (req, res, next) => {
+  try {
+    const docs = await ContestDelta.find().exec();
+
+    if (!docs.length) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    return res.status(200).json(docs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: error.message || "An unexpected error occurred",
+    });
+  }
 });
 
 // get the [bitsid, cfid, name, rating, rank, creationTime] of all users
