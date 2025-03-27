@@ -16,6 +16,61 @@ const User = require("../models/users");
 //   });
 // });
 
+// keep only 1 user per codeforces id, if it matches with another, delete it, and also, it's case insensitive
+router.get("/cleanupDuplicateCfid", (req, res, next) => {
+  User.find()
+    .exec()
+    .then((users) => {
+      const processedCfids = new Map();
+      const duplicateUserIds = [];
+
+      // Find duplicates (case insensitive comparison)
+      users.forEach((user) => {
+        if (user.cfid) {
+          const cfidLower = user.cfid.toLowerCase();
+
+          if (processedCfids.has(cfidLower)) {
+            // This is a duplicate
+            duplicateUserIds.push(user._id);
+          } else {
+            // First occurrence
+            processedCfids.set(cfidLower, user._id);
+          }
+        }
+      });
+
+      // also if same, bits id
+      users.forEach((user) => {
+        if (user.bitsid) {
+          const bitsidLower = user.bitsid.toLowerCase();
+
+          if (processedCfids.has(bitsidLower)) {
+            // This is a duplicate
+            duplicateUserIds.push(user._id);
+          } else {
+            // First occurrence
+            processedCfids.set(bitsidLower, user._id);
+          }
+        }
+      });
+
+      // Delete all duplicates
+      return User.deleteMany({ _id: { $in: duplicateUserIds } })
+        .exec()
+        .then((result) => {
+          res.status(200).json({
+            message: "Duplicate users removed successfully",
+            deletedCount: result.deletedCount,
+            duplicatesFound: duplicateUserIds.length,
+          });
+        });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ error });
+    });
+});
+
 router.post("/", (req, res, next) => {
   const user = new User({
     _id: new mongoose.Types.ObjectId(),

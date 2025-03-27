@@ -37,12 +37,12 @@ const SampleTable: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [cfHandleSearch, setCfHandleSearch] = useState('');
+  const [cfHandleSearch] = useState('');
   // const [ratingRange, setRatingRange] = useState<[number, number]>([0, 4000]);
   const [sliderValue, setSliderValue] = useState<number[]>([0, 4000]); // For visual updates
   const [ratingRange, setRatingRange] = useState<[number, number]>([0, 4000]); // For state updates
   // const sliderTimeout = useRef<NodeJS.Timeout | null>(null);
-  const [selectedYear] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
   const [sortBy, setSortBy] = useState<keyof User>('rating');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   // const [selectedRank, setSelectedRank] = useState('all');
@@ -56,6 +56,7 @@ const SampleTable: React.FC = () => {
   const [overlayColor, setOverlayColor] = useState("#121212"); // Default dark theme overlay
   const [userRankMap, setUserRankMap] = useState<{[key: string]: number}>({});
   const [contestDeltaMap, setContestDeltaMap] = useState<{[key: string]: string}>({});
+  const [count, setCount] = useState(0);
 
 
   // Load the initial theme from localStorage
@@ -240,15 +241,27 @@ useEffect(() => {
     sortUsers(filtered, sortBy, sortOrder);
   }, 150);
 
-  const handleCfHandleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCfHandleSearch(event.target.value);
-    filterUsers(searchTerm, ratingRange, selectedYear, event.target.value);
+  // const handleCfHandleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setCfHandleSearch(event.target.value);
+  //   filterUsers(searchTerm, ratingRange, selectedYear, event.target.value);
+  // };
+
+  // const cfidSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSearchTerm(event.target.value);
+  //   filterUsers(event.target.value, ratingRange, selectedYear, cfHandleSearch);
+  // };
+
+  const searchAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchData = event.target.value;
+    setSearchTerm(searchData);
+    // setCfHandleSearch(searchData);
+    filterUsers('', ratingRange, selectedYear, '', searchData);
   };
 
-  const cfidSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-    filterUsers(event.target.value, ratingRange, selectedYear, cfHandleSearch);
-  };
+  const searchYear = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedYear(event.target.value);
+    filterUsers('', ratingRange, event.target.value, '');
+  }
 
   const cfidSort = (field: keyof User) => {
     const order = sortBy === field && sortOrder === 'desc' ? 'asc' : 'desc';
@@ -271,29 +284,38 @@ useEffect(() => {
   }, [users]);
 
   const filterUsers = (
-  searchTerm: string, 
+  searchTerm: string = '', 
   ratingRange: [number, number], 
-  selectedYear: string, 
-  cfHandleSearch: string = ''
+  selectedYear: string = '',
+  cfHandleSearch: string = '',
+  searchData: string = ''
 ) => {
   let filtered = users;
 
-  if (searchTerm) {
+  if (searchTerm && searchTerm.length > 0) {
     filtered = filtered.filter((user) =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }
 
-  if (cfHandleSearch) {
+  if (cfHandleSearch && cfHandleSearch.length > 0) {
     filtered = filtered.filter((user) =>
       user.cfid.toLowerCase().includes(cfHandleSearch.toLowerCase())
     );
   }
 
-  if (selectedYear) {
-    filtered = filtered.filter(
-      (user) => user.bitsid.substring(0, 4) === selectedYear
+  if (searchData) {
+    filtered = filtered.filter((user) =>
+      user.name.toLowerCase().includes(searchData.toLowerCase()) ||
+      user.cfid.toLowerCase().includes(searchData.toLowerCase()) ||
+      user.bitsid.substring(0, 4).includes(searchData.toLowerCase())
     );
+  }
+
+  if (selectedYear) {
+    filtered = filtered.filter((user) =>
+      user.bitsid.substring(0, 4).includes(selectedYear)
+    )
   }
 
   if (ratingRange) {
@@ -303,6 +325,8 @@ useEffect(() => {
   }
 
   sortUsers(filtered, sortBy, sortOrder);
+  // count
+  setCount(filtered.length);
 };
 
 const handleSliderChange = (
@@ -319,8 +343,10 @@ const handleSliderChange = (
   
   // Use debounced filter function instead of direct filtering
 };
+useEffect(() => {
+  setCount(filteredUsers.length);
+}, [filteredUsers.length]);
 
-// Remove filterUsers from handleSliderChangeCommitted since it's redundant
 const handleSliderChangeCommitted = (
   _: React.SyntheticEvent | Event,
   newValue: number | number[]
@@ -374,7 +400,7 @@ const handleSliderChangeCommitted = (
         <div className='grid gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3'>
           <div className="w-full flex flex-col gap-4 items-center px-4 py-6 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
             <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-3">
-              Search by Name
+              Search
             </div>
             <div className="relative w-full">
               <div className="absolute left-6 top-1/2 transform -translate-y-1/2 flex items-center justify-center h-5 w-5 bg-blue-100 dark:bg-indigo-900/30 rounded-full p-0.5">
@@ -385,7 +411,7 @@ const handleSliderChangeCommitted = (
                 id="search"
                 placeholder="Search users..."
                 value={searchTerm}
-                onChange={cfidSearch}
+                onChange={searchAll}
                 className="pl-12 h-12 w-[95%] mx-auto bg-white dark:bg-gray-800/40 border-blue-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 
                   focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 dark:focus-visible:ring-indigo-500 
                   focus-visible:border-transparent transition-all duration-200
@@ -473,36 +499,36 @@ const handleSliderChangeCommitted = (
               </div>
             </div>
           </div>
-          <div className="w-full flex flex-col gap-4 items-center px-4 py-6 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
+            <div className="w-full flex flex-col gap-4 items-center px-4 py-6 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
             <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-3">
-              Search by CF Handle
+              Search by Year
             </div>
             <div className="relative w-full">
               <div className="absolute left-6 top-1/2 transform -translate-y-1/2 flex items-center justify-center h-5 w-5 bg-blue-100 dark:bg-indigo-900/30 rounded-full p-0.5">
-                <Search className="h-3 w-3 text-blue-600 dark:text-indigo-400" />
+              <Search className="h-3 w-3 text-blue-600 dark:text-indigo-400" />
               </div>
               
               <Input
-                id="search"
-                placeholder="Search users..."
-                value={cfHandleSearch}
-                onChange={handleCfHandleSearch}
-                className="pl-12 h-12 w-[95%] mx-auto bg-white dark:bg-gray-800/40 border-blue-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 
-                  focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 dark:focus-visible:ring-indigo-500 
-                  focus-visible:border-transparent transition-all duration-200
-                  shadow-sm hover:shadow-md rounded-xl"
+              id="year"
+              placeholder="Enter year (e.g., 2024)"
+              value={selectedYear}
+              onChange={searchYear}
+              className="pl-12 h-12 w-[95%] mx-auto bg-white dark:bg-gray-800/40 border-blue-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 
+                focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 dark:focus-visible:ring-indigo-500 
+                focus-visible:border-transparent transition-all duration-200
+                shadow-sm hover:shadow-md rounded-xl"
               />
             </div>
             
-            {cfHandleSearch && (
+            {selectedYear && (
               <div className="flex items-center gap-2 mt-2">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">CF Handle:</span>
-                <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium">
-                  {cfHandleSearch}
-                </span>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Year:</span>
+              <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium">
+                {selectedYear}
+              </span>
               </div>
             )}
-          </div>
+            </div>
         </div>
         <div className='flex flex-col gap-2 mb-4 sm:flex-row sm:gap-4 '>
           <Button className="border-[#292929]" onClick={() => cfidSort('rating')}>
@@ -511,6 +537,13 @@ const handleSliderChangeCommitted = (
           <Button className="border-[#292929]" onClick={() => cfidSort('maxRating')}>
             Sort by Peak Rating <ArrowUpDown className='w-4 h-4 ml-2' />
           </Button>
+          <Button className="border-[#292929]">
+            {/* Sort by Peak Rating <ArrowUpDown className='w-4 h-4 ml-2' /> */}
+            Total : {count}
+          </Button>
+              {/* <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Total Users: {count}
+              </div> */}
         </div>
 
        {loading ? (
