@@ -233,110 +233,94 @@ export default function Home() {
       <div className="space-y-12 mb-12 max-w-6xl mx-auto px-4 sm:px-6">
         {Object.keys(teamData).sort().reverse().map((year) => (
           <motion.div
-            key={year}
-            className="bg-white/70 dark:bg-gray-900/20 backdrop-blur-sm rounded-xl shadow-sm border border-orange-200/30 dark:border-red-900/20 p-6 md:p-8 transition-all duration-300 hover:shadow-lg"
-            // initial={{ opacity: 0, y: 30 }}
-            // whileInView={{ opacity: 1, y: 0 }}
-            // viewport={{ once: true, margin: "-50px" }}
-            // transition={{ duration: 0.5, delay: yearIndex * 0.1 }}
+        key={year}
+        className="bg-white/70 dark:bg-gray-900/20 backdrop-blur-sm rounded-xl shadow-sm border border-orange-200/30 dark:border-red-900/20 p-6 md:p-8 transition-all duration-300 hover:shadow-lg"
           >
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 items-start">
-              <motion.div 
-                className="flex justify-center sm:justify-start sm:col-span-1 group"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="relative w-full max-w-sm overflow-hidden rounded-xl shadow-sm border border-orange-100/20 dark:border-red-900/10">
-                  <Image
-                    src={`/algoCoordis${year.split("-")[0]}.jpg`}
-                    alt={`Algomaniax ${year} Coordinators`}
-                    width={500}
-                    height={300}
-                    className="w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-              </motion.div>
-
-              <div className="sm:col-span-2 space-y-5 text-center sm:text-left">
-                <motion.h2 
-                  className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-400 dark:to-red-400 inline-block pb-2"
-                  // initial={{ opacity: 0, x: -20 }}
-                  // whileInView={{ opacity: 1, x: 0 }}
-                  // viewport={{ once: true }}
-                  // transition={{ duration: 0.5, delay: 0.1 }}
-                >
-                  {teamData[year].year}
-                </motion.h2>
-
-                {/* Map through roles EXCEPT "Crew" */}
-                {Object.keys(teamData[year].roles)
-                  .filter((roleName) => roleName !== "Crew")
-                  .map((roleName) => (
-                    <motion.div
-                      key={roleName}
-                      className="bg-white/50 dark:bg-white/5 backdrop-blur-sm border border-orange-100/30 dark:border-red-900/20 p-4 md:p-5 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
-                      // initial={{ opacity: 0, y: 10 }}
-                      // whileInView={{ opacity: 1, y: 0 }}
-                      // viewport={{ once: true }}
-                      // transition={{ duration: 0.3, delay: 0.1 + roleIndex * 0.1 }}
-                    >
-                      <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3 border-l-4 border-orange-500 dark:border-red-500 pl-3">
-                        {roleName}
-                      </h3>
-                      <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-                        {teamData[year].roles[roleName].map((member) => (
-                          <motion.span key={member.name} className="inline-block"
-                            whileHover={{ y: -3 }}
-                            transition={{ type: "spring", stiffness: 300 }}
-                          >
-                            <a
-                              href={`https://codeforces.com/profile/${member.link}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-1.5 bg-orange-50 dark:bg-gray-800/60 hover:bg-orange-100 dark:hover:bg-red-900/40 rounded-full text-gray-800 dark:text-gray-200 text-sm font-medium hover:text-orange-600 dark:hover:text-red-400 transition-all duration-200 border border-orange-100/30 dark:border-red-900/20"
-                            >
-                              {member.name}
-                            </a>
-                          </motion.span>
-                        ))}
-                      </div>
-                    </motion.div>
-                  ))}
-              </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 items-start">
+          <motion.div 
+            className="flex flex-col justify-center sm:justify-start sm:col-span-1 group"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.h2 
+          className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-400 dark:to-red-400 inline-block pb-4 text-center sm:text-left"
+            >
+          {teamData[year].year}
+            </motion.h2>
+            
+            <div className="relative w-full max-w-sm overflow-hidden rounded-xl shadow-sm border border-orange-100/20 dark:border-red-900/10 mt-2">
+          <Image
+            src={`/algoCoordis${year.split("-")[0]}.jpg`}
+            alt={`Algomaniax ${year} Coordinators`}
+            width={500}
+            height={300}
+            className="w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
+          </motion.div>
 
-            {/* Crew Section with chips style */}
-            {teamData[year].roles["Crew"] && (
-              <motion.div 
-                className="mt-6 bg-white/50 dark:bg-white/5 backdrop-blur-sm border border-orange-100/30 dark:border-red-900/20 p-4 md:p-5 rounded-lg shadow-sm"
-                // initial={{ opacity: 0, y: 20 }}
-                // whileInView={{ opacity: 1, y: 0 }}
-                // viewport={{ once: true }}
-                // transition={{ duration: 0.3, delay: 0.3 }}
+          <div className="sm:col-span-2 space-y-5 text-center sm:text-left">
+            {/* Map through roles EXCEPT "Crew" */}
+            {Object.keys(teamData[year].roles)
+          .filter((roleName) => roleName !== "Crew")
+          .map((roleName) => (
+            <motion.div
+              key={roleName}
+              className="bg-white/50 dark:bg-white/5 backdrop-blur-sm border border-orange-100/30 dark:border-red-900/20 p-4 md:p-5 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
+            >
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3 border-l-4 border-orange-500 dark:border-red-500 pl-3">
+            {roleName}
+              </h3>
+              <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+            {teamData[year].roles[roleName].map((member) => (
+              <motion.span key={member.name} className="inline-block mt-[0.2rem]"
+                whileHover={{ y: -3 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
-                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3 border-l-4 border-orange-500 dark:border-red-500 pl-3 text-center sm:text-left">
-                  Crew Members
-                </h3>
-                <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-                  {teamData[year].roles["Crew"].map((member) => (
-                    <motion.span key={member.name} className="inline-block"
-                      whileHover={{ y: -3 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      <a
-                        href={`https://codeforces.com/profile/${member.link}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-3 py-1.5 bg-orange-50 dark:bg-gray-800/60 hover:bg-orange-100 dark:hover:bg-red-900/40 rounded-full text-gray-800 dark:text-gray-200 text-sm font-medium hover:text-orange-600 dark:hover:text-red-400 transition-all duration-200 border border-orange-100/30 dark:border-red-900/20"
-                      >
-                        {member.name}
-                      </a>
-                    </motion.span>
-                  ))}
-                </div>
-              </motion.div>
-            )}
+                <a
+              href={`https://codeforces.com/profile/${member.link}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 bg-orange-50 dark:bg-gray-800/60 hover:bg-orange-100 dark:hover:bg-red-900/40 rounded-full text-gray-800 dark:text-gray-200 text-sm font-medium hover:text-orange-600 dark:hover:text-red-400 transition-all duration-200 border border-orange-100/30 dark:border-red-900/20"
+                >
+              {member.name}
+                </a>
+              </motion.span>
+            ))}
+              </div>
+            </motion.div>
+          ))}
+          </div>
+        </div>
+
+        {/* Crew Section with chips style */}
+        {teamData[year].roles["Crew"] && (
+          <motion.div 
+            className="mt-6 bg-white/50 dark:bg-white/5 backdrop-blur-sm border border-orange-100/30 dark:border-red-900/20 p-4 md:p-5 rounded-lg shadow-sm"
+          >
+            <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3 border-l-4 border-orange-500 dark:border-red-500 pl-3 text-center sm:text-left">
+          Crew Members
+            </h3>
+            <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+          {teamData[year].roles["Crew"].map((member) => (
+            <motion.span key={member.name} className="inline-block"
+              whileHover={{ y: -3 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <a
+            href={`https://codeforces.com/profile/${member.link}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-1.5 bg-orange-50 dark:bg-gray-800/60 hover:bg-orange-100 dark:hover:bg-red-900/40 rounded-full text-gray-800 dark:text-gray-200 text-sm font-medium hover:text-orange-600 dark:hover:text-red-400 transition-all duration-200 border border-orange-100/30 dark:border-red-900/20"
+              >
+            {member.name}
+              </a>
+            </motion.span>
+          ))}
+            </div>
+          </motion.div>
+        )}
           </motion.div>
         ))}
       </div>
