@@ -12,7 +12,7 @@ interface TypeIntoViewProps {
 const TypeIntoView: React.FC<TypeIntoViewProps> = ({
   id,
   heading = "Welcome to AlgoManiax",
-  text = "Explore the world of competitive programming with us. We are a group of passionate programmers who love to solve problems and learn new techniques to improve our skills. Join us and be a part of the community!",
+  text = "Explore the world of competitive programming with us. We are a group of passionate programmers who love to solve problems and learn new techniques to improve our skills. Join us and be a part of the community",
   align = "left",
 }) => {
   const [visibility, setVisibility] = useState(0);
