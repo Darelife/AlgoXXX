@@ -652,7 +652,7 @@ const handleSliderChangeCommitted = (
       ) : (
         // Keep your existing user cards with animation fix
         <>
-          <style jsx global>{`
+          {/* <style jsx global>{`
             @keyframes fadeInUp {
               from {
                 opacity: 0;
@@ -663,14 +663,14 @@ const handleSliderChangeCommitted = (
                 transform: translateY(0);
               }
             }
-          `}</style>
+          `}</style> */}
           <div 
             className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-            style = {{
-              opacity: 0,
-              animation: `fadeInUp 0.5s ease-out forwards`,
-              animationDelay: `0.5s`,
-            }}
+            // style = {{
+            //   opacity: 0,
+            //   animation: `fadeInUp 0.5s ease-out forwards`,
+            //   animationDelay: `0.5s`,
+            // }}
           >
             {filteredUsers.map((user) => (
                 <div 
