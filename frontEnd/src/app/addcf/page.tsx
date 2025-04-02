@@ -353,7 +353,7 @@ const CodeforcesPage: NextPage = () => {
       {/* Main content */}
       <div className="max-w-4xl mx-auto px-4 pb-20">
         <motion.div 
-          className={`${theme === "dark" ? "bg-white/5" : "bg-blue-50/90"} backdrop-blur-[12px] rounded-xl shadow-sm ${theme === "dark" ? "border-white/10" : "border-blue-200/50"} border p-8 transition-all duration-300 hover:shadow-lg mb-8`}
+          className={`${theme === "dark" ? "bg-black/5" : "bg-blue-50/90"} backdrop-blur-[12px] rounded-xl shadow-sm ${theme === "dark" ? "border-white/10" : "border-blue-200/50"} border p-8 transition-all duration-300 hover:shadow-lg mb-8`}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
