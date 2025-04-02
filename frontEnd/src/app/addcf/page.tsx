@@ -265,7 +265,7 @@ const CodeforcesPage: NextPage = () => {
       <div className="fixed inset-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
         {/* Top left rotating SVG */}
         <motion.div 
-          className="absolute -top-32 -left-32 w-96 h-96 opacity-30 dark:opacity-15"
+          className={`absolute -top-32 -left-32 w-96 h-96 ${theme === "dark" ? "opacity-15" : "opacity-30"}`}
           style={{ 
             y: bgY,
             rotate: rotateLeft,
@@ -283,7 +283,7 @@ const CodeforcesPage: NextPage = () => {
         
         {/* Bottom right rotating SVG */}
         <motion.div 
-          className="absolute bottom-0 right-0 w-96 h-96 opacity-30 dark:opacity-15"
+          className={`absolute bottom-0 right-0 w-96 h-96 ${theme === "dark" ? "opacity-15" : "opacity-30"}`}
           style={{ 
             y: bgY,
             rotate: rotateRight,
@@ -305,8 +305,8 @@ const CodeforcesPage: NextPage = () => {
         className="absolute inset-0 w-full h-screen pointer-events-none"
         style={{ y: bgY }}
       >
-        <div className="absolute top-20 left-1/4 w-64 h-64 rounded-full bg-orange-500/10 dark:bg-orange-500/5 blur-3xl"></div>
-        <div className="absolute bottom-32 right-1/4 w-96 h-96 rounded-full bg-red-500/10 dark:bg-red-500/5 blur-3xl"></div>
+        <div className={`absolute top-20 left-1/4 w-64 h-64 rounded-full ${theme === "dark" ? "bg-orange-500/5" : "bg-orange-500/10"} blur-3xl`}></div>
+        <div className={`absolute bottom-32 right-1/4 w-96 h-96 rounded-full ${theme === "dark" ? "bg-red-500/5" : "bg-red-500/10"} blur-3xl`}></div>
       </motion.div>
       
       <div style={{zIndex: 1000}}>
@@ -340,7 +340,7 @@ const CodeforcesPage: NextPage = () => {
             />
           </motion.div>
           <motion.p 
-            className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-5"
+            className={`mt-6 text-xl ${theme === "dark" ? "text-gray-300" : "text-gray-600"} max-w-2xl mx-auto px-5`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
@@ -353,7 +353,7 @@ const CodeforcesPage: NextPage = () => {
       {/* Main content */}
       <div className="max-w-4xl mx-auto px-4 pb-20">
         <motion.div 
-          className="bg-blue-50/90 dark:bg-white/5 backdrop-blur-[12px] rounded-xl shadow-sm border border-blue-200/50 dark:border-white/10 p-8 transition-all duration-300 hover:shadow-lg mb-8"
+          className={`${theme === "dark" ? "bg-white/5" : "bg-blue-50/90"} backdrop-blur-[12px] rounded-xl shadow-sm ${theme === "dark" ? "border-white/10" : "border-blue-200/50"} border p-8 transition-all duration-300 hover:shadow-lg mb-8`}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
@@ -368,45 +368,45 @@ const CodeforcesPage: NextPage = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4 border-l-4 border-orange-500 dark:border-red-500 pl-3">
+                <h3 className={`text-2xl font-bold ${theme === "dark" ? "text-gray-100" : "text-gray-800"} mb-4 border-l-4 ${theme === "dark" ? "border-red-500" : "border-orange-500"} pl-3`}>
                   Your Information
                 </h3>
                 
-                <div className="bg-white/80 dark:bg-white/5 backdrop-blur-[12px] border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm">
+                <div className={`${theme === "dark" ? "bg-white/5" : "bg-white/80"} backdrop-blur-[12px] ${theme === "dark" ? "border-gray-700/40" : "border-gray-100"} border p-6 rounded-lg shadow-sm`}>
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="bitsId" className="text-gray-700 dark:text-gray-300">BITS ID</Label>
+                      <Label htmlFor="bitsId" className={`${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>BITS ID</Label>
                       <Input
                         id="bitsId"
                         name="bitsId"
                         value={userData.bitsId}
                         onChange={handleInputChange}
                         placeholder="Your Bits ID (in Caps)"
-                        className="bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700 rounded-xl"
+                        className={`${theme === "dark" ? "bg-gray-800/60" : "bg-gray-50"} ${theme === "dark" ? "border-gray-700" : "border-gray-200"} rounded-xl`}
                       />
                     </div>
                     
                     <div>
-                      <Label htmlFor="name" className="text-gray-700 dark:text-gray-300">Name</Label>
+                      <Label htmlFor="name" className={`${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>Name</Label>
                       <Input
                         id="name"
                         name="name"
                         value={userData.name}
                         onChange={handleInputChange}
                         placeholder="Your Name"
-                        className="bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700 rounded-xl"
+                        className={`${theme === "dark" ? "bg-gray-800/60" : "bg-gray-50"} ${theme === "dark" ? "border-gray-700" : "border-gray-200"} rounded-xl`}
                       />
                     </div>
                     
                     <div>
-                      <Label htmlFor="handle" className="text-gray-700 dark:text-gray-300">Codeforces Handle</Label>
+                      <Label htmlFor="handle" className={`${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>Codeforces Handle</Label>
                       <Input
                         id="handle"
                         name="handle"
                         value={userData.handle}
                         onChange={handleInputChange}
                         placeholder="Your Codeforces Handle"
-                        className="bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700 rounded-xl"
+                        className={`${theme === "dark" ? "bg-gray-800/60" : "bg-gray-50"} ${theme === "dark" ? "border-gray-700" : "border-gray-200"} rounded-xl`}
                       />
                     </div>
                   </div>
@@ -420,32 +420,32 @@ const CodeforcesPage: NextPage = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4 border-l-4 border-orange-500 dark:border-red-500 pl-3">
+                <h3 className={`text-2xl font-bold ${theme === "dark" ? "text-gray-100" : "text-gray-800"} mb-4 border-l-4 ${theme === "dark" ? "border-red-500" : "border-orange-500"} pl-3`}>
                   Verification Challenge
                 </h3>
                 
                 {problem ? (
-                  <div className="bg-white/80 dark:bg-white/5 backdrop-blur-[12px] border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm flex flex-col justify-between h-auto transform hover:scale-[1.01] transition-all duration-300">
+                  <div className={`${theme === "dark" ? "bg-white/5" : "bg-white/80"} backdrop-blur-[12px] ${theme === "dark" ? "border-gray-700/40" : "border-gray-100"} border p-6 rounded-lg shadow-sm flex flex-col justify-between h-auto transform hover:scale-[1.01] transition-all duration-300`}>
                     <div className="space-y-4">
-                      <div className="flex items-center justify-center p-4 bg-orange-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4">
-                        <Code className="w-8 h-8 text-orange-600 dark:text-red-400" />
+                      <div className={`flex items-center justify-center p-4 ${theme === "dark" ? "bg-red-900/30" : "bg-orange-100"} rounded-full w-16 h-16 mx-auto mb-4`}>
+                        <Code className={`w-8 h-8 ${theme === "dark" ? "text-red-400" : "text-orange-600"}`} />
                       </div>
                       
-                      <h2 className="text-xl font-bold text-center text-gray-800 dark:text-gray-200">
+                      <h2 className={`text-xl font-bold text-center ${theme === "dark" ? "text-gray-200" : "text-gray-800"}`}>
                         Submit a Compile Error
                       </h2>
                       
-                      <p className="text-gray-600 dark:text-gray-300 text-center">
+                      <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"} text-center`}>
                         Submit code with a compile error to the problem below for verification.
                       </p>
                       
                       <div className="mt-4 p-4 rounded-lg text-center">
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Problem</p>
+                        <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-500"} mb-2`}>Problem</p>
                         <a
                           href={`https://codeforces.com/contest/${problem.contestId}/problem/${problem.index}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xl font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline transition-colors"
+                          className={`text-xl font-medium ${theme === "dark" ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-700"} hover:underline transition-colors`}
                         >
                           {problem.contestId}-{problem.index}
                         </a>
@@ -455,7 +455,7 @@ const CodeforcesPage: NextPage = () => {
                     <Button 
                       onClick={handleGoogleSignInAndVerify}
                       disabled={isLoading}
-                      className="w-full mt-6 bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-500 dark:to-red-500 hover:from-orange-700 hover:to-red-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300"
+                      className={`w-full mt-6 bg-gradient-to-r ${theme === "dark" ? "from-orange-500 to-red-500" : "from-orange-600 to-red-600"} hover:from-orange-700 hover:to-red-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300`}
                     >
                       {isLoading ? (
                         <div className="flex items-center justify-center">
@@ -468,13 +468,13 @@ const CodeforcesPage: NextPage = () => {
                     </Button>
                   </div>
                 ) : (
-                  <div className="bg-white/80 dark:bg-white/5 backdrop-blur-[12px] border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm flex flex-col items-center justify-center h-auto">
+                  <div className={`${theme === "dark" ? "bg-white/5" : "bg-white/80"} backdrop-blur-[12px] ${theme === "dark" ? "border-gray-700/40" : "border-gray-100"} border p-6 rounded-lg shadow-sm flex flex-col items-center justify-center h-auto`}>
                     <div className="animate-pulse flex flex-col items-center">
-                      <div className="h-12 w-12 bg-gray-200 dark:bg-gray-700 rounded-full mb-4"></div>
-                      <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded mb-3"></div>
-                      <div className="h-3 w-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                      <div className={`h-12 w-12 ${theme === "dark" ? "bg-gray-700" : "bg-gray-200"} rounded-full mb-4`}></div>
+                      <div className={`h-4 w-24 ${theme === "dark" ? "bg-gray-700" : "bg-gray-200"} rounded mb-3`}></div>
+                      <div className={`h-3 w-32 ${theme === "dark" ? "bg-gray-700" : "bg-gray-200"} rounded`}></div>
                     </div>
-                    <p className="text-gray-500 dark:text-gray-400 mt-4">Loading problem...</p>
+                    <p className={`${theme === "dark" ? "text-gray-400" : "text-gray-500"} mt-4`}>Loading problem...</p>
                   </div>
                 )}
               </motion.div>
@@ -496,16 +496,16 @@ const CodeforcesPage: NextPage = () => {
         
         {/* Instructions card */}
         <motion.div 
-          className="bg-white/90 dark:bg-white/5 backdrop-blur-[12px] rounded-xl shadow-sm border border-gray-100/50 dark:border-white/10 p-6"
+          className={`${theme === "dark" ? "bg-white/5" : "bg-white/90"} backdrop-blur-[12px] rounded-xl shadow-sm ${theme === "dark" ? "border-white/10" : "border-gray-100/50"} border p-6`}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+          <h3 className={`text-xl font-bold ${theme === "dark" ? "text-gray-100" : "text-gray-800"} mb-4`}>
             How It Works
           </h3>
-          <ol className="space-y-3 text-gray-600 dark:text-gray-300 list-decimal pl-5">
+          <ol className={`space-y-3 ${theme === "dark" ? "text-gray-300" : "text-gray-600"} list-decimal pl-5`}>
             <li>Fill in your BITS ID, full name, and Codeforces handle</li>
             <li>Click the problem link to visit the Codeforces problem page</li>
             <li>Submit any solution that produces a <strong>compile error</strong> (e.g., write, &quot;Compilation Error&quot;)</li>
@@ -517,7 +517,7 @@ const CodeforcesPage: NextPage = () => {
 
       {/* Footer with animation */}
       <motion.footer 
-        className="mt-12 border-t border-gray-200 dark:border-gray-800 py-8"
+        className={`mt-12 border-t ${theme === "dark" ? "border-gray-800" : "border-gray-200"} py-8`}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
@@ -535,7 +535,7 @@ const CodeforcesPage: NextPage = () => {
                   className="mb-2"
                 />
               </div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm text-center md:text-left">
+              <p className={`${theme === "dark" ? "text-gray-400" : "text-gray-600"} text-sm text-center md:text-left`}>
                 © {new Date().getFullYear()} Algomaniax. All rights reserved.
               </p>
             </div>
