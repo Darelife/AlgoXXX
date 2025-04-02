@@ -62,16 +62,24 @@ const CodeforcesPage: NextPage = () => {
 
     // Check for stored data from OAuth redirect
     const storedData = localStorage.getItem("cfVerificationData");
-    if (storedData) {
-      setUserData(JSON.parse(storedData));
-      
+    // trim the ends of the string to remove any extra spaces
+    const dataFetched = JSON.parse(storedData || "{}");
+    if (dataFetched) {
+      // trim the bitsId, name, and handle to remove any extra spaces
+      dataFetched.bitsId = dataFetched.bitsId.trim();
+      dataFetched.name = dataFetched.name.trim();
+      dataFetched.handle = dataFetched.handle.trim();
+      setUserData(dataFetched);
+    // }
+    // if (storedData) {
+    //   setUserData(JSON.parse(storedData));
       // Check if we need to complete verification
       const checkSession = async () => {
         if (localStorage.getItem("isVerifying") === "true") {
           const { data: sessionData } = await supabase.auth.getSession();
           if (sessionData?.session?.user?.email) {
             setIsLoading(true);
-            await completeVerification(JSON.parse(storedData), sessionData.session.user.email);
+            await completeVerification(dataFetched, sessionData.session.user.email);
           }
         }
       };
