@@ -372,7 +372,7 @@ const CodeforcesPage: NextPage = () => {
                   Your Information
                 </h3>
                 
-                <div className={`${theme === "dark" ? "bg-white/5" : "bg-white/80"} backdrop-blur-[12px] ${theme === "dark" ? "border-gray-700/40" : "border-gray-100"} border p-6 rounded-lg shadow-sm`}>
+                <div className={`${theme === "dark" ? "bg-black/5" : "bg-white/80"} backdrop-blur-[12px] ${theme === "dark" ? "border-gray-700/40" : "border-gray-100"} border p-6 rounded-lg shadow-sm`}>
                   <div className="space-y-4">
                     <div>
                       <Label htmlFor="bitsId" className={`${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>BITS ID</Label>
