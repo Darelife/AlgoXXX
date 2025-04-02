@@ -353,7 +353,7 @@ const CodeforcesPage: NextPage = () => {
       {/* Main content */}
       <div className="max-w-4xl mx-auto px-4 pb-20">
         <motion.div 
-          className={`${theme === "dark" ? "bg-[rgba(255, 255, 255, 0.05]" : "bg-blue-50/90"} backdrop-blur-[12px] rounded-xl shadow-sm ${theme === "dark" ? "border-white/10" : "border-blue-200/50"} border p-8 transition-all duration-300 hover:shadow-lg mb-8`}
+          className={`${theme === "dark" ? "bg-[rgba(255, 255, 255, 0.05)]" : "bg-blue-50/90"} backdrop-blur-[12px] rounded-xl shadow-sm ${theme === "dark" ? "border-white/10" : "border-blue-200/50"} border p-8 transition-all duration-300 hover:shadow-lg mb-8`}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
@@ -372,7 +372,7 @@ const CodeforcesPage: NextPage = () => {
                   Your Information
                 </h3>
                 
-                <div className={`${theme === "dark" ? "bg-[rgba(255, 255, 255, 0.05]" : "bg-white/80"} backdrop-blur-[12px] ${theme === "dark" ? "border-gray-700/40" : "border-gray-100"} border p-6 rounded-lg shadow-sm`}>
+                <div className={`${theme === "dark" ? "bg-[rgba(255, 255, 255, 0.05)]" : "bg-white/80"} backdrop-blur-[12px] ${theme === "dark" ? "border-gray-700/40" : "border-gray-100"} border p-6 rounded-lg shadow-sm`}>
                   <div className="space-y-4">
                     <div>
                       <Label htmlFor="bitsId" className={`${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>BITS ID</Label>
@@ -425,7 +425,7 @@ const CodeforcesPage: NextPage = () => {
                 </h3>
                 
                 {problem ? (
-                  <div className={`${theme === "dark" ? "bg-white/5" : "bg-white/80"} backdrop-blur-[12px] ${theme === "dark" ? "border-gray-700/40" : "border-gray-100"} border p-6 rounded-lg shadow-sm flex flex-col justify-between h-auto transform hover:scale-[1.01] transition-all duration-300`}>
+                  <div className={`${theme === "dark" ? "bg-[rgba(255, 255, 255, 0.05)]" : "bg-white/80"} backdrop-blur-[12px] ${theme === "dark" ? "border-gray-700/40" : "border-gray-100"} border p-6 rounded-lg shadow-sm flex flex-col justify-between h-auto transform hover:scale-[1.01] transition-all duration-300`}>
                     <div className="space-y-4">
                       <div className={`flex items-center justify-center p-4 ${theme === "dark" ? "bg-red-900/30" : "bg-orange-100"} rounded-full w-16 h-16 mx-auto mb-4`}>
                         <Code className={`w-8 h-8 ${theme === "dark" ? "text-red-400" : "text-orange-600"}`} />
