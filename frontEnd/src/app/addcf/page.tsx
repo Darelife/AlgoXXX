@@ -353,7 +353,7 @@ const CodeforcesPage: NextPage = () => {
       {/* Main content */}
       <div className="max-w-4xl mx-auto px-4 pb-20">
         <motion.div 
-          className="bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-white/10 p-8 transition-all duration-300 hover:shadow-lg mb-8"
+          className="bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm ios-blur rounded-xl shadow-sm border border-blue-200/50 dark:border-white/10 p-8 transition-all duration-300 hover:shadow-lg mb-8"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
@@ -372,7 +372,7 @@ const CodeforcesPage: NextPage = () => {
                   Your Information
                 </h3>
                 
-                <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm">
+                <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm ios-blur border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm">
                   <div className="space-y-4">
                     <div>
                       <Label htmlFor="bitsId" className="text-gray-700 dark:text-gray-300">BITS ID</Label>
@@ -425,7 +425,7 @@ const CodeforcesPage: NextPage = () => {
                 </h3>
                 
                 {problem ? (
-                  <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm flex flex-col justify-between h-auto transform hover:scale-[1.01] transition-all duration-300">
+                  <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm ios-blur border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm flex flex-col justify-between h-auto transform hover:scale-[1.01] transition-all duration-300">
                     <div className="space-y-4">
                       <div className="flex items-center justify-center p-4 bg-orange-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4">
                         <Code className="w-8 h-8 text-orange-600 dark:text-red-400" />
@@ -468,7 +468,7 @@ const CodeforcesPage: NextPage = () => {
                     </Button>
                   </div>
                 ) : (
-                  <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm flex flex-col items-center justify-center h-auto">
+                  <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm ios-blur border border-gray-100 dark:border-gray-700/40 p-6 rounded-lg shadow-sm flex flex-col items-center justify-center h-auto">
                     <div className="animate-pulse flex flex-col items-center">
                       <div className="h-12 w-12 bg-gray-200 dark:bg-gray-700 rounded-full mb-4"></div>
                       <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded mb-3"></div>
@@ -496,7 +496,7 @@ const CodeforcesPage: NextPage = () => {
         
         {/* Instructions card */}
         <motion.div 
-          className="bg-white/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50 dark:border-white/10 p-6"
+          className="bg-white/90 dark:bg-white/5 backdrop-blur-sm ios-blur rounded-xl shadow-sm border border-gray-100/50 dark:border-white/10 p-6"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
