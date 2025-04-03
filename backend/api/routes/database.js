@@ -74,9 +74,9 @@ router.get("/cleanupDuplicateCfid", (req, res, next) => {
 router.post("/", (req, res, next) => {
   const user = new User({
     _id: new mongoose.Types.ObjectId(),
-    name: req.body.name,
-    cfid: req.body.cfid,
-    bitsid: req.body.bitsid,
+    name: req.body.name.trim(),
+    cfid: req.body.cfid.trim(),
+    bitsid: req.body.bitsid.trim(),
   });
 
   user

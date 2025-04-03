@@ -62,29 +62,32 @@ const CodeforcesPage: NextPage = () => {
 
     // Check for stored data from OAuth redirect
     const storedData = localStorage.getItem("cfVerificationData");
-    // trim the ends of the string to remove any extra spaces
-    const dataFetched = JSON.parse(storedData || "{}");
-    if (dataFetched) {
-      // trim the bitsId, name, and handle to remove any extra spaces
-      dataFetched.bitsId = dataFetched.bitsId.trim();
-      dataFetched.name = dataFetched.name.trim();
-      dataFetched.handle = dataFetched.handle.trim();
-      setUserData(dataFetched);
-    // }
-    // if (storedData) {
-    //   setUserData(JSON.parse(storedData));
-      // Check if we need to complete verification
-      const checkSession = async () => {
-        if (localStorage.getItem("isVerifying") === "true") {
-          const { data: sessionData } = await supabase.auth.getSession();
-          if (sessionData?.session?.user?.email) {
-            setIsLoading(true);
-            await completeVerification(dataFetched, sessionData.session.user.email);
+    if (storedData) {
+      try {
+        const dataFetched = JSON.parse(storedData);
+        // Ensure all userData fields have string values to prevent controlled/uncontrolled input issues
+        const processedData = {
+          bitsId: dataFetched.bitsId || "",
+          name: dataFetched.name || "",
+          handle: dataFetched.handle || ""
+        };
+        setUserData(processedData);
+        
+        // Check if we need to complete verification
+        const checkSession = async () => {
+          if (localStorage.getItem("isVerifying") === "true") {
+            const { data: sessionData } = await supabase.auth.getSession();
+            if (sessionData?.session?.user?.email) {
+              setIsLoading(true);
+              await completeVerification(processedData, sessionData.session.user.email);
+            }
           }
-        }
-      };
-      
-      checkSession();
+        };
+        
+        checkSession();
+      } catch (error) {
+        console.error("Error parsing stored data:", error);
+      }
     }
     
     // Detect mobile device
