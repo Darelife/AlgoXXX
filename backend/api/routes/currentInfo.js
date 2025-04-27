@@ -56,7 +56,8 @@ router.get("/contestDeltaFetch", async (req, res, next) => {
     const contestIds = recentContests
       .filter(
         (contest) =>
-          (contest.name.includes("Div. 2") ||
+          (contest.name.includes("Div. 1") ||
+            contest.name.includes("Div. 2") ||
             contest.name.includes("Div. 3") ||
             contest.name.includes("Div. 4")) &&
           contest.startTimeSeconds <= currentTimeSeconds // Ignore contests that haven't started yet
