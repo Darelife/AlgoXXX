@@ -197,28 +197,36 @@ router.get("/all", async (req, res, next) => {
       return res.status(404).json({ message: "No users found" });
     }
 
-    // Create a semicolon-separated string of Codeforces IDs (cfid)
-    const userString = docs.map((user) => user.cfid.toLowerCase()).join(";");
-
-    // Define the URL to fetch user data from Codeforces API
-    const url = `https://codeforces.com/api/user.info?handles=${userString}`;
-    // console.log("Fetching URL:", url);
-
-    // Fetch user info from Codeforces API
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch user info from Codeforces API");
+    // Create an array of Codeforces IDs (cfid) in lowercase
+    const cfids = docs.map((user) => user.cfid.toLowerCase());
+    const chunkSize = 400;
+    const cfidChunks = [];
+    for (let i = 0; i < cfids.length; i += chunkSize) {
+      cfidChunks.push(cfids.slice(i, i + chunkSize));
     }
 
-    const data = await response.json();
+    // Fetch user info from Codeforces API in chunks of 400
+    let allCfData = [];
+    for (const chunk of cfidChunks) {
+      const userString = chunk.join(";");
+      const url = `https://codeforces.com/api/user.info?handles=${userString}`;
+      const response = await fetch(url);
 
-    if (data.status !== "OK" || !data.result) {
-      throw new Error("Invalid response from Codeforces API");
+      if (!response.ok) {
+        throw new Error("Failed to fetch user info from Codeforces API");
+      }
+
+      const data = await response.json();
+
+      if (data.status !== "OK" || !data.result) {
+        throw new Error("Invalid response from Codeforces API");
+      }
+
+      allCfData = allCfData.concat(data.result);
     }
 
     const cfDataMap = new Map();
-    data.result.forEach((cfData) => {
+    allCfData.forEach((cfData) => {
       cfDataMap.set(cfData.handle.toLowerCase(), cfData);
     });
 
