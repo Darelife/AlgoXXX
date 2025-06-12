@@ -74,7 +74,7 @@ router.get("/contestDeltaFetch", async (req, res, next) => {
 
     for (const contestId of contestIds) {
       try {
-        const url = `https://codeforces.com/api/contest.standings?contestId=${contestId}`;
+        const url = `https://codeforces.com/api/contest.standings?contestId=${contestId}&showUnofficial=true`;
         const response = await fetch(url);
         // Sleep for 2 seconds to avoid rate limiting
         await new Promise((resolve) => setTimeout(resolve, 2000));
