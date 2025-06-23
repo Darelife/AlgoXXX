@@ -4,6 +4,8 @@ const router = express.Router();
 
 const User = require("../models/users");
 const ContestDelta = require("../models/contestDelta");
+const axios = require("axios");
+const dotenv = require("dotenv");
 
 // Add CORS headers to all routes
 router.use((req, res, next) => {
@@ -183,6 +185,48 @@ router.get("/contestDelta", async (req, res, next) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({
+      error: error.message || "An unexpected error occurred",
+    });
+  }
+});
+
+router.get("/nextContest", async (req, res, next) => {
+  dotenv.config();
+
+  const CLIST_USERNAME = process.env.CLIST_USERNAME;
+  const CLIST_PASSWORD = process.env.CLIST_PASSWORD;
+
+  if (!CLIST_USERNAME || !CLIST_PASSWORD) {
+    return res.status(500).json({
+      error: "CLIST_USERNAME or CLIST_PASSWORD is not defined in .env file",
+    });
+  }
+
+  try {
+    const currentDateTime = new Date().toISOString();
+    const url = `https://clist.by/api/v3/contest/?username=${CLIST_USERNAME}&api_key=${CLIST_PASSWORD}&start__gt=${currentDateTime}&format=json`;
+
+    const response = await axios.get(url);
+
+    if (response.status !== 200 || !response.data) {
+      return res.status(500).json({
+        error: "Failed to fetch contest data from CLIST API",
+      });
+    }
+
+    const contests = response.data.objects.map((contest) => ({
+      event: contest.event,
+      start: contest.start,
+      end: contest.end,
+      duration: contest.duration,
+      host: contest.host,
+      href: contest.href,
+    }));
+
+    return res.status(200).json(contests);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
       error: error.message || "An unexpected error occurred",
     });
   }
