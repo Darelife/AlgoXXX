@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, ExternalLink, Trophy, Globe } from 'lucide-react';
+import { Calendar, Clock, Trophy, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+// import { Card } from '@/components/ui/card';
 import { motion, useScroll, useTransform } from "framer-motion";
 import NavBar from '../components/navBar';
-import Image from 'next/image';
+// import Image from 'next/image';
 
 interface Contest {
   event: string;
