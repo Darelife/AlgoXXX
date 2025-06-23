@@ -203,8 +203,11 @@ router.get("/nextContest", async (req, res, next) => {
   }
 
   try {
-    const currentDateTime = new Date().toISOString();
-    const url = `https://clist.by/api/v3/contest/?username=${CLIST_USERNAME}&api_key=${CLIST_PASSWORD}&start__gt=${currentDateTime}&format=json`;
+    // const currentDateTime = new Date().toISOString();
+    const eightHoursAgo = new Date(
+      Date.now() - 8 * 60 * 60 * 1000
+    ).toISOString();
+    const url = `https://clist.by/api/v3/contest/?username=${CLIST_USERNAME}&api_key=${CLIST_PASSWORD}&start__gt=${eightHoursAgo}&format=json`;
 
     const response = await axios.get(url);
 
