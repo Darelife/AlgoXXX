@@ -122,10 +122,25 @@ const ContestsPage: React.FC = () => {
         console.log(`Seven days from now: ${sevenDaysFromNow.toISOString()}`);
         console.log(`Is within time range: ${contestStart <= sevenDaysFromNow}`);
         
+        // Only show contests from specific platforms
+        const allowedHosts = [
+          'codeforces.com',
+          'atcoder.jp', 
+          'codechef.com',
+          'topcoder.com',
+          'hackerrank.com',
+          'leetcode.com',
+          'codedrills.io',
+          'projecteuler.net'
+        ];
+        
         const isWithinTimeRange = contestStart <= sevenDaysFromNow;
         const hasLatinTitle = isLatinOnly(contest.event);
+        const isFromAllowedHost = allowedHosts.includes(contest.host);
         
-        return isWithinTimeRange && hasLatinTitle;
+        console.log(`Host: ${contest.host}, Allowed: ${isFromAllowedHost}`);
+        
+        return isWithinTimeRange && hasLatinTitle && isFromAllowedHost;
       });
       
       // Sort contests by start time (earliest first)
