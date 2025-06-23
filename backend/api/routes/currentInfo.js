@@ -219,8 +219,12 @@ router.get("/nextContest", async (req, res, next) => {
 
     const contests = response.data.objects.map((contest) => ({
       event: contest.event,
-      start: contest.start,
-      end: contest.end,
+      start: new Date(
+        new Date(contest.start).getTime() + 5.5 * 60 * 60 * 1000
+      ).toISOString(),
+      end: new Date(
+        new Date(contest.end).getTime() + 5.5 * 60 * 60 * 1000
+      ).toISOString(),
       duration: contest.duration,
       host: contest.host,
       href: contest.href,
