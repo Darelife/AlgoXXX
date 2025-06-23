@@ -120,9 +120,9 @@ const ContestsPage: React.FC = () => {
         console.log(`Contest start: ${contestStart.toISOString()}`);
         console.log(`Now: ${now.toISOString()}`);
         console.log(`Seven days from now: ${sevenDaysFromNow.toISOString()}`);
-        console.log(`Is within time range: ${contestStart >= now && contestStart <= sevenDaysFromNow}`);
+        console.log(`Is within time range: ${contestStart <= sevenDaysFromNow}`);
         
-        const isWithinTimeRange = contestStart >= now && contestStart <= sevenDaysFromNow;
+        const isWithinTimeRange = contestStart <= sevenDaysFromNow;
         const hasLatinTitle = isLatinOnly(contest.event);
         
         return isWithinTimeRange && hasLatinTitle;
