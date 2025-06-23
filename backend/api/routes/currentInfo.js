@@ -203,11 +203,11 @@ router.get("/nextContest", async (req, res, next) => {
   }
 
   try {
-    // const currentDateTime = new Date().toISOString();
-    const eightHoursAgo = new Date(
-      Date.now() - 8 * 60 * 60 * 1000
-    ).toISOString();
-    const url = `https://clist.by/api/v3/contest/?username=${CLIST_USERNAME}&api_key=${CLIST_PASSWORD}&start__gt=${eightHoursAgo}&format=json`;
+    const currentDateTime = new Date().toISOString();
+    // const eightHoursAgo = new Date(
+    //   Date.now() - 8 * 60 * 60 * 1000
+    // ).toISOString();
+    const url = `https://clist.by/api/v3/contest/?username=${CLIST_USERNAME}&api_key=${CLIST_PASSWORD}&start__gt=${currentDateTime}&format=json`;
 
     const response = await axios.get(url);
 
@@ -219,12 +219,8 @@ router.get("/nextContest", async (req, res, next) => {
 
     const contests = response.data.objects.map((contest) => ({
       event: contest.event,
-      start: new Date(
-        new Date(contest.start).getTime() + 5.5 * 60 * 60 * 1000
-      ).toISOString(),
-      end: new Date(
-        new Date(contest.end).getTime() + 5.5 * 60 * 60 * 1000
-      ).toISOString(),
+      start: new Date(contest.start).toISOString(),
+      end: new Date(contest.end).toISOString(),
       duration: contest.duration,
       host: contest.host,
       href: contest.href,
