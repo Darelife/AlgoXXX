@@ -1,9 +1,6 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const router = express.Router();
-const cors = require("cors");
-router.use(cors());
-const User = require("../models/users");
+const supabase = require("../../supabaseClient");
 
 function checkIfUserExists(name, cfid, bitsid) {
   // First delete any users with matching BITS ID or CF ID
@@ -19,156 +16,62 @@ function checkIfUserExists(name, cfid, bitsid) {
     });
 }
 
-router.post("/", (req, res, next) => {
-  // const backendResponse = await fetch("https://algoxxx.onrender.com/verify", {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           ...userData,
-  //           contestId: problem?.contestId,
-  //           index: problem?.index,
-  //         }),
-  //       });
-  //       if (backendResponse.status === 200) {
-  //         router.push("/");
-  //       } else {
-  //         setError("Submission failed. Please try again.");
-  //       }
-  //     } else {
-  //       setError("Failed to verify submission. Please try again.");
-  const cfid = req.body.cfid;
-  const name = req.body.name;
-  const bitsid = req.body.bitsid;
-  const contestId = req.body.contestId;
-  const index = req.body.index;
+router.post("/", async (req, res, next) => {
+  const { cfid, name, bitsid, contestId, index } = req.body;
   const url = `https://codeforces.com/api/user.status?handle=${cfid}`;
 
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      const submissions = data.result;
-      const submission = submissions.find(
-        (submission) =>
-          submission.problem.contestId == contestId &&
-          submission.problem.index == index &&
-          submission.verdict == "COMPILATION_ERROR"
-      );
-      if (submission) {
-        checkIfUserExists(name, cfid, bitsid)
-          .then((users) => {
-            if (users.length === 0) {
-              const user = new User({
-                _id: new mongoose.Types.ObjectId(),
-                name: name,
-                cfid: cfid,
-                bitsid: bitsid,
-              });
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
 
-              user
-                .save()
-                .then((result) => {
-                  res.status(201).json({
-                    message: "Submission verified",
-                    createdUser: result,
-                  });
-                })
-                .catch((error) => {
-                  res.status(500).json({
-                    error: error,
-                  });
-                });
-            } else {
-              // res.status(400).json({
-              //   message: "User already exists",
-              // });
+    const submissions = data.result;
+    const submission = submissions.find(
+      (submission) =>
+        submission.problem.contestId == contestId &&
+        submission.problem.index == index &&
+        submission.verdict == "COMPILATION_ERROR"
+    );
 
-              const user = users[0];
-              user.name = name;
-              user.cfid = cfid;
-              user.bitsid = bitsid;
+    if (submission) {
+      const users = await checkIfUserExists(name, cfid, bitsid);
 
-              user
-                .save()
-                .then((result) => {
-                  res.status(200).json({
-                    message: "User details updated",
-                    updatedUser: result,
-                  });
-                })
-                .catch((error) => {
-                  res.status(500).json({
-                    error: error,
-                  });
-                });
-            }
-          })
-          .catch((error) => {
-            res.status(500).json({
-              error: error,
-            });
-          });
+      if (users.length === 0) {
+        const { data: createdUser, error: createError } = await supabase
+          .from("users")
+          .insert({ name, cfid, bitsid });
+
+        if (createError) {
+          return res.status(500).json({ error: createError.message });
+        }
+
+        return res.status(201).json({
+          message: "Submission verified",
+          createdUser,
+        });
       } else {
-        res.status(400).json({
-          message: "Submission not found",
+        const { data: updatedUser, error: updateError } = await supabase
+          .from("users")
+          .update({ name, cfid, bitsid })
+          .eq("cfid", cfid);
+
+        if (updateError) {
+          return res.status(500).json({ error: updateError.message });
+        }
+
+        return res.status(200).json({
+          message: "User details updated",
+          updatedUser,
         });
       }
-    })
-    .catch((error) => {
-      res.status(500).json({
-        error: error,
-      });
+    } else {
+      return res.status(400).json({ message: "Submission not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: error.message || "An unexpected error occurred",
     });
+  }
 });
-
-// router
-//   .post("/forceUpdate", (req, res, next) => {
-//     // the only difference is that if there's a user with the same bitsid or cfid, we'll delete it, and add our user
-//     const cfid = req.body.cfid;
-//     const name = req.body.name;
-//     const bitsid = req.body.bitsid;
-
-//     const submission = true;
-//     if (submission) {
-//       User.deleteMany({ $or: [{ bitsid: bitsid }, { cfid: cfid }] })
-//         .then(() => {
-//           const user = new User({
-//             _id: new mongoose.Types.ObjectId(),
-//             name: name,
-//             cfid: cfid,
-//             bitsid: bitsid,
-//           });
-
-//           user
-//             .save()
-//             .then((result) => {
-//               res.status(201).json({
-//                 message: "Submission verified",
-//                 createdUser: result,
-//               });
-//             })
-//             .catch((error) => {
-//               res.status(500).json({
-//                 error: error,
-//               });
-//             });
-//         })
-//         .catch((error) => {
-//           res.status(500).json({
-//             error: error,
-//           });
-//         });
-//     } else {
-//       res.status(400).json({
-//         message: "Submission not found",
-//       });
-//     }
-//   })
-//   .catch((error) => {
-//     res.status(500).json({
-//       error: error,
-//     });
-//   });
 
 module.exports = router;

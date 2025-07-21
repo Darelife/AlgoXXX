@@ -1,6 +1,5 @@
 const express = require("express");
 const morgan = require("morgan");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 require("dotenv").config();
@@ -8,12 +7,6 @@ require("dotenv").config();
 const databaseRoutes = require("./api/routes/database");
 const currentInfoRoutes = require("./api/routes/currentInfo");
 const verifyRoutes = require("./api/routes/verify");
-
-mongoose.connect(
-  "mongodb+srv://aglomaniax:" +
-    process.env.MONGOPASS +
-    "@cluster0.am47a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-);
 
 const app = express();
 app.use(cors());
@@ -51,18 +44,27 @@ app.use((error, req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  //setting CORS headers before handling routes, these do not send a response, but rather modify it, so that whenever we send a response, it has these headers
-  res.header("Access-Control-Allow-Origin", "*"); //(Initially it was Not-Allowed but now we set it to Allowed, these headers need a value so we give * as a value so that all the URLs are allowed - you could also give https://devsoc.club but typically RESTful APIs allow all the URLs to have access!)
+  // Dynamically set allowed origin for CORS
+  const allowedOrigins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://algomaniax.vercel.app",
+    // "https://www.postman.com",
+    // "https://postman.com",
+  ];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  ); //these are some of the default headers than need to be added in order to avoid the CORS error, you can read about each one of them online
+  );
   if (req.method === "OPTIONS") {
-    //whenever you send a GET, DELETE, PATCH, POST, or a PUT request, the browser always responds with an OPTIONS method which is inevitable, thus, to overcome this, we set a custom header for this too
     res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
     return res.status(200).json({});
   }
-  next(); //to end our middleware if we're not returning immediately due to receiving the OPTIONS request so that the other routes can't take over
+  next();
 });
 
 module.exports = app; //lets us use our express app elsewhere in the backend program
