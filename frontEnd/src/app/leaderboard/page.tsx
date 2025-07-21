@@ -125,7 +125,7 @@ const SampleTable: React.FC = () => {
 useEffect(() => {
   async function fetchUsers() {
     try {
-      const response = await axios.get('https://algoxxx.onrender.com/currentinfo/all', {
+      const response = await axios.get('https://algoxxx.onrender.com/currentInfo/all', {
         headers: {
           'Content-Type': 'application/json',
         },

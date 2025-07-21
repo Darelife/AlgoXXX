@@ -274,4 +274,83 @@ router.delete("/database", async (req, res, next) => {
   }
 });
 
+// get the [bitsid, cfid, name, rating, rank, creationTime] of all users
+router.get("/all", async (req, res, next) => {
+  try {
+    const { data: docs, error: fetchError } = await supabase
+      .from("users")
+      .select("bitsid, cfid, name");
+
+    if (fetchError) {
+      throw new Error(fetchError.message);
+    }
+
+    if (!docs.length) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    // Create an array of Codeforces IDs (cfid) in lowercase
+    const cfids = docs.map((user) => user.cfid.toLowerCase());
+    const chunkSize = 400;
+    const cfidChunks = [];
+    for (let i = 0; i < cfids.length; i += chunkSize) {
+      cfidChunks.push(cfids.slice(i, i + chunkSize));
+    }
+
+    // Fetch user info from Codeforces API in chunks of 400
+    let allCfData = [];
+    for (const chunk of cfidChunks) {
+      const userString = chunk.join(";");
+      const url = `https://codeforces.com/api/user.info?handles=${userString}`;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user info from Codeforces API");
+      }
+
+      const data = await response.json();
+
+      if (data.status !== "OK" || !data.result) {
+        throw new Error("Invalid response from Codeforces API");
+      }
+
+      allCfData = allCfData.concat(data.result);
+    }
+
+    const cfDataMap = new Map();
+    allCfData.forEach((cfData) => {
+      cfDataMap.set(cfData.handle.toLowerCase(), cfData);
+    });
+
+    let updatedDocs = docs.map((user) => {
+      const cfData = cfDataMap.get(user.cfid.toLowerCase()) || {}; // Use cfid to find corresponding data or default to an empty object
+
+      return {
+        bitsid: user.bitsid,
+        cfid: user.cfid,
+        name: user.name || "N/A",
+        rating: cfData.rating !== undefined ? cfData.rating : 0, // Default rating to 0
+        rank: cfData.rank !== undefined ? cfData.rank : "N/A", // Default rank to "N/A"
+        maxRating: cfData.maxRating !== undefined ? cfData.maxRating : 0, // Default maxRating to 0
+        maxRank: cfData.maxRank !== undefined ? cfData.maxRank : "N/A", // Default maxRank to "N/A"
+        creationTime: cfData.registrationTimeSeconds
+          ? new Date(cfData.registrationTimeSeconds * 1000)
+          : "N/A", // Default to "N/A" if registrationTimeSeconds is undefined
+        titlePhoto: cfData.titlePhoto || "N/A",
+      };
+    });
+
+    // Sort the updatedDocs array in descending order based on current rating
+    updatedDocs.sort((a, b) => b.rating - a.rating);
+
+    // Return the updated user data as a JSON response
+    res.status(200).json(updatedDocs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: error.message || "An unexpected error occurred",
+    });
+  }
+});
+
 module.exports = router;
