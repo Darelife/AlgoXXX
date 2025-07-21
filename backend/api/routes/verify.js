@@ -2,18 +2,25 @@ const express = require("express");
 const router = express.Router();
 const supabase = require("../../supabaseClient");
 
-function checkIfUserExists(name, cfid, bitsid) {
-  // First delete any users with matching BITS ID or CF ID
-  return User.deleteMany({ $or: [{ bitsid: bitsid }, { cfid: cfid }] })
-    .then(() => {
-      // After deletion, return an empty array since we've deleted any matches
-      // This will cause the code to treat it as a new user
+async function checkIfUserExists(name, cfid, bitsid) {
+  try {
+    // Delete any users with matching BITS ID or CF ID
+    const { error: deleteError } = await supabase
+      .from("users")
+      .delete()
+      .or(`bitsid.eq.${bitsid},cfid.eq.${cfid}`);
+
+    if (deleteError) {
+      console.error("Error deleting existing users:", deleteError.message);
       return [];
-    })
-    .catch((err) => {
-      console.error("Error deleting existing users:", err);
-      return [];
-    });
+    }
+
+    // Return an empty array since we've deleted any matches
+    return [];
+  } catch (err) {
+    console.error("Unexpected error deleting users:", err);
+    return [];
+  }
 }
 
 router.post("/", async (req, res, next) => {
