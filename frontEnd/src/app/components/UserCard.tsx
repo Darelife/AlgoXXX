@@ -38,6 +38,11 @@ const UserCard: React.FC<UserCardProps> = React.memo(({ user, userRank, contestD
     return { name: 'Legendary Grandmaster', color: 'text-red-600' }
   }
 
+  // if user.titlePhoto contains "no-title"
+  if (user.titlePhoto.includes("no-title")) {
+    user.titlePhoto = "/no-title.jpg";
+  }
+
   // Get rank number color based on position
   const getRankColor = (rank: number): string => {
     if (rank === 1) return 'text-yellow-500 dark:text-yellow-400';
@@ -64,7 +69,7 @@ const UserCard: React.FC<UserCardProps> = React.memo(({ user, userRank, contestD
           <div className="flex items-center gap-5">
             <div className="relative">
               <Image 
-                src={user.titlePhoto === 'N/A' ? "https://userpic.codeforces.org/no-title.jpg" : user.titlePhoto} 
+                src={user.titlePhoto === 'N/A' ? "/no-title.jpg" : user.titlePhoto} 
                 alt={user.name} 
                 width={64} 
                 height={64} 
