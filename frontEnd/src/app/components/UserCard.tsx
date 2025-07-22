@@ -73,7 +73,8 @@ const UserCard: React.FC<UserCardProps> = React.memo(({ user, userRank, contestD
                 alt={user.name} 
                 width={64} 
                 height={64} 
-                className='w-16 h-16 rounded-md object-cover border-2 border-white dark:border-gray-700 shadow-md' 
+                className='w-16 h-16 rounded-md object-cover border-2 border-white dark:border-gray-700 shadow-md'
+                unoptimized
               />
             </div>
 
