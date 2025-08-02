@@ -3,86 +3,29 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/navBar";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ChevronRight } from 'lucide-react';
+import axios from "axios";
 
-interface BootcampData {
-  [key: string]: string | BootcampData;
+interface Question {
+  questionName: string;
+  questionLink: string;
+  questionRating: number;
+  questionTags: string[];
+  contributor: string;
+  topic: string;
 }
-
-const ResourceItem = ({ name, content }: { name: string; content: string | BootcampData }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const isNested = typeof content === 'object';
-
-  const toggleOpen = () => setIsOpen(!isOpen);
-
-  if (isNested) {
-    return (
-      <div className="mb-1">
-        <motion.div 
-          className="bg-white/25 dark:bg-gray-800/15 backdrop-blur-sm p-3 rounded-lg border border-orange-100/20 dark:border-red-900/10 hover:border-orange-200/30 dark:hover:border-red-800/20 transition-all duration-300"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <button
-            onClick={toggleOpen}
-            className="flex items-center justify-between w-full text-left group"
-          >
-            <div className="flex items-center">
-              <motion.div
-                animate={{ rotate: isOpen ? 90 : 0 }}
-                transition={{ duration: 0.2 }}
-                className="mr-2 flex-shrink-0"
-              >
-                <ChevronRight className={`w-3.5 h-3.5 ${isOpen ? 'text-orange-600 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'} transition-colors`} />
-              </motion.div>
-              <h3 className="text-base font-medium text-gray-800 dark:text-gray-200 group-hover:text-orange-600 dark:group-hover:text-red-400 transition-colors">
-                {name}
-              </h3>
-            </div>
-            <span className="text-xs text-gray-500 dark:text-gray-400">
-              {Object.keys(content).length} items
-            </span>
-          </button>
-          
-          {isOpen && (
-            <motion.div 
-              className="mt-2 pl-3 space-y-0.5 border-l border-orange-100/30 dark:border-red-900/20 ml-1"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              transition={{ duration: 0.2 }}
-            >
-              {Object.entries(content).map(([key, value]) => (
-                <ResourceItem key={key} name={key} content={value} />
-              ))}
-            </motion.div>
-          )}
-        </motion.div>
-      </div>
-    );
-  }
-
-  return (
-    <motion.a
-      href={content}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center py-1.5 px-2 rounded-md text-gray-700 dark:text-gray-300 text-sm hover:text-orange-600 dark:hover:text-red-400 transition-colors group"
-      whileHover={{ x: 2, transition: { duration: 0.2 } }}
-    >
-      <div className="w-1 h-1 bg-orange-500/70 dark:bg-red-400/70 rounded-full mr-2 group-hover:scale-110 transition-transform"></div>
-      <span className="truncate">{name}</span>
-    </motion.a>
-  );
-};
 
 export default function Home() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [isAnimating, setIsAnimating] = useState(false);
   const [overlayColor, setOverlayColor] = useState("#121212");
   const [transform, setTransform] = useState({ x: 0, y: 0 });
-  const [bootcampData, setBootcampData] = useState<BootcampData | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [questions, setQuestions] = useState<Question[]>(Array.isArray([]) ? [] : []);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [filteredQuestions, setFilteredQuestions] = useState<Question[]>(Array.isArray([]) ? [] : []);
+  const [topicFilter, setTopicFilter] = useState<string>("All");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   // Detect mobile device on first render and window resize
   useEffect(() => {
@@ -108,6 +51,48 @@ export default function Home() {
   const rotateLeft = useTransform(scrollY, [0, 1000], isMobile ? [0, -5] : [0, -25]);
   const rotateRight = useTransform(scrollY, [0, 1000], isMobile ? [0, 5] : [0, 25]);
 
+  // Fetch questions from backend
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get('https://algoxxx.onrender.com/currentInfo/algosheet');
+        setQuestions(response.data);
+        setFilteredQuestions(response.data);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching questions:', err);
+        setError('Failed to fetch questions');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuestions();
+  }, []);
+
+  // Filter questions based on topic and search term
+  useEffect(() => {
+    let filtered = questions;
+
+    if (topicFilter !== "All") {
+      filtered = filtered.filter(q => q.topic === topicFilter);
+    }
+
+    if (searchTerm) {
+      filtered = filtered.filter(q => 
+        q.questionName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        q.contributor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        q.questionTags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+    }
+
+    setFilteredQuestions(filtered);
+  }, [questions, topicFilter, searchTerm]);
+
+  // Get unique topics for filter dropdown
+  const uniqueTopics = ["All", ...Array.from(new Set(Array.isArray(questions) ? questions.map(q => q.topic) : []))];
+
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme") || "light";
     setTheme(storedTheme as "light" | "dark");
@@ -115,12 +100,6 @@ export default function Home() {
     document.body.classList.toggle("dark", storedTheme === "dark");
   }, []);
 
-  useEffect(() => {
-    fetch("/bootcamp.json")
-      .then((res) => res.json())
-      .then((data: BootcampData) => setBootcampData(data))
-      .catch((error) => console.error("Error fetching bootcamp data:", error));
-  }, []);
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -157,38 +136,6 @@ export default function Home() {
     };
   }, [isMobile]);
 
-  if (!bootcampData) {
-    return (
-      <div className={`relative overflow-hidden ${theme === "dark" ? "dark" : ""}`}>
-        <NavBar toggleTheme={toggleTheme} fixed={false} />
-        <div className="flex justify-center items-center min-h-screen">
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0.4, 1, 0.4] }}
-            transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop" }}
-            className="flex items-center gap-2"
-          >
-            <div className="text-2xl text-gray-600 dark:text-gray-300">Loading</div>
-            <motion.div 
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop" }}
-              className="w-2 h-2 rounded-full bg-orange-500 dark:bg-red-500"
-            ></motion.div>
-            <motion.div 
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 1.5, delay: 0.2, repeat: Infinity, repeatType: "loop" }}
-              className="w-2 h-2 rounded-full bg-orange-500 dark:bg-red-500"
-            ></motion.div>
-            <motion.div 
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 1.5, delay: 0.4, repeat: Infinity, repeatType: "loop" }}
-              className="w-2 h-2 rounded-full bg-orange-500 dark:bg-red-500"
-            ></motion.div>
-          </motion.div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className={`relative overflow-hidden ${theme === "dark" ? "dark" : ""}`}>
@@ -280,10 +227,127 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            (in development...fuck off, u aren&apos;t supposed to be here)
+            Curated collection of algorithmic problems
           </motion.p>
         </motion.div>
       </motion.div>
+
+      {/* Filters and Search */}
+      <div className="max-w-7xl mx-auto px-4 mb-8">
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div className="flex gap-4 items-center">
+            <select
+              value={topicFilter}
+              onChange={(e) => setTopicFilter(e.target.value)}
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+            >
+              {uniqueTopics.map(topic => (
+                <option key={topic} value={topic}>{topic}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex gap-4 items-center">
+            <input
+              type="text"
+              placeholder="Search questions..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 w-64"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Questions Table */}
+      <div className="max-w-7xl mx-auto px-4 mb-12">
+        {loading ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+          </div>
+        ) : error ? (
+          <div className="bg-red-100 dark:bg-red-900/20 border border-red-400 text-red-700 dark:text-red-400 px-4 py-3 rounded">
+            {error}
+          </div>
+        ) : (
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 dark:bg-gray-700">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      Question
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      Rating
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      Topic
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      Tags
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      Contributor
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-600">
+                  {Array.isArray(filteredQuestions) && filteredQuestions.map((question, index) => (
+                    <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <a
+                          href={question.questionLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300 font-medium"
+                        >
+                          {question.questionName}
+                        </a>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          question.questionRating >= 2000 
+                            ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+                            : question.questionRating >= 1500
+                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+                            : 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                        }`}>
+                          {question.questionRating}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                        {question.topic}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex flex-wrap gap-1">
+                          {question.questionTags.map((tag, tagIndex) => (
+                            <span
+                              key={tagIndex}
+                              className="inline-flex px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                        {question.contributor}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {filteredQuestions.length === 0 && (
+              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                No questions found matching your criteria.
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+
       
       {/* Footer matching homepage style */}
       <motion.footer 

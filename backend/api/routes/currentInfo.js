@@ -353,4 +353,40 @@ router.get("/all", async (req, res, next) => {
   }
 });
 
+// Route to fetch all questions from algosheet table
+router.get("/algosheet", async (req, res, next) => {
+  try {
+    const { data, error } = await supabase
+      .from("algosheet")
+      .select(
+        "questionName, questionLink, questionRating, questionTags, contributor, topic"
+      );
+
+    if (data) {
+      data.forEach((question) => {
+        if (question.questionTags) {
+          question.questionTags = question.questionTags
+            .split(",")
+            .map((tag) => tag.trim());
+        }
+      });
+    }
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    if (!data.length) {
+      return res.status(404).json({ message: "No questions found" });
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: error.message || "An unexpected error occurred",
+    });
+  }
+});
+
 module.exports = router;
