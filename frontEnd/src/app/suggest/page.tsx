@@ -98,7 +98,7 @@ export default function SuggestPage() {
   const fetchSuggestedQuestions = async () => {
     try {
       setLoadingSuggestions(true);
-      const response = await axios.get('http://localhost:5000/currentInfo/algosheetreq');
+      const response = await axios.get('https://algoxxx.onrender.com/currentInfo/algosheetreq');
       
       if (response.status === 200) {
         setSuggestedQuestions(response.data);
@@ -133,7 +133,7 @@ export default function SuggestPage() {
       };
       console.log("Sending request:", requestData);
 
-      const response = await axios.post('http://localhost:5000/currentInfo/algosheetreq', requestData);
+      const response = await axios.post('https://algoxxx.onrender.com/currentInfo/algosheetreq', requestData);
       
       console.log("Response:", response.data);
 

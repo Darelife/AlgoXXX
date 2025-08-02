@@ -394,9 +394,7 @@ router.get("/algosheetreq", async (req, res, next) => {
   try {
     const { data, error } = await supabase
       .from("algosheetreq")
-      .select(
-        "questionName, questionLink, questionRating, questionTags, topic"
-      )
+      .select("questionName, questionLink, questionRating, questionTags, topic")
       .order("created_at", { ascending: false });
 
     if (data) {
