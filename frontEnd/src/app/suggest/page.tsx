@@ -103,7 +103,7 @@ export default function SuggestPage() {
       };
       console.log("Sending request:", requestData);
 
-      const response = await axios.post('http://localhost:5000/currentInfo/algosheetreq', requestData);
+      const response = await axios.post('https://algoxxx.onrender.com/currentInfo/algosheetreq', requestData);
       
       console.log("Response:", response.data);
 
