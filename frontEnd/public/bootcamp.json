@@ -46,7 +46,8 @@
   },
   "C++ STL" : {
     "Theory" : {
-      "GFG STL" : "https://www.geeksforgeeks.org/the-c-standard-template-library-stl/"
+      "GFG STL" : "https://www.geeksforgeeks.org/the-c-standard-template-library-stl/",
+      "Vectors, Maps, Sets By Krish Jaiswal" : "https://docs.google.com/document/d/1Cm58HsgxqWBvE7Z6c7iD5xxAW3nzmKusl89gcq4SK80/edit?usp=drive_link"
     },
     "Problems" : {
       "1D Eraser" : "https://codeforces.com/problemset/problem/1873/D",
@@ -58,6 +59,26 @@
       "Longest Strike" : "https://codeforces.com/problemset/problem/1676/F",
       "Rudolf and the Another Competition" : "https://codeforces.com/problemset/problem/1846/C",
       "Subtract Operation" : "https://codeforces.com/problemset/problem/1656/B"
+    }
+  },
+  "2 Pointers" : {
+    "Theory" : {
+      "2 Pointers By Mohommad Zaid" : "ttps://docs.google.com/document/d/1B551V5u57_OQJXTr1MeF2l70wv0XpxG4f_98A0whcyM/edit?usp=sharing"
+    }
+  },
+  "Binary Search" : {
+    "Theory" : {
+      "Binary Search By Kunal Gupta" : "https://docs.google.com/document/d/1zHCfGlzP9Y1f1K3fr-6E6bwBLvzAnPXBlYQWqrvULs0/edit?usp=sharing"
+    }
+  },
+  "Math & Number Theory" : {
+    "Theory" : {
+      "Math and Number Theory By Darshan Rajagoli" : "https://docs.google.com/document/d/1s-DLnqDeYSYg8CzfpRPOdPGfzVf90lIWSwQs_PBPfq4/edit?tab=t.0"
+    }
+  },
+  "Bitmasking" : {
+    "Theory" : {
+      "Bitmasking Theory by Mervin Jude" : "https://drive.google.com/file/d/19o4qxGtFvLgFTfAqm_PWlNy3PNpSRiZ2/view?usp=sharing"
     }
   }
 }
