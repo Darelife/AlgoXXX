@@ -389,4 +389,43 @@ router.get("/algosheet", async (req, res, next) => {
   }
 });
 
+// Route to submit question suggestions to algosheetreq table
+router.post("/algosheetreq", async (req, res, next) => {
+  try {
+    const { questions, contributor } = req.body;
+
+    if (!questions || !Array.isArray(questions) || questions.length === 0) {
+      return res.status(400).json({ error: "Questions array is required" });
+    }
+
+    if (!contributor) {
+      return res.status(400).json({ error: "Contributor name is required" });
+    }
+
+    // Add contributor to each question and insert them
+    const questionsWithContributor = questions.map((question) => ({
+      ...question,
+      contributor: contributor,
+    }));
+
+    const { data, error } = await supabase
+      .from("algosheetreq")
+      .insert(questionsWithContributor);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return res.status(201).json({
+      message: "Questions submitted successfully",
+      count: questions.length,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: error.message || "An unexpected error occurred",
+    });
+  }
+});
+
 module.exports = router;
