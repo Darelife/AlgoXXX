@@ -389,6 +389,39 @@ router.get("/algosheet", async (req, res, next) => {
   }
 });
 
+// Route to fetch all suggested questions from algosheetreq table (without contributor names)
+router.get("/algosheetreq", async (req, res, next) => {
+  try {
+    const { data, error } = await supabase
+      .from("algosheetreq")
+      .select(
+        "questionName, questionLink, questionRating, questionTags, topic"
+      )
+      .order("created_at", { ascending: false });
+
+    if (data) {
+      data.forEach((question) => {
+        if (question.questionTags) {
+          question.questionTags = question.questionTags
+            .split(",")
+            .map((tag) => tag.trim());
+        }
+      });
+    }
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return res.status(200).json(data || []);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: error.message || "An unexpected error occurred",
+    });
+  }
+});
+
 // Route to submit question suggestions to algosheetreq table
 router.post("/algosheetreq", async (req, res, next) => {
   try {

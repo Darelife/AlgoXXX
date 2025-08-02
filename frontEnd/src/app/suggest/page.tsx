@@ -25,6 +25,14 @@ interface Question {
   topic: string;
 }
 
+interface SuggestedQuestion {
+  questionName: string;
+  questionLink: string;
+  questionRating: number;
+  questionTags: string[] | string;
+  topic: string;
+}
+
 export default function SuggestPage() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [isAnimating, setIsAnimating] = useState(false);
@@ -34,6 +42,8 @@ export default function SuggestPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
+  const [suggestedQuestions, setSuggestedQuestions] = useState<SuggestedQuestion[]>([]);
+  const [loadingSuggestions, setLoadingSuggestions] = useState(true);
   
   const [questions, setQuestions] = useState<Question[]>([
     {
@@ -75,9 +85,29 @@ export default function SuggestPage() {
     document.body.classList.toggle("dark", storedTheme === "dark");
   }, []);
 
-  // Function to verify BITS email format
+  useEffect(() => {
+    // Fetch suggested questions on component mount
+    fetchSuggestedQuestions();
+  }, []);
+
   const verifyBitsEmail = (email: string) => {
     return email.toLowerCase().endsWith('@goa.bits-pilani.ac.in');
+  };
+
+  // Function to fetch suggested questions
+  const fetchSuggestedQuestions = async () => {
+    try {
+      setLoadingSuggestions(true);
+      const response = await axios.get('http://localhost:5000/currentInfo/algosheetreq');
+      
+      if (response.status === 200) {
+        setSuggestedQuestions(response.data);
+      }
+    } catch (err) {
+      console.error("Error fetching suggested questions:", err);
+    } finally {
+      setLoadingSuggestions(false);
+    }
   };
 
   const submitQuestions = React.useCallback(async (questionsData: Question[], email: string) => {
@@ -103,7 +133,7 @@ export default function SuggestPage() {
       };
       console.log("Sending request:", requestData);
 
-      const response = await axios.post('https://algoxxx.onrender.com/currentInfo/algosheetreq', requestData);
+      const response = await axios.post('http://localhost:5000/currentInfo/algosheetreq', requestData);
       
       console.log("Response:", response.data);
 
@@ -118,6 +148,9 @@ export default function SuggestPage() {
         }]);
         localStorage.removeItem("pendingQuestions");
         localStorage.removeItem("isSubmittingQuestions");
+        
+        // Refresh the suggested questions list
+        fetchSuggestedQuestions();
         
         // Redirect to sheet page after 2 seconds
         setTimeout(() => {
@@ -522,6 +555,86 @@ export default function SuggestPage() {
             <li>• Your email username will be used as the contributor name</li>
             <li>• Questions will be reviewed before being added to the main sheet</li>
           </ul>
+        </div>
+
+        {/* Previously Suggested Questions */}
+        <div className="mt-8 bg-green-50/90 dark:bg-green-900/20 backdrop-blur-sm rounded-xl border border-green-200/50 dark:border-green-800/50 p-6">
+          <h3 className="text-lg font-semibold text-green-900 dark:text-green-300 mb-4">
+            Previously Suggested Questions
+          </h3>
+          
+          {loadingSuggestions ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="w-6 h-6 border-2 border-t-green-600 border-green-300 rounded-full animate-spin"></div>
+              <span className="ml-2 text-green-800 dark:text-green-400">Loading suggestions...</span>
+            </div>
+          ) : suggestedQuestions.length === 0 ? (
+            <p className="text-green-800 dark:text-green-400 text-center py-4">
+              No questions have been suggested yet. Be the first to contribute!
+            </p>
+          ) : (
+            <div className="space-y-4">
+              {suggestedQuestions.map((question, index) => (
+                <div
+                  key={index}
+                  className="bg-white/50 dark:bg-gray-800/30 border border-green-200 dark:border-green-700 rounded-lg p-4"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div>
+                      <h4 className="font-medium text-green-900 dark:text-green-300 mb-1">
+                        Question Name
+                      </h4>
+                      <a
+                        href={question.questionLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
+                      >
+                        {question.questionName}
+                      </a>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium text-green-900 dark:text-green-300 mb-1">
+                        Difficulty
+                      </h4>
+                      <span className="text-green-800 dark:text-green-400 text-sm">
+                        {question.questionRating}
+                      </span>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium text-green-900 dark:text-green-300 mb-1">
+                        Topic
+                      </h4>
+                      <span className="text-green-800 dark:text-green-400 text-sm">
+                        {question.topic}
+                      </span>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium text-green-900 dark:text-green-300 mb-1">
+                        Tags
+                      </h4>
+                      <div className="flex flex-wrap gap-1">
+                        {(Array.isArray(question.questionTags) 
+                          ? question.questionTags 
+                          : question.questionTags.split(',').map(tag => tag.trim())
+                        ).map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className="bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 text-xs px-2 py-1 rounded"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
