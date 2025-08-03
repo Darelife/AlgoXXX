@@ -429,6 +429,7 @@ const APPROVED_VOTERS = [
   "f20230454@goa.bits-pilani.ac.in",
   "f20230377@goa.bits-pilani.ac.in",
   "f20230468@goa.bits-pilani.ac.in",
+  "f20230860@goa.bits-pilani.ac.in",
 ];
 
 // Function to check if an email is approved (with more flexible checking for testing)
