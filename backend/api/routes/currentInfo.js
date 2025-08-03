@@ -538,34 +538,17 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
       return res.status(404).json({ error: "Question not found" });
     }
 
-    // Check if this voter has already approved this question
-    const { data: existingVote, error: voteCheckError } = await supabase
-      .from("question_votes")
-      .select("*")
-      .eq("question_id", questionId)
-      .eq("voter_email", voterEmail.toLowerCase())
-      .single();
+    console.log("Question found:", questionData);
 
-    if (existingVote) {
-      return res
-        .status(400)
-        .json({ error: "You have already voted on this question" });
-    }
-
-    // Record the vote
-    const { error: voteError } = await supabase.from("question_votes").insert({
-      question_id: questionId,
-      voter_email: voterEmail.toLowerCase(),
-    });
-
-    if (voteError) {
-      throw new Error(voteError.message);
-    }
+    // For now, we'll skip the duplicate vote check to avoid the question_votes table issue
+    // TODO: Implement proper vote tracking once the table is set up
+    console.log("Skipping duplicate vote check for now...");
 
     // Increment the approvals count
-    const currentApprovals =
-      questionData.Approvals || questionData.approvals || 0;
+    const currentApprovals = questionData.Approvals || questionData.approvals || 0;
     const newApprovals = currentApprovals + 1;
+
+    console.log("Current approvals:", currentApprovals, "New approvals:", newApprovals);
 
     const { error: updateError } = await supabase
       .from("algosheetreq")
@@ -573,11 +556,16 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
       .eq("id", questionId);
 
     if (updateError) {
+      console.error("Update error:", updateError);
       throw new Error(updateError.message);
     }
 
+    console.log("Approvals updated successfully");
+
     // If approvals reach 5, move to algosheet and delete from algosheetreq
     if (newApprovals >= 5) {
+      console.log("Question reached 5 approvals, moving to main sheet...");
+      
       // Insert into algosheet
       const { error: insertError } = await supabase.from("algosheet").insert({
         questionName: questionData.questionName,
@@ -589,8 +577,11 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
       });
 
       if (insertError) {
+        console.error("Insert error:", insertError);
         throw new Error(insertError.message);
       }
+
+      console.log("Question inserted into algosheet successfully");
 
       // Delete from algosheetreq
       const { error: deleteError } = await supabase
@@ -599,14 +590,14 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
         .eq("id", questionId);
 
       if (deleteError) {
+        console.error("Delete error:", deleteError);
         throw new Error(deleteError.message);
       }
 
-      // Delete associated votes
-      await supabase
-        .from("question_votes")
-        .delete()
-        .eq("question_id", questionId);
+      console.log("Question deleted from algosheetreq successfully");
+
+      // Skip deleting votes since we're not tracking them for now
+      // TODO: Add this back when question_votes table is properly set up
 
       return res.status(200).json({
         message: "Question approved and moved to main sheet",
