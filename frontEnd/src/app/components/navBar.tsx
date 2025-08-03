@@ -84,7 +84,20 @@ const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boole
               onClick={() => setActiveLink("/leaderboard")}
             >
               Leaderboard
-            </Link>            <Link 
+            </Link>
+            <Link 
+              href="/sheet" 
+              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${
+                activeLink === "/sheet" 
+                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold" 
+                  : "border-l-transparent"
+              }`} 
+              prefetch={false}
+              onClick={() => setActiveLink("/sheet")}
+            >
+              Sheet
+            </Link>
+            <Link 
               href="/bootcamp" 
               className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${
                 activeLink === "/bootcamp" 
@@ -119,8 +132,8 @@ const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boole
       {/* Desktop Brand */}
       <div className="hidden lg:flex items-center">
         
-        {/* Desktop Navigation - Less blocky with bottom borders instead of backgrounds */}
-        <div className="flex space-x-6">
+        {/* Desktop Navigation - Left side */}
+        <div className="flex space-x-4 lg:space-x-6">
           <Link 
             href="/" 
             className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${
@@ -134,18 +147,6 @@ const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boole
             Home
           </Link>
           <Link 
-            href="/about" 
-            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${
-              activeLink === "/about" 
-                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400" 
-                : "border-b-transparent"
-            }`} 
-            prefetch={false}
-            onClick={() => setActiveLink("/about")}
-          >
-            About
-          </Link>
-          <Link 
             href="/leaderboard" 
             className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${
               activeLink === "/leaderboard" 
@@ -156,7 +157,8 @@ const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boole
             onClick={() => setActiveLink("/leaderboard")}
           >
             Leaderboard
-          </Link>          <Link 
+          </Link>
+          <Link 
             href="/bootcamp" 
             className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${
               activeLink === "/bootcamp" 
@@ -185,6 +187,34 @@ const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boole
       
       {/* Right side actions */}
       <div className="flex items-center space-x-4">
+        {/* About and Sheet links on right side - hidden on smaller screens */}
+        <div className="hidden lg:flex items-center space-x-4">
+          <Link 
+            href="/about" 
+            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${
+              activeLink === "/about" 
+                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400" 
+                : "border-b-transparent"
+            }`} 
+            prefetch={false}
+            onClick={() => setActiveLink("/about")}
+          >
+            About
+          </Link>
+          <Link 
+            href="/sheet" 
+            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${
+              activeLink === "/sheet" 
+                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400" 
+                : "border-b-transparent"
+            }`} 
+            prefetch={false}
+            onClick={() => setActiveLink("/sheet")}
+          >
+            Sheet
+          </Link>
+        </div>
+        
         <div className="hidden lg:block">
           <AddCfButton />
         </div>

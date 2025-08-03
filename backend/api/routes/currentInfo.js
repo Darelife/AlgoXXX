@@ -570,36 +570,46 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
     console.log("Question found:", questionData);
 
     // Extract username from email (before @)
-    const voterUsername = voterEmail.split('@')[0];
+    const voterUsername = voterEmail.split("@")[0];
     console.log("Voter username:", voterUsername);
 
     // Check if user has already voted by checking the approvers list
     const currentApprovers = questionData.approvers || "";
-    const approversList = currentApprovers ? currentApprovers.split(',').map(name => name.trim()) : [];
-    
+    const approversList = currentApprovers
+      ? currentApprovers.split(",").map((name) => name.trim())
+      : [];
+
     console.log("Current approvers:", approversList);
 
     if (approversList.includes(voterUsername)) {
       console.log("User has already voted on this question");
-      return res.status(400).json({ error: "You have already voted on this question" });
+      return res
+        .status(400)
+        .json({ error: "You have already voted on this question" });
     }
 
     // Add the voter to the approvers list
     const updatedApproversList = [...approversList, voterUsername];
-    const updatedApprovers = updatedApproversList.join(',');
-    
+    const updatedApprovers = updatedApproversList.join(",");
+
     // Increment the approvals count
-    const currentApprovals = questionData.Approvals || questionData.approvals || 0;
+    const currentApprovals =
+      questionData.Approvals || questionData.approvals || 0;
     const newApprovals = currentApprovals + 1;
 
-    console.log("Current approvals:", currentApprovals, "New approvals:", newApprovals);
+    console.log(
+      "Current approvals:",
+      currentApprovals,
+      "New approvals:",
+      newApprovals
+    );
     console.log("Updated approvers list:", updatedApprovers);
 
     const { error: updateError } = await supabase
       .from("algosheetreq")
-      .update({ 
+      .update({
         Approvals: newApprovals,
-        approvers: updatedApprovers
+        approvers: updatedApprovers,
       })
       .eq("id", questionId);
 
@@ -648,14 +658,14 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
         message: "Question approved and moved to main sheet",
         approvedAndMoved: true,
         approvals: newApprovals,
-        approvers: updatedApprovers
+        approvers: updatedApprovers,
       });
     }
 
     return res.status(200).json({
       message: "Question approved successfully",
       approvals: newApprovals,
-      approvers: updatedApprovers
+      approvers: updatedApprovers,
     });
   } catch (error) {
     console.error(error);
