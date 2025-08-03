@@ -545,10 +545,16 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
     console.log("Skipping duplicate vote check for now...");
 
     // Increment the approvals count
-    const currentApprovals = questionData.Approvals || questionData.approvals || 0;
+    const currentApprovals =
+      questionData.Approvals || questionData.approvals || 0;
     const newApprovals = currentApprovals + 1;
 
-    console.log("Current approvals:", currentApprovals, "New approvals:", newApprovals);
+    console.log(
+      "Current approvals:",
+      currentApprovals,
+      "New approvals:",
+      newApprovals
+    );
 
     const { error: updateError } = await supabase
       .from("algosheetreq")
@@ -565,7 +571,7 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
     // If approvals reach 5, move to algosheet and delete from algosheetreq
     if (newApprovals >= 5) {
       console.log("Question reached 5 approvals, moving to main sheet...");
-      
+
       // Insert into algosheet
       const { error: insertError } = await supabase.from("algosheet").insert({
         questionName: questionData.questionName,

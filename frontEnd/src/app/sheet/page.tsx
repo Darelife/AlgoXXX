@@ -271,72 +271,74 @@ export default function Home() {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
           </div>
         ) : error ? (
-          <div className="bg-red-100 dark:bg-red-900/20 border border-red-400 text-red-700 dark:text-red-400 px-4 py-3 rounded">
+          <div className="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg">
             {error}
           </div>
         ) : (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 dark:bg-gray-700">
+                <thead className="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-600">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
                       Question
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
                       Rating
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
                       Topic
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
                       Tags
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
                       Contributor
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-600">
+                <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                   {Array.isArray(filteredQuestions) && filteredQuestions.map((question, index) => (
-                    <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                      <td className="px-6 py-4 whitespace-nowrap">
+                    <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-150">
+                      <td className="px-4 py-4">
                         <a
                           href={question.questionLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300 font-medium"
+                          className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 font-medium underline-offset-2 hover:underline transition-colors"
                         >
                           {question.questionName}
                         </a>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                      <td className="px-4 py-4">
+                        <span className={`inline-flex px-3 py-1 text-sm font-medium rounded-full ${
                           question.questionRating >= 2000 
-                            ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+                            ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
                             : question.questionRating >= 1500
-                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
-                            : 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                            ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'
+                            : 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
                         }`}>
                           {question.questionRating}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                        {question.topic}
+                      <td className="px-4 py-4 text-sm text-gray-900 dark:text-gray-100">
+                        <span className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-md text-xs font-medium">
+                          {question.topic}
+                        </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-4">
                         <div className="flex flex-wrap gap-1">
                           {question.questionTags.map((tag, tagIndex) => (
                             <span
                               key={tagIndex}
-                              className="inline-flex px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded"
+                              className="inline-flex px-2 py-1 text-xs bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded border border-gray-200 dark:border-gray-600"
                             >
                               {tag}
                             </span>
                           ))}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">
                         {question.contributor}
                       </td>
                     </tr>
