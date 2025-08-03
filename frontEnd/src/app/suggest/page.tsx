@@ -264,8 +264,12 @@ export default function SuggestPage() {
         return;
       }
 
-      // Extract name from email (before @)
-      const contributor = email.split('@')[0];
+      // Get user's actual name from session, fallback to email prefix if not available
+      const { data: sessionData } = await supabase.auth.getSession();
+      const userName = sessionData?.session?.user?.user_metadata?.full_name || 
+                      sessionData?.session?.user?.user_metadata?.name ||
+                      email.split('@')[0];
+      const contributor = userName;
       console.log("Contributor:", contributor);
 
       const requestData = {
@@ -729,7 +733,7 @@ export default function SuggestPage() {
             <li>• Fill in all required fields marked with asterisk (*)</li>
             <li>• Add as many questions as you&apos;d like before submitting</li>
             <li>• You&apos;ll need to sign in with your @goa.bits-pilani.ac.in email</li>
-            <li>• Your email username will be used as the contributor name</li>
+            <li>• Your Google account name will be used as the contributor name</li>
             <li>• Questions will be reviewed before being added to the main sheet</li>
           </ul>
         </div>
