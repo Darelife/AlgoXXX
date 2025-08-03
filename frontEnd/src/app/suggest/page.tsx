@@ -49,6 +49,7 @@ export default function SuggestPage() {
   const [approvingQuestion, setApprovingQuestion] = useState<number | null>(null);
   const [userEmail, setUserEmail] = useState<string>("");
   const [selectedQuestions, setSelectedQuestions] = useState<Set<number>>(new Set());
+  const processingSubmission = React.useRef(false);
   
   const [questions, setQuestions] = useState<Question[]>([
     {
@@ -252,7 +253,15 @@ export default function SuggestPage() {
   const submitQuestions = React.useCallback(async (questionsData: Question[], email: string) => {
     console.log("submitQuestions called with:", { questionsData, email });
     
+    // Prevent duplicate submissions
+    if (processingSubmission.current) {
+      console.log("Already processing submission, aborting...");
+      return;
+    }
+    
     try {
+      processingSubmission.current = true;
+      
       if (!verifyBitsEmail(email)) {
         await supabase.auth.signOut();
         setError("Only @goa.bits-pilani.ac.in emails are allowed");
@@ -305,6 +314,7 @@ export default function SuggestPage() {
     } finally {
       setIsLoading(false);
       localStorage.removeItem("isSubmittingQuestions");
+      processingSubmission.current = false;
     }
   }, [router]);
 
@@ -312,6 +322,13 @@ export default function SuggestPage() {
     // Check for auth session and stored data on mount
     const checkSession = async () => {
       console.log("checkSession called");
+      
+      // Prevent duplicate processing
+      if (processingSubmission.current) {
+        console.log("Already processing submission, skipping...");
+        return;
+      }
+      
       const storedQuestions = localStorage.getItem("pendingQuestions");
       const isSubmitting = localStorage.getItem("isSubmittingQuestions");
       const pendingApprovals = localStorage.getItem("pendingApprovals");
@@ -322,17 +339,27 @@ export default function SuggestPage() {
       if (sessionData?.session?.user?.email) {
         setUserEmail(sessionData.session.user.email);
         
-        // Handle pending question submissions
-        if (storedQuestions && isSubmitting === "true") {
+        // Handle pending question submissions - only if not already processing
+        if (storedQuestions && isSubmitting === "true" && !isLoading && !processingSubmission.current) {
           try {
+            processingSubmission.current = true;
             const questionsData = JSON.parse(storedQuestions);
             console.log("Parsed questions:", questionsData);
             setQuestions(questionsData);
             console.log("User email found:", sessionData.session.user.email);
+            
+            // Clear the flags immediately to prevent duplicate submissions
+            localStorage.removeItem("isSubmittingQuestions");
+            localStorage.removeItem("pendingQuestions");
+            
             setIsLoading(true);
             await submitQuestions(questionsData, sessionData.session.user.email);
           } catch (error) {
             console.error("Error parsing stored questions:", error);
+            localStorage.removeItem("isSubmittingQuestions");
+            localStorage.removeItem("pendingQuestions");
+          } finally {
+            processingSubmission.current = false;
           }
         }
         
@@ -355,7 +382,8 @@ export default function SuggestPage() {
     };
     
     checkSession();
-  }, [submitQuestions, handleBulkApproval]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Intentionally empty to run only once on mount
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
