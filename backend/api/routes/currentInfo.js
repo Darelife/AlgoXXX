@@ -408,19 +408,19 @@ const APPROVED_VOTERS = [
 // Function to check if an email is approved (with more flexible checking for testing)
 const isApprovedVoter = (email) => {
   const emailLower = email.toLowerCase();
-  
+
   // Direct match check
   if (APPROVED_VOTERS.includes(emailLower)) {
     return true;
   }
-  
+
   // For testing purposes, allow any BITS email to vote
   // Comment this out in production and only use the APPROVED_VOTERS list
-  if (emailLower.endsWith('@goa.bits-pilani.ac.in')) {
+  if (emailLower.endsWith("@goa.bits-pilani.ac.in")) {
     console.log("Allowing BITS email for testing:", emailLower);
     return true;
   }
-  
+
   return false;
 };
 
@@ -517,7 +517,7 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
     // Check if the voter is in the approved list
     console.log("Checking if email is approved:", voterEmail.toLowerCase());
     console.log("Approved voters list:", APPROVED_VOTERS);
-    
+
     if (!isApprovedVoter(voterEmail)) {
       console.log("Email not found in approved voters list");
       return res
@@ -563,7 +563,8 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
     }
 
     // Increment the approvals count
-    const currentApprovals = questionData.Approvals || questionData.approvals || 0;
+    const currentApprovals =
+      questionData.Approvals || questionData.approvals || 0;
     const newApprovals = currentApprovals + 1;
 
     const { error: updateError } = await supabase

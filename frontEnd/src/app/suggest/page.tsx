@@ -149,7 +149,8 @@ export default function SuggestPage() {
     try {
       setApprovingQuestion(questionId);
       
-          const response = await axios.post('http://localhost:5000/currentInfo/algosheetreq/approve', {
+          // const response = await axios.post('http://localhost:5000/currentInfo/algosheetreq/approve', {
+          const response = await axios.post('https://algoxxx.onrender.com/currentInfo/algosheetreq/approve', {
             questionId: questionId,
             voterEmail: userEmail
           });      if (response.status === 200) {
@@ -214,7 +215,8 @@ export default function SuggestPage() {
 
       for (const questionId of questionIds) {
         try {
-          const response = await axios.post('http://localhost:5000/currentInfo/algosheetreq/approve', {
+          // const response = await axios.post('http://localhost:5000/currentInfo/algosheetreq/approve', {
+          const response = await axios.post('https://algoxxx.onrender.com/currentInfo/algosheetreq/approve', {
             questionId: questionId,
             voterEmail: userEmail
           });
@@ -270,7 +272,7 @@ export default function SuggestPage() {
       };
       console.log("Sending request:", requestData);
 
-      const response = await axios.post('http://localhost:5000/currentInfo/algosheetreq', requestData);
+      const response = await axios.post('https://algoxxx.onrender.com/currentInfo/algosheetreq', requestData);
       
       console.log("Response:", response.data);
 
