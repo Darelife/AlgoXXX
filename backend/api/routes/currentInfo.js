@@ -396,7 +396,13 @@ const APPROVED_VOTERS = [
   "f20220003@goa.bits-pilani.ac.in",
   "f20220004@goa.bits-pilani.ac.in",
   "f20220005@goa.bits-pilani.ac.in",
-  // Add more approved emails here
+  "f20220006@goa.bits-pilani.ac.in",
+  "f20220007@goa.bits-pilani.ac.in",
+  "f20220008@goa.bits-pilani.ac.in",
+  "f20220009@goa.bits-pilani.ac.in",
+  "f20220010@goa.bits-pilani.ac.in",
+  // Add actual approved emails here - replace with real BITS email IDs
+  // For testing purposes, you can temporarily add your own email
 ];
 
 // Route to fetch all suggested questions from algosheetreq table (without contributor names)
