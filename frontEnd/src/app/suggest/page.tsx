@@ -250,18 +250,11 @@ export default function SuggestPage() {
     }
   }, [selectedQuestions, userEmail]);
 
-  const submitQuestions = React.useCallback(async (questionsData: Question[], email: string) => {
-    console.log("submitQuestions called with:", { questionsData, email });
-    
-    // Prevent duplicate submissions
-    if (processingSubmission.current) {
-      console.log("Already processing submission, aborting...");
-      return;
-    }
+  // Internal function without ref check for auth flow
+  const submitQuestionsDirectly = React.useCallback(async (questionsData: Question[], email: string) => {
+    console.log("submitQuestionsDirectly called with:", { questionsData, email });
     
     try {
-      processingSubmission.current = true;
-      
       if (!verifyBitsEmail(email)) {
         await supabase.auth.signOut();
         setError("Only @goa.bits-pilani.ac.in emails are allowed");
@@ -314,7 +307,6 @@ export default function SuggestPage() {
     } finally {
       setIsLoading(false);
       localStorage.removeItem("isSubmittingQuestions");
-      processingSubmission.current = false;
     }
   }, [router]);
 
@@ -353,7 +345,8 @@ export default function SuggestPage() {
             localStorage.removeItem("pendingQuestions");
             
             setIsLoading(true);
-            await submitQuestions(questionsData, sessionData.session.user.email);
+            // Call submitQuestions directly without the ref check since we're already managing it here
+            await submitQuestionsDirectly(questionsData, sessionData.session.user.email);
           } catch (error) {
             console.error("Error parsing stored questions:", error);
             localStorage.removeItem("isSubmittingQuestions");
