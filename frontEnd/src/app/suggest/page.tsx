@@ -577,26 +577,36 @@ export default function SuggestPage() {
           </Alert>
         )}
 
-        <div className="bg-white dark:bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-8">
-          <div className="space-y-8">
+        <motion.div 
+          className="bg-white/90 dark:bg-[rgba(255,255,255,0.05)] backdrop-blur-[12px] rounded-xl shadow-sm border border-gray-200/50 dark:border-white/10 p-8 transition-all duration-300 hover:shadow-lg"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+        >
+          <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 border-l-4 border-orange-500 dark:border-red-500 pl-3">
+            Submit Questions
+          </h3>
+          
+          <div className="space-y-6">
             {questions.map((question, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
-                className="border border-gray-200 dark:border-gray-600 rounded-lg p-6 bg-gray-50/50 dark:bg-gray-700/30"
+                className="bg-white/80 dark:bg-[rgba(255,255,255,0.05)] backdrop-blur-[12px] border border-gray-100 dark:border-gray-700/40 rounded-lg p-6 shadow-sm transform hover:scale-[1.01] transition-all duration-300"
               >
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     Question {index + 1}
-                  </h3>
+                  </h4>
                   {questions.length > 1 && (
                     <Button
                       onClick={() => removeQuestion(index)}
                       variant="outline"
                       size="sm"
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 border-red-200 dark:border-red-700"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -605,46 +615,53 @@ export default function SuggestPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor={`questionName-${index}`}>Question Name *</Label>
+                    <Label htmlFor={`questionName-${index}`} className="text-gray-700 dark:text-gray-300">
+                      Question Name *
+                    </Label>
                     <Input
                       id={`questionName-${index}`}
                       value={question.questionName}
                       onChange={(e) => updateQuestion(index, 'questionName', e.target.value)}
                       placeholder="Enter question name"
-                      className="mt-1"
+                      className="mt-1 bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700 rounded-xl"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor={`questionLink-${index}`}>Question Link *</Label>
+                    <Label htmlFor={`questionLink-${index}`} className="text-gray-700 dark:text-gray-300">
+                      Question Link *
+                    </Label>
                     <Input
                       id={`questionLink-${index}`}
                       value={question.questionLink}
                       onChange={(e) => updateQuestion(index, 'questionLink', e.target.value)}
                       placeholder="https://..."
-                      className="mt-1"
+                      className="mt-1 bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700 rounded-xl"
                     />
                   </div>
-
                   <div>
-                    <Label htmlFor={`questionRating-${index}`}>Difficulty Rating *</Label>
+                    <Label htmlFor={`questionRating-${index}`} className="text-gray-700 dark:text-gray-300">
+                      Difficulty Rating *
+                    </Label>
                     <Input
                       id={`questionRating-${index}`}
                       type="number"
-                      value={question.questionRating || ''}
-                      onChange={(e) => updateQuestion(index, 'questionRating', parseInt(e.target.value) || 0)}
-                      placeholder="1000"
-                      className="mt-1"
+                      value={question.questionRating}
+                      onChange={(e) => updateQuestion(index, 'questionRating', parseInt(e.target.value))}
+                      placeholder="Enter difficulty rating"
+                      className="mt-1 bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700 rounded-xl appearance-none"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor={`topic-${index}`}>Topic *</Label>
+                    <Label htmlFor={`topic-${index}`} className="text-gray-700 dark:text-gray-300">
+                      Topic *
+                    </Label>
                     <select
                       id={`topic-${index}`}
                       value={question.topic}
                       onChange={(e) => updateQuestion(index, 'topic', e.target.value)}
-                      className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                      className="mt-1 w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-800/60 text-gray-900 dark:text-gray-100"
                     >
                       <option value="">Select topic</option>
                       {topicOptions.map(topic => (
@@ -654,24 +671,26 @@ export default function SuggestPage() {
                   </div>
 
                   <div className="md:col-span-2">
-                    <Label htmlFor={`questionTags-${index}`}>Tags (comma-separated)</Label>
+                    <Label htmlFor={`questionTags-${index}`} className="text-gray-700 dark:text-gray-300">
+                      Tags (comma-separated)
+                    </Label>
                     <Input
                       id={`questionTags-${index}`}
                       value={question.questionTags}
                       onChange={(e) => updateQuestion(index, 'questionTags', e.target.value)}
                       placeholder="array, sorting, binary-search"
-                      className="mt-1"
+                      className="mt-1 bg-gray-50 dark:bg-gray-800/60 border-gray-200 dark:border-gray-700 rounded-xl"
                     />
                   </div>
                 </div>
               </motion.div>
             ))}
 
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center pt-4">
               <Button
                 onClick={addQuestion}
                 variant="outline"
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/60"
               >
                 <Plus className="w-4 h-4" />
                 Add Another Question
@@ -680,7 +699,7 @@ export default function SuggestPage() {
               <Button
                 onClick={handleSubmit}
                 disabled={isLoading}
-                className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white flex items-center gap-2"
+                className="bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-500 dark:to-red-500 hover:from-orange-700 hover:to-red-700 text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 flex items-center gap-2"
               >
                 {isLoading ? (
                   <>
@@ -696,7 +715,7 @@ export default function SuggestPage() {
               </Button>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Instructions */}
         <div className="mt-8 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
