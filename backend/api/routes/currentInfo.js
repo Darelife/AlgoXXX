@@ -389,12 +389,24 @@ router.get("/algosheet", async (req, res, next) => {
   }
 });
 
+// List of approved email IDs who can vote on question suggestions
+const APPROVED_VOTERS = [
+  "f20220001@goa.bits-pilani.ac.in",
+  "f20220002@goa.bits-pilani.ac.in",
+  "f20220003@goa.bits-pilani.ac.in",
+  "f20220004@goa.bits-pilani.ac.in",
+  "f20220005@goa.bits-pilani.ac.in",
+  // Add more approved emails here
+];
+
 // Route to fetch all suggested questions from algosheetreq table (without contributor names)
 router.get("/algosheetreq", async (req, res, next) => {
   try {
     const { data, error } = await supabase
       .from("algosheetreq")
-      .select("questionName, questionLink, questionRating, questionTags, topic")
+      .select(
+        "id, questionName, questionLink, questionRating, questionTags, topic, Approvals"
+      )
       .order("created_at", { ascending: false });
 
     if (data) {
@@ -404,6 +416,8 @@ router.get("/algosheetreq", async (req, res, next) => {
             .split(",")
             .map((tag) => tag.trim());
         }
+        // Ensure approvals field exists and is a number
+        question.approvals = question.Approvals || 0;
       });
     }
 
@@ -433,10 +447,11 @@ router.post("/algosheetreq", async (req, res, next) => {
       return res.status(400).json({ error: "Contributor name is required" });
     }
 
-    // Add contributor to each question and insert them
+    // Add contributor and initialize approvals to each question
     const questionsWithContributor = questions.map((question) => ({
       ...question,
       contributor: contributor,
+      approvals: 0,
     }));
 
     const { data, error } = await supabase
@@ -450,6 +465,124 @@ router.post("/algosheetreq", async (req, res, next) => {
     return res.status(201).json({
       message: "Questions submitted successfully",
       count: questions.length,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: error.message || "An unexpected error occurred",
+    });
+  }
+});
+
+// Route to approve a question suggestion
+router.post("/algosheetreq/approve", async (req, res, next) => {
+  try {
+    const { questionId, voterEmail } = req.body;
+
+    if (!questionId) {
+      return res.status(400).json({ error: "Question ID is required" });
+    }
+
+    if (!voterEmail) {
+      return res.status(400).json({ error: "Voter email is required" });
+    }
+
+    // Check if the voter is in the approved list
+    if (!APPROVED_VOTERS.includes(voterEmail.toLowerCase())) {
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to vote on questions" });
+    }
+
+    // Check if the question exists
+    const { data: questionData, error: fetchError } = await supabase
+      .from("algosheetreq")
+      .select("*")
+      .eq("id", questionId)
+      .single();
+
+    if (fetchError || !questionData) {
+      return res.status(404).json({ error: "Question not found" });
+    }
+
+    // Check if this voter has already approved this question
+    const { data: existingVote, error: voteCheckError } = await supabase
+      .from("question_votes")
+      .select("*")
+      .eq("question_id", questionId)
+      .eq("voter_email", voterEmail.toLowerCase())
+      .single();
+
+    if (existingVote) {
+      return res
+        .status(400)
+        .json({ error: "You have already voted on this question" });
+    }
+
+    // Record the vote
+    const { error: voteError } = await supabase.from("question_votes").insert({
+      question_id: questionId,
+      voter_email: voterEmail.toLowerCase(),
+    });
+
+    if (voteError) {
+      throw new Error(voteError.message);
+    }
+
+    // Increment the approvals count
+    const newApprovals = (questionData.approvals || 0) + 1;
+
+    const { error: updateError } = await supabase
+      .from("algosheetreq")
+      .update({ approvals: newApprovals })
+      .eq("id", questionId);
+
+    if (updateError) {
+      throw new Error(updateError.message);
+    }
+
+    // If approvals reach 5, move to algosheet and delete from algosheetreq
+    if (newApprovals >= 5) {
+      // Insert into algosheet
+      const { error: insertError } = await supabase.from("algosheet").insert({
+        questionName: questionData.questionName,
+        questionLink: questionData.questionLink,
+        questionRating: questionData.questionRating,
+        questionTags: questionData.questionTags,
+        topic: questionData.topic,
+        contributor: questionData.contributor,
+      });
+
+      if (insertError) {
+        throw new Error(insertError.message);
+      }
+
+      // Delete from algosheetreq
+      const { error: deleteError } = await supabase
+        .from("algosheetreq")
+        .delete()
+        .eq("id", questionId);
+
+      if (deleteError) {
+        throw new Error(deleteError.message);
+      }
+
+      // Delete associated votes
+      await supabase
+        .from("question_votes")
+        .delete()
+        .eq("question_id", questionId);
+
+      return res.status(200).json({
+        message: "Question approved and moved to main sheet",
+        approvedAndMoved: true,
+        approvals: newApprovals,
+      });
+    }
+
+    return res.status(200).json({
+      message: "Question approved successfully",
+      approvals: newApprovals,
     });
   } catch (error) {
     console.error(error);

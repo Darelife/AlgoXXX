@@ -26,11 +26,13 @@ interface Question {
 }
 
 interface SuggestedQuestion {
+  id: number;
   questionName: string;
   questionLink: string;
   questionRating: number;
   questionTags: string[] | string;
   topic: string;
+  approvals: number;
 }
 
 export default function SuggestPage() {
@@ -44,6 +46,9 @@ export default function SuggestPage() {
   const [success, setSuccess] = useState<string>("");
   const [suggestedQuestions, setSuggestedQuestions] = useState<SuggestedQuestion[]>([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(true);
+  const [approvingQuestion, setApprovingQuestion] = useState<number | null>(null);
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [selectedQuestions, setSelectedQuestions] = useState<Set<number>>(new Set());
   
   const [questions, setQuestions] = useState<Question[]>([
     {
@@ -98,7 +103,7 @@ export default function SuggestPage() {
   const fetchSuggestedQuestions = async () => {
     try {
       setLoadingSuggestions(true);
-      const response = await axios.get('https://algoxxx.onrender.com/currentInfo/algosheetreq');
+      const response = await axios.get('http://localhost:5000/currentInfo/algosheetreq');
       
       if (response.status === 200) {
         setSuggestedQuestions(response.data);
@@ -109,6 +114,138 @@ export default function SuggestPage() {
       setLoadingSuggestions(false);
     }
   };
+
+  // Function to handle single question approval
+  const handleApproveQuestion = async (questionId: number) => {
+    if (!userEmail) {
+      // User needs to sign in first
+      try {
+        setApprovingQuestion(questionId);
+        
+        const { error: signInError } = await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo: window.location.href,
+            queryParams: {
+              prompt: 'select_account',
+              hd: 'goa.bits-pilani.ac.in',
+            }
+          }
+        });
+
+        if (signInError) {
+          setError("Failed to sign in with Google");
+          setApprovingQuestion(null);
+        }
+      } catch (err) {
+        console.error(err);
+        setError("Failed to sign in");
+        setApprovingQuestion(null);
+      }
+      return;
+    }
+
+    // User is signed in, proceed with approval
+    try {
+      setApprovingQuestion(questionId);
+      
+          const response = await axios.post('http://localhost:5000/currentInfo/algosheetreq/approve', {
+            questionId: questionId,
+            voterEmail: userEmail
+          });      if (response.status === 200) {
+        if (response.data.approvedAndMoved) {
+          setSuccess(`Question approved and moved to the main sheet!`);
+        } else {
+          setSuccess(`Question approved! (${response.data.approvals}/5 approvals)`);
+        }
+        // Refresh the suggestions list
+        fetchSuggestedQuestions();
+      }
+    } catch (err: unknown) {
+      const errorMessage = err && typeof err === 'object' && 'response' in err 
+        ? (err as { response?: { data?: { error?: string } } }).response?.data?.error || "Failed to approve question"
+        : "Failed to approve question";
+      setError(errorMessage);
+    } finally {
+      setApprovingQuestion(null);
+    }
+  };
+
+  // Function to handle bulk approval
+  const handleBulkApproval = React.useCallback(async () => {
+    if (selectedQuestions.size === 0) {
+      setError("Please select questions to approve");
+      return;
+    }
+
+    if (!userEmail) {
+      // User needs to sign in first
+      try {
+        localStorage.setItem("pendingApprovals", JSON.stringify(Array.from(selectedQuestions)));
+        
+        const { error: signInError } = await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo: window.location.href,
+            queryParams: {
+              prompt: 'select_account',
+              hd: 'goa.bits-pilani.ac.in',
+            }
+          }
+        });
+
+        if (signInError) {
+          setError("Failed to sign in with Google");
+          localStorage.removeItem("pendingApprovals");
+        }
+      } catch (err) {
+        console.error(err);
+        setError("Failed to sign in");
+        localStorage.removeItem("pendingApprovals");
+      }
+      return;
+    }
+
+    // User is signed in, proceed with bulk approval
+    try {
+      const questionIds = Array.from(selectedQuestions);
+      let approvedCount = 0;
+      let movedCount = 0;
+
+      for (const questionId of questionIds) {
+        try {
+          const response = await axios.post('http://localhost:5000/currentInfo/algosheetreq/approve', {
+            questionId: questionId,
+            voterEmail: userEmail
+          });
+
+          if (response.status === 200) {
+            approvedCount++;
+            if (response.data.approvedAndMoved) {
+              movedCount++;
+            }
+          }
+        } catch (err) {
+          console.error(`Error approving question ${questionId}:`, err);
+        }
+      }
+
+      if (approvedCount > 0) {
+        let message = `Successfully approved ${approvedCount} question(s)`;
+        if (movedCount > 0) {
+          message += `, ${movedCount} moved to main sheet`;
+        }
+        setSuccess(message);
+        setSelectedQuestions(new Set());
+        fetchSuggestedQuestions();
+      } else {
+        setError("Failed to approve any questions");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Failed to approve questions");
+    }
+  }, [selectedQuestions, userEmail]);
 
   const submitQuestions = React.useCallback(async (questionsData: Question[], email: string) => {
     console.log("submitQuestions called with:", { questionsData, email });
@@ -133,7 +270,7 @@ export default function SuggestPage() {
       };
       console.log("Sending request:", requestData);
 
-      const response = await axios.post('https://algoxxx.onrender.com/currentInfo/algosheetreq', requestData);
+      const response = await axios.post('http://localhost:5000/currentInfo/algosheetreq', requestData);
       
       console.log("Response:", response.data);
 
@@ -175,32 +312,48 @@ export default function SuggestPage() {
       console.log("checkSession called");
       const storedQuestions = localStorage.getItem("pendingQuestions");
       const isSubmitting = localStorage.getItem("isSubmittingQuestions");
-      console.log("Stored data:", { storedQuestions, isSubmitting });
+      const pendingApprovals = localStorage.getItem("pendingApprovals");
+      console.log("Stored data:", { storedQuestions, isSubmitting, pendingApprovals });
       
-      if (storedQuestions && isSubmitting === "true") {
-        try {
-          const questionsData = JSON.parse(storedQuestions);
-          console.log("Parsed questions:", questionsData);
-          setQuestions(questionsData);
-          
-          const { data: sessionData } = await supabase.auth.getSession();
-          console.log("Session data:", sessionData);
-          
-          if (sessionData?.session?.user?.email) {
+      // Check for current user session
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (sessionData?.session?.user?.email) {
+        setUserEmail(sessionData.session.user.email);
+        
+        // Handle pending question submissions
+        if (storedQuestions && isSubmitting === "true") {
+          try {
+            const questionsData = JSON.parse(storedQuestions);
+            console.log("Parsed questions:", questionsData);
+            setQuestions(questionsData);
             console.log("User email found:", sessionData.session.user.email);
             setIsLoading(true);
             await submitQuestions(questionsData, sessionData.session.user.email);
-          } else {
-            console.log("No user email found in session");
+          } catch (error) {
+            console.error("Error parsing stored questions:", error);
           }
-        } catch (error) {
-          console.error("Error parsing stored questions:", error);
         }
+        
+        // Handle pending approvals
+        if (pendingApprovals) {
+          try {
+            const questionIds = JSON.parse(pendingApprovals);
+            setSelectedQuestions(new Set(questionIds));
+            localStorage.removeItem("pendingApprovals");
+            // Auto-trigger bulk approval
+            setTimeout(() => handleBulkApproval(), 1000);
+          } catch (error) {
+            console.error("Error parsing pending approvals:", error);
+            localStorage.removeItem("pendingApprovals");
+          }
+        }
+      } else {
+        setUserEmail("");
       }
     };
     
     checkSession();
-  }, [submitQuestions]);
+  }, [submitQuestions, handleBulkApproval]);
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
@@ -559,9 +712,28 @@ export default function SuggestPage() {
 
         {/* Previously Suggested Questions */}
         <div className="mt-8 bg-green-50/90 dark:bg-green-900/20 backdrop-blur-sm rounded-xl border border-green-200/50 dark:border-green-800/50 p-6">
-          <h3 className="text-lg font-semibold text-green-900 dark:text-green-300 mb-4">
-            Previously Suggested Questions
-          </h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-green-900 dark:text-green-300">
+              Previously Suggested Questions
+            </h3>
+            {selectedQuestions.size > 0 && (
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleBulkApproval}
+                  className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2"
+                >
+                  Approve Selected ({selectedQuestions.size})
+                </Button>
+                <Button
+                  onClick={() => setSelectedQuestions(new Set())}
+                  variant="outline"
+                  className="text-sm px-4 py-2"
+                >
+                  Clear Selection
+                </Button>
+              </div>
+            )}
+          </div>
           
           {loadingSuggestions ? (
             <div className="flex items-center justify-center py-8">
@@ -576,9 +748,45 @@ export default function SuggestPage() {
             <div className="space-y-4">
               {suggestedQuestions.map((question, index) => (
                 <div
-                  key={index}
+                  key={question.id || index}
                   className="bg-white/50 dark:bg-gray-800/30 border border-green-200 dark:border-green-700 rounded-lg p-4"
                 >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        checked={selectedQuestions.has(question.id)}
+                        onChange={(e) => {
+                          const newSelected = new Set(selectedQuestions);
+                          if (e.target.checked) {
+                            newSelected.add(question.id);
+                          } else {
+                            newSelected.delete(question.id);
+                          }
+                          setSelectedQuestions(newSelected);
+                        }}
+                        className="w-4 h-4 text-green-600 border-green-300 rounded focus:ring-green-500"
+                      />
+                      <span className="text-sm font-medium text-green-800 dark:text-green-300">
+                        Approvals: {question.approvals}/5
+                      </span>
+                    </div>
+                    <Button
+                      onClick={() => handleApproveQuestion(question.id)}
+                      disabled={approvingQuestion === question.id}
+                      className="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1"
+                    >
+                      {approvingQuestion === question.id ? (
+                        <>
+                          <div className="w-3 h-3 border border-t-white border-white/30 rounded-full animate-spin mr-1"></div>
+                          Approving...
+                        </>
+                      ) : (
+                        "👍 Approve"
+                      )}
+                    </Button>
+                  </div>
+                  
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
                       <h4 className="font-medium text-green-900 dark:text-green-300 mb-1">
