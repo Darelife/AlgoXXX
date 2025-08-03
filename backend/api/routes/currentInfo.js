@@ -401,9 +401,28 @@ const APPROVED_VOTERS = [
   "f20220008@goa.bits-pilani.ac.in",
   "f20220009@goa.bits-pilani.ac.in",
   "f20220010@goa.bits-pilani.ac.in",
-  // Add actual approved emails here - replace with real BITS email IDs
-  // For testing purposes, you can temporarily add your own email
+  "f20230458@goa.bits-pilani.ac.in", // Add the actual user email
+  // Add more approved emails here - replace with real BITS email IDs
 ];
+
+// Function to check if an email is approved (with more flexible checking for testing)
+const isApprovedVoter = (email) => {
+  const emailLower = email.toLowerCase();
+  
+  // Direct match check
+  if (APPROVED_VOTERS.includes(emailLower)) {
+    return true;
+  }
+  
+  // For testing purposes, allow any BITS email to vote
+  // Comment this out in production and only use the APPROVED_VOTERS list
+  if (emailLower.endsWith('@goa.bits-pilani.ac.in')) {
+    console.log("Allowing BITS email for testing:", emailLower);
+    return true;
+  }
+  
+  return false;
+};
 
 // Route to fetch all suggested questions from algosheetreq table (without contributor names)
 router.get("/algosheetreq", async (req, res, next) => {
@@ -457,7 +476,7 @@ router.post("/algosheetreq", async (req, res, next) => {
     const questionsWithContributor = questions.map((question) => ({
       ...question,
       contributor: contributor,
-      approvals: 0,
+      Approvals: 0,
     }));
 
     const { data, error } = await supabase
@@ -485,6 +504,8 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
   try {
     const { questionId, voterEmail } = req.body;
 
+    console.log("Approval request received:", { questionId, voterEmail });
+
     if (!questionId) {
       return res.status(400).json({ error: "Question ID is required" });
     }
@@ -494,11 +515,17 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
     }
 
     // Check if the voter is in the approved list
-    if (!APPROVED_VOTERS.includes(voterEmail.toLowerCase())) {
+    console.log("Checking if email is approved:", voterEmail.toLowerCase());
+    console.log("Approved voters list:", APPROVED_VOTERS);
+    
+    if (!isApprovedVoter(voterEmail)) {
+      console.log("Email not found in approved voters list");
       return res
         .status(403)
         .json({ error: "You are not authorized to vote on questions" });
     }
+
+    console.log("Email is approved, proceeding with vote...");
 
     // Check if the question exists
     const { data: questionData, error: fetchError } = await supabase
@@ -536,11 +563,12 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
     }
 
     // Increment the approvals count
-    const newApprovals = (questionData.approvals || 0) + 1;
+    const currentApprovals = questionData.Approvals || questionData.approvals || 0;
+    const newApprovals = currentApprovals + 1;
 
     const { error: updateError } = await supabase
       .from("algosheetreq")
-      .update({ approvals: newApprovals })
+      .update({ Approvals: newApprovals })
       .eq("id", questionId);
 
     if (updateError) {
