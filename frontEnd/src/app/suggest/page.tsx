@@ -469,7 +469,7 @@ export default function SuggestPage() {
     }
   };
 
-  const topicOptions = ["DSA", "Quant", "Brain Teasers", "Math", "Algorithms", "Data Structures", "Other"];
+  const topicOptions = ["DSA", "Quant", "Brain Teasers", "Non DSA"];
 
   return (
     <div className={`relative overflow-hidden ${theme === "dark" ? "dark" : ""}`}>
