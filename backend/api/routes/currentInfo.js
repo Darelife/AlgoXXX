@@ -457,7 +457,7 @@ router.get("/algosheetreq", async (req, res, next) => {
     const { data, error } = await supabase
       .from("algosheetreq")
       .select(
-        "id, questionName, questionLink, questionRating, questionTags, topic, Approvals"
+        "id, questionName, questionLink, questionRating, questionTags, topic, Approvals, approvers"
       )
       .order("created_at", { ascending: false });
 
@@ -470,6 +470,8 @@ router.get("/algosheetreq", async (req, res, next) => {
         }
         // Ensure approvals field exists and is a number
         question.approvals = question.Approvals || 0;
+        // Ensure approvers field exists
+        question.approvers = question.approvers || "";
       });
     }
 
@@ -567,25 +569,38 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
 
     console.log("Question found:", questionData);
 
-    // For now, we'll skip the duplicate vote check to avoid the question_votes table issue
-    // TODO: Implement proper vote tracking once the table is set up
-    console.log("Skipping duplicate vote check for now...");
+    // Extract username from email (before @)
+    const voterUsername = voterEmail.split('@')[0];
+    console.log("Voter username:", voterUsername);
 
+    // Check if user has already voted by checking the approvers list
+    const currentApprovers = questionData.approvers || "";
+    const approversList = currentApprovers ? currentApprovers.split(',').map(name => name.trim()) : [];
+    
+    console.log("Current approvers:", approversList);
+
+    if (approversList.includes(voterUsername)) {
+      console.log("User has already voted on this question");
+      return res.status(400).json({ error: "You have already voted on this question" });
+    }
+
+    // Add the voter to the approvers list
+    const updatedApproversList = [...approversList, voterUsername];
+    const updatedApprovers = updatedApproversList.join(',');
+    
     // Increment the approvals count
-    const currentApprovals =
-      questionData.Approvals || questionData.approvals || 0;
+    const currentApprovals = questionData.Approvals || questionData.approvals || 0;
     const newApprovals = currentApprovals + 1;
 
-    console.log(
-      "Current approvals:",
-      currentApprovals,
-      "New approvals:",
-      newApprovals
-    );
+    console.log("Current approvals:", currentApprovals, "New approvals:", newApprovals);
+    console.log("Updated approvers list:", updatedApprovers);
 
     const { error: updateError } = await supabase
       .from("algosheetreq")
-      .update({ Approvals: newApprovals })
+      .update({ 
+        Approvals: newApprovals,
+        approvers: updatedApprovers
+      })
       .eq("id", questionId);
 
     if (updateError) {
@@ -593,7 +608,7 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
       throw new Error(updateError.message);
     }
 
-    console.log("Approvals updated successfully");
+    console.log("Approvals and approvers updated successfully");
 
     // If approvals reach 5, move to algosheet and delete from algosheetreq
     if (newApprovals >= 5) {
@@ -629,19 +644,18 @@ router.post("/algosheetreq/approve", async (req, res, next) => {
 
       console.log("Question deleted from algosheetreq successfully");
 
-      // Skip deleting votes since we're not tracking them for now
-      // TODO: Add this back when question_votes table is properly set up
-
       return res.status(200).json({
         message: "Question approved and moved to main sheet",
         approvedAndMoved: true,
         approvals: newApprovals,
+        approvers: updatedApprovers
       });
     }
 
     return res.status(200).json({
       message: "Question approved successfully",
       approvals: newApprovals,
+      approvers: updatedApprovers
     });
   } catch (error) {
     console.error(error);
