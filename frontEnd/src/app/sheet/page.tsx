@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/navBar";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { Switch } from "@/components/ui/switch";
 import axios from "axios";
 
 interface Question {
@@ -24,8 +25,14 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>(Array.isArray([]) ? [] : []);
-  const [topicFilter, setTopicFilter] = useState<string>("All");
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedTopics, setSelectedTopics] = useState<Set<string>>(new Set(["All"]));
+  // const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
+  const [tagFilterMode, setTagFilterMode] = useState<"AND" | "OR">("OR");
+  const [selectedRatings, setSelectedRatings] = useState<Set<number>>(new Set([1300]));
+  const [showRatings, setShowRatings] = useState(true);
+  const [showTags, setShowTags] = useState(true);
+  const [isRandomized, setIsRandomized] = useState(false);
 
   // Detect mobile device on first render and window resize
   useEffect(() => {
@@ -71,27 +78,116 @@ export default function Home() {
     fetchQuestions();
   }, []);
 
-  // Filter questions based on topic and search term
+  // Filter questions based on topic, search term, tags, and rating ranges
   useEffect(() => {
     let filtered = questions;
 
-    if (topicFilter !== "All") {
-      filtered = filtered.filter(q => q.topic === topicFilter);
+    if (!selectedTopics.has("All") && selectedTopics.size > 0) {
+      filtered = filtered.filter(q => selectedTopics.has(q.topic));
     }
 
-    if (searchTerm) {
-      filtered = filtered.filter(q => 
-        q.questionName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        q.contributor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        q.questionTags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
+    if (selectedTags.size > 0) {
+      filtered = filtered.filter(q => {
+        if (tagFilterMode === "AND") {
+          return Array.from(selectedTags).every(tag => q.questionTags.includes(tag));
+        } else {
+          return Array.from(selectedTags).some(tag => q.questionTags.includes(tag));
+        }
+      });
+    }
+
+    // Filter by selected ratings
+    if (selectedRatings.size > 0) {
+      filtered = filtered.filter(q => {
+        const roundedRating = Math.floor(q.questionRating / 100) * 100;
+        return selectedRatings.has(roundedRating);
+      });
     }
 
     setFilteredQuestions(filtered);
-  }, [questions, topicFilter, searchTerm]);
+  }, [questions, selectedTopics, selectedTags, tagFilterMode, selectedRatings]);
 
-  // Get unique topics for filter dropdown
+  // Randomize questions
+  const randomizeQuestions = () => {
+    const shuffled = [...filteredQuestions].sort(() => Math.random() - 0.5);
+    setFilteredQuestions(shuffled);
+    setIsRandomized(true);
+  };
+
+  // Reset to original order
+  const resetOrder = () => {
+    // Re-apply filters to get original order
+    let filtered = questions;
+
+    if (!selectedTopics.has("All") && selectedTopics.size > 0) {
+      filtered = filtered.filter(q => selectedTopics.has(q.topic));
+    }
+
+
+    if (selectedTags.size > 0) {
+      filtered = filtered.filter(q => {
+        if (tagFilterMode === "AND") {
+          return Array.from(selectedTags).every(tag => q.questionTags.includes(tag));
+        } else {
+          return Array.from(selectedTags).some(tag => q.questionTags.includes(tag));
+        }
+      });
+    }
+
+    if (selectedRatings.size > 0) {
+      filtered = filtered.filter(q => {
+        const roundedRating = Math.floor(q.questionRating / 100) * 100;
+        return selectedRatings.has(roundedRating);
+      });
+    }
+
+    setFilteredQuestions(filtered);
+    setIsRandomized(false);
+  };
+
   const uniqueTopics = ["All", ...Array.from(new Set(Array.isArray(questions) ? questions.map(q => q.topic) : []))];
+  const uniqueTags = Array.from(new Set(Array.isArray(questions) ? questions.flatMap(q => q.questionTags) : [])).sort();
+  const ratings = Array.from({ length: 21 }, (_, i) => 800 + i * 100); // 800, 900, ..., 2800
+
+
+  const toggleTopic = (topic: string) => {
+    const newSelectedTopics = new Set(selectedTopics);
+    if (topic === "All") {
+      setSelectedTopics(new Set(["All"]));
+    } else {
+      newSelectedTopics.delete("All");
+      if (newSelectedTopics.has(topic)) {
+        newSelectedTopics.delete(topic);
+        if (newSelectedTopics.size === 0) {
+          newSelectedTopics.add("All");
+        }
+      } else {
+        newSelectedTopics.add(topic);
+      }
+      setSelectedTopics(newSelectedTopics);
+    }
+  };
+
+  const toggleTag = (tag: string) => {
+    const newSelectedTags = new Set(selectedTags);
+    if (newSelectedTags.has(tag)) {
+      newSelectedTags.delete(tag);
+    } else {
+      newSelectedTags.add(tag);
+    }
+    setSelectedTags(newSelectedTags);
+  };
+
+  const toggleRating = (rating: number) => {
+    const newSelectedRatings = new Set(selectedRatings);
+    if (newSelectedRatings.has(rating)) {
+      newSelectedRatings.delete(rating);
+    } else {
+      newSelectedRatings.add(rating);
+    }
+    setSelectedRatings(newSelectedRatings);
+  };
+
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme") || "light";
@@ -234,37 +330,110 @@ export default function Home() {
 
       {/* Filters and Search */}
       <div className="max-w-7xl mx-auto px-4 mb-8">
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="flex gap-4 items-center">
-            <select
-              value={topicFilter}
-              onChange={(e) => setTopicFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-            >
-              {uniqueTopics.map(topic => (
-                <option key={topic} value={topic}>{topic}</option>
-              ))}
-            </select>
-            <a
-              href="/suggest"
-              className="px-4 py-2 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white rounded-lg font-medium transition-all duration-300 shadow-md hover:shadow-lg"
-            >
-              + Suggest Questions
-            </a>
-          </div>
-          <div className="flex gap-4 items-center">
-            <input
-              type="text"
-              placeholder="Search questions..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 w-64"
-            />
+        <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+          <div className="space-y-4">
+
+            {/* Topics Filter */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 w-20 flex-shrink-0">Topics:</h3>
+              <div className="flex flex-wrap gap-2">
+                {uniqueTopics.map(topic => (
+                  <button
+                    key={topic}
+                    onClick={() => toggleTopic(topic)}
+                    className={`px-3 py-1.5 text-sm font-medium rounded-full border transition-all duration-200 ${
+                      selectedTopics.has(topic)
+                        ? "bg-orange-500 text-white border-orange-500 shadow-sm"
+                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-400"
+                    }`}
+                  >
+                    {topic}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Tags Filter */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <div className="flex items-center gap-4 w-20 flex-shrink-0">
+                <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400">Tags:</h3>
+              </div>
+              <div className="flex flex-wrap gap-2 flex-grow">
+                {uniqueTags.map(tag => (
+                  <button
+                    key={tag}
+                    onClick={() => toggleTag(tag)}
+                    className={`px-3 py-1.5 text-sm font-medium rounded-full border transition-all duration-200 ${
+                      selectedTags.has(tag)
+                        ? "bg-orange-500 text-white border-orange-500 shadow-sm"
+                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-400"
+                    }`}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+              {selectedTags.size > 0 && (
+                <div className="flex items-center gap-2">
+                  <div className="flex border border-gray-300 dark:border-gray-600 rounded-full overflow-hidden">
+                    <button onClick={() => setTagFilterMode("OR")} className={`px-2 py-0.5 text-xs font-medium transition-colors ${tagFilterMode === "OR" ? "bg-orange-500 text-white" : "bg-transparent text-gray-600 dark:text-gray-400"}`}>Any</button>
+                    <button onClick={() => setTagFilterMode("AND")} className={`px-2 py-0.5 text-xs font-medium transition-colors ${tagFilterMode === "AND" ? "bg-orange-500 text-white" : "bg-transparent text-gray-600 dark:text-gray-400"}`}>All</button>
+                  </div>
+                  <button onClick={() => setSelectedTags(new Set())} className="text-xs text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors">Clear</button>
+                </div>
+              )}
+            </div>
+
+            {/* Ratings Filter */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 w-20 flex-shrink-0">Ratings:</h3>
+              <div className="flex flex-wrap gap-2">
+                {ratings.map(rating => (
+                  <button
+                    key={rating}
+                    onClick={() => toggleRating(rating)}
+                    className={`px-3 py-1.5 text-sm font-medium rounded-md border transition-all duration-200 ${
+                      selectedRatings.has(rating)
+                        ? "bg-orange-500 text-white border-orange-500 shadow-sm"
+                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-400"
+                    }`}
+                  >
+                    {rating}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Actions and Toggles */}
+            <div className="flex flex-wrap items-center justify-center gap-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={isRandomized ? resetOrder : randomizeQuestions}
+                  className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-full font-medium transition-colors duration-200 shadow-sm hover:shadow-md text-sm"
+                >
+                  {isRandomized ? "Reset Order" : "Randomize"}
+                </button>
+                <a
+                  href="/suggest"
+                  className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-medium transition-colors duration-200 shadow-sm hover:shadow-md text-sm"
+                >
+                  + Suggest Qs
+                </a>
+                <div className="flex items-center gap-6">
+                   <div className="flex items-center space-x-2">
+                     <Switch id="show-ratings" checked={showRatings} onCheckedChange={setShowRatings} />
+                     <label htmlFor="show-ratings" className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer">Show Ratings</label>
+                   </div>
+                   <div className="flex items-center space-x-2">
+                     <Switch id="show-tags" checked={showTags} onCheckedChange={setShowTags} />
+                     <label htmlFor="show-tags" className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer">Show Tags</label>
+                   </div>
+                 </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Questions Table */}
+      {/* Questions Grid */}
       <div className="max-w-7xl mx-auto px-4 mb-12">
         {loading ? (
           <div className="flex justify-center items-center py-12">
@@ -274,83 +443,91 @@ export default function Home() {
           <div className="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg">
             {error}
           </div>
+        ) : filteredQuestions.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="text-gray-400 dark:text-gray-500 mb-4">
+              <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47.881-6.063 2.33C8.134 19.729 9.86 21 12 21c2.139 0 3.866-1.271 6.063-3.67z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No questions found</h3>
+            <p className="text-gray-500 dark:text-gray-400">Try adjusting your search criteria or filters</p>
+          </div>
         ) : (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-600">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Question
-                    </th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Rating
-                    </th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Topic
-                    </th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Tags
-                    </th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Contributor
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                  {Array.isArray(filteredQuestions) && filteredQuestions.map((question, index) => (
-                    <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-150">
-                      <td className="px-4 py-4">
-                        <a
-                          href={question.questionLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 font-medium underline-offset-2 hover:underline transition-colors"
-                        >
-                          {question.questionName}
-                        </a>
-                      </td>
-                      <td className="px-4 py-4">
-                        <span className={`inline-flex px-3 py-1 text-sm font-medium rounded-full ${
-                          question.questionRating >= 2000 
+          <div className="space-y-6">
+            {/* Header */}
+            <div className="text-center border-b border-gray-200 dark:border-gray-700 pb-4">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                Found {filteredQuestions.length} question{filteredQuestions.length !== 1 ? 's' : ''}
+              </h2>
+            </div>
+
+            {/* Questions Grid */}
+            <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1">
+              {filteredQuestions.map((question, index) => (
+                <div key={index} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow duration-200">
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <a
+                        href={question.questionLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 font-semibold hover:underline transition-colors text-lg block mb-2"
+                      >
+                        {question.questionName}
+                      </a>
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                        <span className="flex items-center gap-1">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                          {question.contributor}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                          </svg>
+                          {question.topic}
+                        </span>
+                        {showTags && (
+                          <div className="flex flex-wrap gap-1">
+                            {question.questionTags.slice(0, 3).map((tag, tagIndex) => (
+                              <span key={tagIndex} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-full">
+                                {tag}
+                              </span>
+                            ))}
+                            {question.questionTags.length > 3 && (
+                              <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-full">
+                                +{question.questionTags.length - 3}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    {showRatings && (
+                      <div className="flex items-center gap-3">
+                        <span className={`inline-flex px-4 py-2 text-sm font-bold rounded-full ${
+                          question.questionRating >= 2400
+                            ? 'bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400'
+                            : question.questionRating >= 2000 
                             ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
-                            : question.questionRating >= 1500
-                            ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'
-                            : 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                            : question.questionRating >= 1600
+                            ? 'bg-orange-50 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400'
+                            : question.questionRating >= 1200
+                            ? 'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'
+                            : question.questionRating >= 800
+                            ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                            : 'bg-gray-50 text-gray-700 dark:bg-gray-900/20 dark:text-gray-400'
                         }`}>
                           {question.questionRating}
                         </span>
-                      </td>
-                      <td className="px-4 py-4 text-sm text-gray-900 dark:text-gray-100">
-                        <span className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-md text-xs font-medium">
-                          {question.topic}
-                        </span>
-                      </td>
-                      <td className="px-4 py-4">
-                        <div className="flex flex-wrap gap-1">
-                          {question.questionTags.map((tag, tagIndex) => (
-                            <span
-                              key={tagIndex}
-                              className="inline-flex px-2 py-1 text-xs bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded border border-gray-200 dark:border-gray-600"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </td>
-                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">
-                        {question.contributor}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
-            {filteredQuestions.length === 0 && (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-                No questions found matching your criteria.
-              </div>
-            )}
           </div>
         )}
       </div>
