@@ -15,6 +15,10 @@
       "CF Analytics" : {
         "Chrome" : "https://chromewebstore.google.com/detail/cf-analytics/hhljbjodjdbjbggddjaidojnlmaobcpo",
         "Firefox" : "https://addons.mozilla.org/en-US/firefox/addon/cf-analytics/"
+      },
+      "Tamper Monkey Scripts" : {
+        "Dark Mode" : "algomaniax.vercel.app/darkmode.js",
+        "Fast Submit" : "algomaniax.vercel.app/cf-fast-submit.js"
       }
     },
     "VS Code" : {

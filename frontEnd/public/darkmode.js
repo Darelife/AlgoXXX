@@ -1,0 +1,218 @@
+// ==UserScript==
+// @name         Codeforces dark mode
+// @version      1.3
+// @description  Improved dark mode for Codeforces
+// @author       Gaurang Tandon, David & edited by Prakhar Bhandari
+// @match        https://codeforces.com/*
+// @match        http://codeforces.com/*
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=codeforces.com
+// @match        https://calendar.google.com/calendar/embed*
+// @match        https://www.facebook.com/v2.8/plugins/like.php*
+// @resource     desertCSS  https://github.com/LordLava/codeforces-darktheme/raw/master/desert.css
+// @resource     monokaiEditorTheme https://raw.githubusercontent.com/ajaxorg/ace/master/lib/ace/theme/monokai.css
+// @resource     darkthemecss https://github.com/LordLava/codeforces-darktheme/raw/master/darktheme.css
+// @grant        GM_addStyle
+// @grant        GM_getResourceText
+// @run-at       document-start
+// ==/UserScript==
+
+(function () {
+  "use strict";
+
+  var colors = {
+    tableGreyRow: "#181818",
+    whiteTextColor: "rgb(240, 240, 240)",
+    inputBoxBackgroundBorderColor: "#383838",
+    redColorJustPassesA11Y: "#ff0000",
+    genericLinkBlueColor: "#00a6ff",
+  };
+
+  function overrideStyleAttribute(elm, prop, value) {
+    elm.setAttribute(
+      "style",
+      elm.getAttribute("style") + `; ${prop}: ${value} !important; `
+    );
+  }
+
+  if (
+    window.self != window.top &&
+    /calendar\.google\.com/.test(window.self.location.hostname)
+  ) {
+    // cannot add the other styles as they interfere with
+    // calendar's elements (since the selectors are so generic)
+    GM_addStyle(`
+/* google calendar logo, see #13 */
+div.logo-plus-button {
+    filter: invert(1) hue-rotate(180deg);
+}`);
+    // rest of the google calendar has already been inverted
+    // so return
+    return;
+  }
+
+  var style = GM_getResourceText("darkthemecss"),
+    desertCSS = GM_getResourceText("desertCSS");
+
+  GM_addStyle(style);
+  GM_addStyle(desertCSS);
+
+  // to avoid long FOUT duration
+  function applyFuncWhenElmLoaded(sel, func) {
+    var elm = document.querySelectorAll(sel);
+    if (!elm || elm.length == 0) {
+      return setTimeout(applyFuncWhenElmLoaded, 100, sel, func);
+    }
+    for (let i = 0, len = elm.length; i < len; i++) func(elm[i]);
+  }
+
+  // some properties are added via element.style
+  // need to override them via javascript
+
+  applyFuncWhenElmLoaded(
+    "#pageContent div div h3 a, .comment-table.highlight-blue .right .ttypography p, .comment-table.highlight-blue .right .info",
+    function (elm) {
+      var obs = new MutationObserver(function (mutationList, observer) {
+        mutationList.forEach(function (mutation) {
+          if (
+            mutation.type == "attributes" &&
+            mutation.attributeName == "style"
+          ) {
+            elm.setAttribute(
+              "style",
+              elm.getAttribute("style") + "; color: white !important; "
+            );
+          }
+        });
+      });
+      overrideStyleAttribute(elm, "color", "white");
+
+      obs.observe(elm, { attributes: true });
+    }
+  );
+
+  applyFuncWhenElmLoaded(".datatable div:nth-child(5)", function (elm) {
+    elm.classList.add("dark");
+  });
+
+  // in this case !important doesn't workthrough css stylesheet
+  applyFuncWhenElmLoaded(".unread td", function (elm) {
+    elm.style.backgroundColor = "#13203a !important";
+  });
+
+  (function detect404Page() {
+    applyFuncWhenElmLoaded("body > h3", function (elm) {
+      if (
+        elm.innerText.startsWith(
+          "The requested URL was not found on this server."
+        )
+      ) {
+        document.body.classList.add("notfoundpage");
+      }
+    });
+  })();
+
+  (function fixLavaMenu() {
+    applyFuncWhenElmLoaded(
+      ".second-level-menu-list li.backLava",
+      function (elm) {
+        elm.style.backgroundImage =
+          "url(https://github.com/LordLava/codeforces-darktheme/raw/master/imgs/lava-right2.png)";
+        elm.firstElementChild.style.backgroundImage =
+          "url(https://github.com/LordLava/codeforces-darktheme/raw/master/imgs/lava-left2.png)";
+      }
+    );
+  })();
+
+  (function fixAceEditor() {
+    applyFuncWhenElmLoaded("#editor", function (elm) {
+      var monokaiEditorThemeCSS = GM_getResourceText("monokaiEditorTheme"),
+        aceChromeClass = "ace-chrome";
+      GM_addStyle(monokaiEditorThemeCSS);
+      elm.classList.remove(aceChromeClass);
+      elm.classList.add("ace-monokai");
+
+      // using a mutationobserver to revert addition of class ace-chome
+      // goes into an infinite loop, presumably because the script run
+      // by codeforces adds it back
+      function checkAceClassRemoved() {
+        if (elm.classList.contains(aceChromeClass)) {
+          elm.classList.remove(aceChromeClass);
+        }
+      }
+      setInterval(checkAceClassRemoved, 10);
+    });
+  })();
+
+  (function fixLogo() {
+    applyFuncWhenElmLoaded(
+      "#header > div:nth-child(1) > a > img",
+      function (elm) {
+        elm.src =
+          "https://github.com/LordLava/codeforces-darktheme/raw/master/imgs/logo.png";
+      }
+    );
+  })();
+
+  (function fixColorRedGreenContrast() {
+    if (document.readyState != "complete") {
+      return setTimeout(fixColorRedGreenContrast, 100);
+    }
+
+    var elms = document.querySelectorAll("*");
+    for (let i = 0, len = elms.length; i < len; i++) {
+      if (getComputedStyle(elms[i]).color == "rgb(0, 128, 0)") {
+        overrideStyleAttribute(elms[i], "color", "#00c700");
+      }
+    }
+
+    elms = document.querySelectorAll("font");
+    for (let i = 0, len = elms.length; i < len; i++) {
+      if (elms[i].getAttribute("color") == "red") {
+        elms[i].setAttribute("color", colors.redColorJustPassesA11Y);
+      }
+    }
+  })();
+
+  (function fixBlackTextInRightTableDuringContest() {
+    applyFuncWhenElmLoaded(".rtable span", function (elm) {
+      if (elm.style && elm.style.color == "rgb(0, 0, 0)") {
+        overrideStyleAttribute(elm, "color", colors.whiteTextColor);
+      }
+    });
+  })();
+
+  (function fixDayElementsFill() {
+    function changeFillColor() {
+      document.querySelectorAll(".day").forEach(function (elm) {
+        if (elm.getAttribute("fill") === "#EBEDF0") {
+          elm.setAttribute("fill", "#1e2024");
+        }
+      });
+    }
+    applyFuncWhenElmLoaded(".day", changeFillColor);
+  })();
+
+  applyFuncWhenElmLoaded(".mobile-toolbar-internals", function (elm) {
+    elm.style.backgroundColor = "#181818";
+    elm.style.borderColor = "#181818";
+    elm.style.borderBottom = "2px solid #b9b9b9";
+  });
+
+  applyFuncWhenElmLoaded(".mobile-toolbar", function (elm) {
+    elm.style.backgroundColor = "#181818";
+    elm.style.borderColor = "#181818";
+  });
+
+  applyFuncWhenElmLoaded(".menu-box", function (elm) {
+    elm.style.backgroundColor = "#181818";
+    elm.style.borderColor = "#181818";
+    elm.style.color = "#f0f0f0";
+  });
+
+  // cannot override through css since specifity issue
+  (function improveLinkColorInGreenAlerts() {
+    applyFuncWhenElmLoaded("div.alert-success a", function (elm) {
+      overrideStyleAttribute(elm, "color", "#004794");
+    });
+  })();
+})();
