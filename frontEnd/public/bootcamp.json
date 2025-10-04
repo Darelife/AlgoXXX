@@ -17,8 +17,8 @@
         "Firefox" : "https://addons.mozilla.org/en-US/firefox/addon/cf-analytics/"
       },
       "Tamper Monkey Scripts" : {
-        "Dark Mode" : "algomaniax.vercel.app/darkmode.js",
-        "Fast Submit" : "algomaniax.vercel.app/cf-fast-submit.js"
+        "Dark Mode" : "./darkmode.js",
+        "Fast Submit" : "./cf-fast-submit.js"
       }
     },
     "VS Code" : {
