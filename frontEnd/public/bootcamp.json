@@ -18,7 +18,8 @@
       },
       "Tamper Monkey Scripts" : {
         "Dark Mode" : "./darkmode.js",
-        "Fast Submit" : "./cf-fast-submit.js"
+        "Fast Submit" : "./cf-fast-submit.js",
+        "CF Analytics Extended" : "./cf-analytics-extended.js"
       }
     },
     "VS Code" : {
