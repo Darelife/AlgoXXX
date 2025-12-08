@@ -19,7 +19,7 @@ interface DBUser {
     name: string;
 }
 
-export async function POST(request: Request) {
+export async function POST() {
     try {
         const supabase = createClient();
 
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
 
         // 3. Process Submissions
         // Calculate start of day in IST
-        const startOfISTDay = new Date(istDate.getFullYear(), istDate.getMonth(), istDate.getDate()).getTime() / 1000;
+
         // Adjust back to UTC timestamp for CF comparison (since CF uses Unix timestamp which is UTC based, but we want 00:00 IST)
         // Wait, new Date(y, m, d) creates a date in LOCAL server time.
         // We constructed istDate manually.
@@ -139,7 +139,14 @@ export async function POST(request: Request) {
         }
 
         // 4. Upsert to Supabase
-        const updates = [];
+        interface LeaderboardUpdate {
+            user_handle: string;
+            date: string;
+            solve_count: number;
+            points: number;
+            last_updated: string;
+        }
+        const updates: LeaderboardUpdate[] = [];
         for (const [handle, stats] of userScores.entries()) {
             updates.push({
                 user_handle: handle,
@@ -153,6 +160,7 @@ export async function POST(request: Request) {
         if (updates.length > 0) {
             const { error } = await supabase
                 .from('daily_leaderboard')
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 .upsert(updates as any, { onConflict: 'user_handle, date' });
 
             if (error) throw error;
@@ -160,8 +168,9 @@ export async function POST(request: Request) {
 
         return NextResponse.json({ success: true, updated: updates.length });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Sync error:", error);
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
     }
 }

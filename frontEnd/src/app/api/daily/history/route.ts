@@ -23,8 +23,9 @@ export async function GET(request: Request) {
 
         return NextResponse.json(data);
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("History fetch error:", error);
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
     }
 }

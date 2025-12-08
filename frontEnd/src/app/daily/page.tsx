@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
+import { Session } from "@supabase/supabase-js";
 import NavBar from "../components/navBar";
-import { Star, Terminal, LogIn, AlertCircle, Calendar } from "lucide-react";
+import { Star, LogIn, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { createClient } from "@/utils/supabase/client";
@@ -89,8 +90,7 @@ export default function DailyRoute() {
   const { scrollY } = useScroll();
   const bgY = useTransform(scrollY, [0, 300], isMobile ? [0, 0] : [0, 80]);
   const rotateLeft = useTransform(scrollY, [0, 1000], isMobile ? [0, -5] : [0, -25]);
-  const rotateRight = useTransform(scrollY, [0, 1000], isMobile ? [0, 5] : [0, 25]);
-  const rotateSlowRight = useTransform(scrollY, [0, 1000], isMobile ? [0, 5] : [0, 15]);
+
 
   // Mouse move
   useEffect(() => {
@@ -113,7 +113,7 @@ export default function DailyRoute() {
     document.documentElement.classList.toggle("dark", storedTheme === "dark");
     document.body.classList.toggle("dark", storedTheme === "dark");
 
-    const verifyUser = async (session: any) => {
+    const verifyUser = async (session: Session) => {
       try {
         if (session?.user?.email) {
           const email = session.user.email.toLowerCase();
@@ -149,9 +149,9 @@ export default function DailyRoute() {
       setIsAuthChecking(false);
     }
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: string, session: any) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event: string, session: Session | null) => {
       if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-        await verifyUser(session);
+        if (session) await verifyUser(session);
       } else if (event === 'INITIAL_SESSION') {
         if (session) await verifyUser(session);
         else if (!localStorage.getItem("verifiedUserHandle")) setIsAuthChecking(false);
@@ -259,8 +259,15 @@ export default function DailyRoute() {
         const userHistoryMap = new Map<string, { solve_count: number, points: number }>();
         const leaderboardMap = new Map<string, { totalPoints: number, totalSolved: number }>();
 
+        interface HistoryEntry {
+          user_handle: string;
+          date: string;
+          solve_count: number;
+          points: number;
+        }
+
         // Process history data
-        historyData.forEach((entry: any) => {
+        historyData.forEach((entry: HistoryEntry) => {
           // Build Leaderboard
           const current = leaderboardMap.get(entry.user_handle) || { totalPoints: 0, totalSolved: 0 };
           leaderboardMap.set(entry.user_handle, {
