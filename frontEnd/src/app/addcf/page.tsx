@@ -47,7 +47,7 @@ const CodeforcesPage: NextPage = () => {
   // Parallax scroll setup - disable on mobile
   const { scrollY } = useScroll();
   const bgY = useTransform(scrollY, [0, 300], isMobile ? [0, 0] : [0, 80]);
-  
+
   // Adding rotation transforms for SVG backgrounds - reduced effect on mobile
   const rotateLeft = useTransform(scrollY, [0, 1000], isMobile ? [0, -5] : [0, -25]);
   const rotateRight = useTransform(scrollY, [0, 1000], isMobile ? [0, 5] : [0, 25]);
@@ -72,7 +72,7 @@ const CodeforcesPage: NextPage = () => {
           handle: dataFetched.handle || ""
         };
         setUserData(processedData);
-        
+
         // Check if we need to complete verification
         const checkSession = async () => {
           if (localStorage.getItem("isVerifying") === "true") {
@@ -83,21 +83,21 @@ const CodeforcesPage: NextPage = () => {
             }
           }
         };
-        
+
         checkSession();
       } catch (error) {
         console.error("Error parsing stored data:", error);
       }
     }
-    
+
     // Detect mobile device
     const checkMobile = () => {
       setIsMobile(/iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent) || window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
+
     return () => {
       window.removeEventListener('resize', checkMobile);
     };
@@ -106,7 +106,7 @@ const CodeforcesPage: NextPage = () => {
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
       if (isMobile) return; // Don't apply mouse movement effect on mobile
-      
+
       const { clientX, clientY } = event;
       const { innerWidth, innerHeight } = window;
       const offsetX = (clientX / innerWidth - 0.5) * -20;
@@ -115,7 +115,7 @@ const CodeforcesPage: NextPage = () => {
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    
+
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
@@ -178,11 +178,11 @@ const CodeforcesPage: NextPage = () => {
         setIsLoading(false);
         return;
       }
-      
+
       const prob = JSON.parse(localStorage.getItem("problemData") || "{}");
       const conId = prob?.contestId.toString();
       const indId = prob?.index;
-      
+
       // Proceed with the API call for verification
       const url = "https://algoxxx.onrender.com/verify";
       const response = await fetch(url, {
@@ -198,8 +198,11 @@ const CodeforcesPage: NextPage = () => {
           index: indId,
         }),
       });
-      
+
       if (response.status === 201) {
+        // Save verified user handle for other pages to use
+        localStorage.setItem("verifiedUserHandle", userData.handle);
+
         // Clear verification data and redirect
         localStorage.removeItem("cfVerificationData");
         localStorage.removeItem("isVerifying");
@@ -227,12 +230,12 @@ const CodeforcesPage: NextPage = () => {
 
     try {
       setIsLoading(true);
-      
+
       // Store form data for when we return from Google OAuth
       localStorage.setItem("cfVerificationData", JSON.stringify(userData));
       localStorage.setItem("isVerifying", "true");
       localStorage.setItem("problemData", JSON.stringify(problem));
-      
+
       // Start the OAuth sign-in process
       const { error: signInError } = await supabase.auth.signInWithOAuth({
         provider: "google",
@@ -251,9 +254,9 @@ const CodeforcesPage: NextPage = () => {
         setError("Failed to sign in with Google");
         setIsLoading(false);
       }
-      
+
       // The rest happens after redirect - see useEffect 
-      
+
     } catch (err) {
       console.error(err);
       localStorage.removeItem("isVerifying");
@@ -271,65 +274,65 @@ const CodeforcesPage: NextPage = () => {
           style={{ backgroundColor: overlayColor }}
         ></div>
       )}
-      
+
       {/* SVG Background Elements with Parallax Rotation - similar to main page */}
       <div className="fixed inset-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
         {/* Top left rotating SVG */}
-        <motion.div 
+        <motion.div
           className={`absolute -top-32 -left-32 w-96 h-96 ${theme === "dark" ? "opacity-15" : "opacity-30"}`}
-          style={{ 
+          style={{
             y: bgY,
             rotate: rotateLeft,
             scale: useTransform(scrollY, [0, 500], [1, 1.35])
           }}
         >
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            <path 
-              fill={theme === "dark" ? "#ff4500" : "#ff6347"} 
-              d="M38.8,-66.8C51.9,-59.6,65.4,-51.8,71.2,-39.8C77,-27.9,75.1,-12,74.5,4.2C73.9,20.3,74.5,36.8,67.1,48.2C59.6,59.5,44.1,65.8,28.7,71.5C13.3,77.2,-2,82.3,-13.4,76.6C-24.9,70.9,-32.4,54.6,-40.6,42C-48.8,29.4,-57.7,20.5,-62.4,9.4C-67.1,-1.8,-67.5,-15,-64.7,-29.2C-61.9,-43.4,-55.9,-58.7,-44.6,-66.6C-33.3,-74.5,-16.7,-75.1,-1.4,-72.8C13.9,-70.6,27.7,-65.5,38.8,-66.8Z" 
-              transform="translate(100 100)" 
+            <path
+              fill={theme === "dark" ? "#ff4500" : "#ff6347"}
+              d="M38.8,-66.8C51.9,-59.6,65.4,-51.8,71.2,-39.8C77,-27.9,75.1,-12,74.5,4.2C73.9,20.3,74.5,36.8,67.1,48.2C59.6,59.5,44.1,65.8,28.7,71.5C13.3,77.2,-2,82.3,-13.4,76.6C-24.9,70.9,-32.4,54.6,-40.6,42C-48.8,29.4,-57.7,20.5,-62.4,9.4C-67.1,-1.8,-67.5,-15,-64.7,-29.2C-61.9,-43.4,-55.9,-58.7,-44.6,-66.6C-33.3,-74.5,-16.7,-75.1,-1.4,-72.8C13.9,-70.6,27.7,-65.5,38.8,-66.8Z"
+              transform="translate(100 100)"
             />
           </svg>
         </motion.div>
-        
+
         {/* Bottom right rotating SVG */}
-        <motion.div 
+        <motion.div
           className={`absolute bottom-0 right-0 w-96 h-96 ${theme === "dark" ? "opacity-15" : "opacity-30"}`}
-          style={{ 
+          style={{
             y: bgY,
             rotate: rotateRight,
             scale: useTransform(scrollY, [0, 500], [1, 0.85])
           }}
         >
           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            <path 
-              fill={theme === "dark" ? "#cc3300" : "#ff5722"} 
-              d="M44.1,-70.5C58.4,-62.3,72.1,-51.4,80.2,-36.6C88.3,-21.8,90.8,-3.2,85.8,12.7C80.7,28.5,68.2,41.7,54.3,53.8C40.5,65.9,25.3,77.1,7.3,79.8C-10.6,82.5,-31.5,76.8,-48.2,65.5C-64.9,54.2,-77.4,37.2,-81.7,18.6C-86.1,0,-82.3,-20.3,-72.3,-36.5C-62.2,-52.6,-45.9,-64.7,-29.9,-72.2C-13.9,-79.7,1.9,-82.7,15.7,-78.5C29.5,-74.4,44.1,-70.5,44.1,-70.5Z" 
-              transform="translate(100 100) scale(1.05)" 
+            <path
+              fill={theme === "dark" ? "#cc3300" : "#ff5722"}
+              d="M44.1,-70.5C58.4,-62.3,72.1,-51.4,80.2,-36.6C88.3,-21.8,90.8,-3.2,85.8,12.7C80.7,28.5,68.2,41.7,54.3,53.8C40.5,65.9,25.3,77.1,7.3,79.8C-10.6,82.5,-31.5,76.8,-48.2,65.5C-64.9,54.2,-77.4,37.2,-81.7,18.6C-86.1,0,-82.3,-20.3,-72.3,-36.5C-62.2,-52.6,-45.9,-64.7,-29.9,-72.2C-13.9,-79.7,1.9,-82.7,15.7,-78.5C29.5,-74.4,44.1,-70.5,44.1,-70.5Z"
+              transform="translate(100 100) scale(1.05)"
             />
           </svg>
         </motion.div>
       </div>
-      
+
       {/* Parallax background elements */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 w-full h-screen pointer-events-none"
         style={{ y: bgY }}
       >
         <div className={`absolute top-20 left-1/4 w-64 h-64 rounded-full ${theme === "dark" ? "bg-orange-500/5" : "bg-orange-500/10"} blur-3xl`}></div>
         <div className={`absolute bottom-32 right-1/4 w-96 h-96 rounded-full ${theme === "dark" ? "bg-red-500/5" : "bg-red-500/10"} blur-3xl`}></div>
       </motion.div>
-      
-      <div style={{zIndex: 1000}}>
+
+      <div style={{ zIndex: 1000 }}>
         <NavBar toggleTheme={toggleTheme} fixed={false} />
       </div>
 
       {/* Hero section with logo and subtitle */}
       <motion.div
         className="flex justify-center items-center min-h-screen pt-24 pb-10"
-        style={{ 
+        style={{
           y: useTransform(scrollY, [0, 300], [0, -30]),
-          transform: isMobile ? undefined : `translate(${transform.x}px, ${transform.y}px)` 
+          transform: isMobile ? undefined : `translate(${transform.x}px, ${transform.y}px)`
         }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -341,16 +344,16 @@ const CodeforcesPage: NextPage = () => {
             animate={{ scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Image 
-              src="/logos/cflogo.png" 
-              alt="Connect Codeforces" 
+            <Image
+              src="/logos/cflogo.png"
+              alt="Connect Codeforces"
               className="w-[12rem] mx-auto"
               width={300}
               height={300}
               priority
             />
           </motion.div>
-          <motion.p 
+          <motion.p
             className={`mt-6 text-xl ${theme === "dark" ? "text-gray-300" : "text-gray-600"} max-w-2xl mx-auto px-5`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -360,10 +363,10 @@ const CodeforcesPage: NextPage = () => {
           </motion.p>
         </div>
       </motion.div>
-      
+
       {/* Main content */}
       <div className="max-w-4xl mx-auto px-4 pb-20">
-        <motion.div 
+        <motion.div
           className={`${theme === "dark" ? "bg-[rgba(255, 255, 255, 0.05)]" : "bg-blue-50/90"} backdrop-blur-[12px] rounded-xl shadow-sm ${theme === "dark" ? "border-white/10" : "border-blue-200/50"} border p-8 transition-all duration-300 hover:shadow-lg mb-8`}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -372,7 +375,7 @@ const CodeforcesPage: NextPage = () => {
         >
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <motion.div 
+              <motion.div
                 className="space-y-4"
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -382,7 +385,7 @@ const CodeforcesPage: NextPage = () => {
                 <h3 className={`text-2xl font-bold ${theme === "dark" ? "text-gray-100" : "text-gray-800"} mb-4 border-l-4 ${theme === "dark" ? "border-red-500" : "border-orange-500"} pl-3`}>
                   Your Information
                 </h3>
-                
+
                 <div className={`${theme === "dark" ? "bg-[rgba(255, 255, 255, 0.05)]" : "bg-white/80"} backdrop-blur-[12px] ${theme === "dark" ? "border-gray-700/40" : "border-gray-100"} border p-6 rounded-lg shadow-sm`}>
                   <div className="space-y-4">
                     <div>
@@ -396,7 +399,7 @@ const CodeforcesPage: NextPage = () => {
                         className={`${theme === "dark" ? "bg-gray-800/60" : "bg-gray-50"} ${theme === "dark" ? "border-gray-700" : "border-gray-200"} rounded-xl`}
                       />
                     </div>
-                    
+
                     <div>
                       <Label htmlFor="name" className={`${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>Name</Label>
                       <Input
@@ -408,7 +411,7 @@ const CodeforcesPage: NextPage = () => {
                         className={`${theme === "dark" ? "bg-gray-800/60" : "bg-gray-50"} ${theme === "dark" ? "border-gray-700" : "border-gray-200"} rounded-xl`}
                       />
                     </div>
-                    
+
                     <div>
                       <Label htmlFor="handle" className={`${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>Codeforces Handle</Label>
                       <Input
@@ -423,8 +426,8 @@ const CodeforcesPage: NextPage = () => {
                   </div>
                 </div>
               </motion.div>
-              
-              <motion.div 
+
+              <motion.div
                 className="space-y-4"
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -434,22 +437,22 @@ const CodeforcesPage: NextPage = () => {
                 <h3 className={`text-2xl font-bold ${theme === "dark" ? "text-gray-100" : "text-gray-800"} mb-4 border-l-4 ${theme === "dark" ? "border-red-500" : "border-orange-500"} pl-3`}>
                   Verification Challenge
                 </h3>
-                
+
                 {problem ? (
                   <div className={`${theme === "dark" ? "bg-[rgba(255, 255, 255, 0.05)]" : "bg-white/80"} backdrop-blur-[12px] ${theme === "dark" ? "border-gray-700/40" : "border-gray-100"} border p-6 rounded-lg shadow-sm flex flex-col justify-between h-auto transform hover:scale-[1.01] transition-all duration-300`}>
                     <div className="space-y-4">
                       <div className={`flex items-center justify-center p-4 ${theme === "dark" ? "bg-red-900/30" : "bg-orange-100"} rounded-full w-16 h-16 mx-auto mb-4`}>
                         <Code className={`w-8 h-8 ${theme === "dark" ? "text-red-400" : "text-orange-600"}`} />
                       </div>
-                      
+
                       <h2 className={`text-xl font-bold text-center ${theme === "dark" ? "text-gray-200" : "text-gray-800"}`}>
                         Submit a Compile Error
                       </h2>
-                      
+
                       <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"} text-center`}>
                         Submit code with a compile error to the problem below for verification.
                       </p>
-                      
+
                       <div className="mt-4 p-4 rounded-lg text-center">
                         <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-500"} mb-2`}>Problem</p>
                         <a
@@ -462,8 +465,8 @@ const CodeforcesPage: NextPage = () => {
                         </a>
                       </div>
                     </div>
-                    
-                    <Button 
+
+                    <Button
                       onClick={handleGoogleSignInAndVerify}
                       disabled={isLoading}
                       className={`w-full mt-6 bg-gradient-to-r ${theme === "dark" ? "from-orange-500 to-red-500" : "from-orange-600 to-red-600"} hover:from-orange-700 hover:to-red-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300`}
@@ -492,7 +495,7 @@ const CodeforcesPage: NextPage = () => {
             </div>
           </div>
         </motion.div>
-        
+
         {error && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -504,9 +507,9 @@ const CodeforcesPage: NextPage = () => {
             </Alert>
           </motion.div>
         )}
-        
+
         {/* Instructions card */}
-        <motion.div 
+        <motion.div
           className={`${theme === "dark" ? "bg-white/5" : "bg-white/90"} backdrop-blur-[12px] rounded-xl shadow-sm ${theme === "dark" ? "border-white/10" : "border-gray-100/50"} border p-6`}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -527,7 +530,7 @@ const CodeforcesPage: NextPage = () => {
       </div>
 
       {/* Footer with animation */}
-      <motion.footer 
+      <motion.footer
         className={`mt-12 border-t ${theme === "dark" ? "border-gray-800" : "border-gray-200"} py-8`}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}

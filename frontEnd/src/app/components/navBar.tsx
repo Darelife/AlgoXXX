@@ -10,7 +10,7 @@ import AddCfButton from "./cfLogin";
 const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boolean }) => {
   const [activeLink, setActiveLink] = React.useState("");
   const [mounted, setMounted] = useState(false);
-  
+
   React.useEffect(() => {
     // Set active link based on current path
     setActiveLink(window.location.pathname);
@@ -18,15 +18,15 @@ const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boole
   }, []);
 
   return (
-    <header 
+    <header
       className={`${fixed ? "fixed" : ""} top-0 left-0 right-0 flex h-20 w-full shrink-0 items-center justify-between px-4 md:px-6 z-50 backdrop-blur-sm bg-white/80 dark:bg-[#121212] border-b border-gray-200/50 dark:border-gray-800/50`}
     >
       {/* Mobile Menu */}
       <Sheet>
         <SheetTrigger asChild>
-          <Button 
-            variant="ghost" 
-            size="icon" 
+          <Button
+            variant="ghost"
+            size="icon"
             className="lg:hidden hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors"
           >
             <svg
@@ -49,176 +49,186 @@ const NavBar = ({ toggleTheme, fixed }: { toggleTheme: () => void; fixed?: boole
           <div className="mb-8 mt-2">
           </div>
           <nav className="flex flex-col space-y-1">
-            <Link 
-              href="/" 
-              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${
-                activeLink === "/" 
-                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold" 
+            <Link
+              href="/"
+              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${activeLink === "/"
+                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold"
                   : "border-l-transparent"
-              }`} 
+                }`}
               prefetch={false}
               onClick={() => setActiveLink("/")}
             >
               Home
             </Link>
-            <Link 
-              href="/about" 
-              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${
-                activeLink === "/about" 
-                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold" 
+            <Link
+              href="/about"
+              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${activeLink === "/about"
+                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold"
                   : "border-l-transparent"
-              }`} 
+                }`}
               prefetch={false}
               onClick={() => setActiveLink("/about")}
             >
               About
             </Link>
-            <Link 
-              href="/leaderboard" 
-              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${
-                activeLink === "/leaderboard" 
-                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold" 
+            <Link
+              href="/leaderboard"
+              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${activeLink === "/leaderboard"
+                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold"
                   : "border-l-transparent"
-              }`} 
+                }`}
               prefetch={false}
               onClick={() => setActiveLink("/leaderboard")}
             >
               Leaderboard
             </Link>
-            <Link 
-              href="/sheet" 
-              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${
-                activeLink === "/sheet" 
-                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold" 
+            <Link
+              href="/sheet"
+              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${activeLink === "/sheet"
+                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold"
                   : "border-l-transparent"
-              }`} 
+                }`}
               prefetch={false}
               onClick={() => setActiveLink("/sheet")}
             >
               Sheet
             </Link>
-            <Link 
-              href="/bootcamp" 
-              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${
-                activeLink === "/bootcamp" 
-                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold" 
+            <Link
+              href="/bootcamp"
+              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${activeLink === "/bootcamp"
+                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold"
                   : "border-l-transparent"
-              }`} 
+                }`}
               prefetch={false}
               onClick={() => setActiveLink("/bootcamp")}
             >
               Bootcamp
             </Link>
-            <Link 
-              href="/contests" 
-              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${
-                activeLink === "/contests" 
-                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold" 
+            <Link
+              href="/contests"
+              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${activeLink === "/contests"
+                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold"
                   : "border-l-transparent"
-              }`} 
+                }`}
               prefetch={false}
               onClick={() => setActiveLink("/contests")}
             >
               Contests
             </Link>
+            <Link
+              href="/daily"
+              className={`py-2.5 px-4 text-lg font-medium transition-all hover:text-orange-600 dark:hover:text-red-400 border-l-2 ${activeLink === "/daily"
+                  ? "border-l-orange-600 dark:border-l-red-400 text-orange-600 dark:text-red-400 font-semibold"
+                  : "border-l-transparent"
+                }`}
+              prefetch={false}
+              onClick={() => setActiveLink("/daily")}
+            >
+              Daily
+            </Link>
           </nav>
-          
+
           <div className="mt-8 px-4">
             <AddCfButton />
           </div>
         </SheetContent>
       </Sheet>
-      
+
       {/* Desktop Brand */}
       <div className="hidden lg:flex items-center">
-        
+
         {/* Desktop Navigation - Left side */}
         <div className="flex space-x-4 lg:space-x-6">
-          <Link 
-            href="/" 
-            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${
-              activeLink === "/" 
-                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400" 
+          <Link
+            href="/"
+            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${activeLink === "/"
+                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400"
                 : "border-b-transparent"
-            }`} 
+              }`}
             prefetch={false}
             onClick={() => setActiveLink("/")}
           >
             Home
           </Link>
-          <Link 
-            href="/leaderboard" 
-            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${
-              activeLink === "/leaderboard" 
-                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400" 
+          <Link
+            href="/leaderboard"
+            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${activeLink === "/leaderboard"
+                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400"
                 : "border-b-transparent"
-            }`} 
+              }`}
             prefetch={false}
             onClick={() => setActiveLink("/leaderboard")}
           >
             Leaderboard
           </Link>
-          <Link 
-            href="/bootcamp" 
-            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${
-              activeLink === "/bootcamp" 
-                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400" 
+          <Link
+            href="/bootcamp"
+            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${activeLink === "/bootcamp"
+                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400"
                 : "border-b-transparent"
-            }`} 
+              }`}
             prefetch={false}
             onClick={() => setActiveLink("/bootcamp")}
           >
             Bootcamp
           </Link>
-          <Link 
-            href="/contests" 
-            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${
-              activeLink === "/contests" 
-                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400" 
+          <Link
+            href="/contests"
+            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${activeLink === "/contests"
+                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400"
                 : "border-b-transparent"
-            }`} 
+              }`}
             prefetch={false}
             onClick={() => setActiveLink("/contests")}
           >
             Contests
           </Link>
+          <Link
+            href="/daily"
+            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${activeLink === "/daily"
+                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400"
+                : "border-b-transparent"
+              }`}
+            prefetch={false}
+            onClick={() => setActiveLink("/daily")}
+          >
+            Daily
+          </Link>
         </div>
       </div>
-      
+
       {/* Right side actions */}
       <div className="flex items-center space-x-4">
         {/* About and Sheet links on right side - hidden on smaller screens */}
         <div className="hidden lg:flex items-center space-x-4">
-          <Link 
-            href="/about" 
-            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${
-              activeLink === "/about" 
-                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400" 
+          <Link
+            href="/about"
+            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${activeLink === "/about"
+                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400"
                 : "border-b-transparent"
-            }`} 
+              }`}
             prefetch={false}
             onClick={() => setActiveLink("/about")}
           >
             About
           </Link>
-          <Link 
-            href="/sheet" 
-            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${
-              activeLink === "/sheet" 
-                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400" 
+          <Link
+            href="/sheet"
+            className={`px-1 py-1.5 font-medium transition-all border-b-2 hover:text-orange-600 dark:hover:text-red-400 ${activeLink === "/sheet"
+                ? "border-b-orange-600 dark:border-b-red-400 text-orange-600 dark:text-red-400"
                 : "border-b-transparent"
-            }`} 
+              }`}
             prefetch={false}
             onClick={() => setActiveLink("/sheet")}
           >
             Sheet
           </Link>
         </div>
-        
+
         <div className="hidden lg:block">
           <AddCfButton />
         </div>
-        
+
         {/* Theme toggle - More refined, less blocky design */}
         <Button
           variant="ghost"
