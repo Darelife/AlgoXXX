@@ -88,7 +88,7 @@ export async function POST() {
         console.log(`[Sync] Start of Day (Unix): ${startOfDay}`);
         console.log(`[Sync] Daily Problems: ${dailyProblems.map(p => p.index).join(', ')}`);
 
-        const userScores = new Map<string, { solveCount: number, points: number }>();
+        const userScores = new Map<string, { solveCount: number, points: number, name: string }>();
 
         for (const problem of dailyProblems) {
             if (!problem.contestId || !problem.index) continue;
@@ -102,7 +102,7 @@ export async function POST() {
                 if (statusData.status === "OK") {
                     const submissions = statusData.result;
                     console.log(`[Sync] Fetched ${submissions.length} submissions`);
-                    const uniqueSolversForProblem = new Set<string>();
+                    const problemSolvers = new Map<string, number>(); // handle -> earliest submission time
 
                     for (const sub of submissions) {
                         if (sub.creationTimeSeconds < startOfDay) {
@@ -114,22 +114,38 @@ export async function POST() {
                             for (const author of sub.author.members) {
                                 const handle = author.handle.toLowerCase().trim();
                                 if (userMap.has(handle)) {
-                                    uniqueSolversForProblem.add(handle);
-                                    // console.log(`[Sync] User ${handle} solved ${problem.index}`);
+                                    // Store the earliest submission time for this user
+                                    const existingTime = problemSolvers.get(handle);
+                                    if (!existingTime || sub.creationTimeSeconds < existingTime) {
+                                        problemSolvers.set(handle, sub.creationTimeSeconds);
+                                    }
                                 }
                             }
                         }
                     }
 
-                    const solversCount = uniqueSolversForProblem.size;
+                    const solversCount = problemSolvers.size;
                     console.log(`[Sync] Problem ${problem.index} solved by ${solversCount} registered users`);
-                    const points = Math.max(10, 25 - solversCount);
 
-                    uniqueSolversForProblem.forEach(handle => {
-                        const current = userScores.get(handle) || { solveCount: 0, points: 0 };
+                    // Sort solvers by time (ascending)
+                    const sortedSolvers = Array.from(problemSolvers.entries())
+                        .sort((a, b) => a[1] - b[1]);
+
+                    // Assign points based on rank
+                    sortedSolvers.forEach(([handle, _time], index) => {
+                        const rank = index + 1; // 1-based rank
+                        // Rank 1: 24 points (25 - 1)
+                        // Rank 2: 23 points (25 - 2)
+                        // ...
+                        // Rank 15: 10 points (25 - 15)
+                        // Rank 16+: 10 points
+                        const points = Math.max(10, 25 - rank);
+
+                        const current = userScores.get(handle) || { solveCount: 0, points: 0, name: userMap.get(handle)?.name || handle };
                         userScores.set(handle, {
                             solveCount: current.solveCount + 1,
-                            points: current.points + points
+                            points: current.points + points,
+                            name: current.name
                         });
                     });
                 }
@@ -141,6 +157,7 @@ export async function POST() {
         // 4. Upsert to Supabase
         interface LeaderboardUpdate {
             user_handle: string;
+            name: string;
             date: string;
             solve_count: number;
             points: number;
@@ -150,6 +167,7 @@ export async function POST() {
         for (const [handle, stats] of userScores.entries()) {
             updates.push({
                 user_handle: handle,
+                name: stats.name,
                 date: dateStr,
                 solve_count: stats.solveCount,
                 points: stats.points,

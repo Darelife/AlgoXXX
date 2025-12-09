@@ -40,6 +40,7 @@ interface DBUser {
 
 interface LeaderboardEntry {
   handle: string;
+  name: string;
   totalPoints: number;
   totalSolved: number;
 }
@@ -216,110 +217,127 @@ export default function DailyRoute() {
 
   // Main Data Fetch
   useEffect(() => {
+    const processAndSetData = (historyData: any[], problemsData: any) => {
+      if (problemsData.status !== "OK") throw new Error("Failed to fetch problems");
+
+      const allProblems: CFProblem[] = problemsData.result.problems;
+      const rated = allProblems.filter((p) => typeof p.rating === "number");
+
+      // Sort deterministically
+      rated.sort((a, b) => {
+        if (b.contestId !== a.contestId) return (b.contestId || 0) - (a.contestId || 0);
+        return (a.index || "").localeCompare(b.index || "");
+      });
+
+      const easy = rated.filter((p) => p.rating! >= 800 && p.rating! <= 1200);
+      const medium = rated.filter((p) => p.rating! >= 1300 && p.rating! <= 1600);
+      const hard = rated.filter((p) => p.rating! >= 1700 && p.rating! <= 2000);
+
+      // 4. Process Days
+      const processedDays: DayEntry[] = [];
+      const now = new Date();
+      // Shift to IST
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const istOffset = 5.5 * 60 * 60 * 1000;
+      const istNow = new Date(utc + istOffset);
+      const todayStr = istNow.toISOString().split('T')[0];
+
+      // Map history for quick lookup
+      const userHistoryMap = new Map<string, { solve_count: number, points: number }>();
+      const leaderboardMap = new Map<string, { totalPoints: number, totalSolved: number, name: string }>();
+
+      interface HistoryEntry {
+        user_handle: string;
+        name: string;
+        date: string;
+        solve_count: number;
+        points: number;
+      }
+
+      // Process history data
+      historyData.forEach((entry: HistoryEntry) => {
+        // Build Leaderboard
+        const current = leaderboardMap.get(entry.user_handle) || { totalPoints: 0, totalSolved: 0, name: entry.name || entry.user_handle };
+        leaderboardMap.set(entry.user_handle, {
+          totalPoints: current.totalPoints + entry.points,
+          totalSolved: current.totalSolved + entry.solve_count,
+          name: entry.name || entry.user_handle // Use name if available, else handle
+        });
+
+        // Store current user's daily stats
+        if (entry.user_handle.toLowerCase() === userHandle!.toLowerCase()) {
+          userHistoryMap.set(entry.date, { solve_count: entry.solve_count, points: entry.points });
+        }
+      });
+
+      // Generate last 30 days (IST based)
+      for (let i = 0; i < 30; i++) {
+        const d = new Date(istNow); // Start from IST current date
+        d.setDate(istNow.getDate() - i); // Subtract days from IST current date
+
+        const dateStr = d.toISOString().split('T')[0]; // YYYY-MM-DD for this IST day
+        const displayDate = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const isToday = dateStr === todayStr;
+
+        // Use noon time to avoid timezone edge cases for seed
+        // This date object 'd' is already in IST, so its getTime() will reflect IST.
+        // We want the noon of *this specific IST day* for the seed.
+        const noonTime = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0).getTime() / 1000;
+        const questions = generateProblemsForDate(noonTime, easy, medium, hard);
+
+        const stats = userHistoryMap.get(dateStr) || { solve_count: 0, points: 0 };
+
+        processedDays.push({
+          date: dateStr,
+          displayDate,
+          questions,
+          solvedCount: stats.solve_count,
+          points: stats.points,
+          isToday
+        });
+      }
+
+      setDays(processedDays);
+
+      // 5. Set Leaderboard
+      const sortedLeaderboard = Array.from(leaderboardMap.entries())
+        .map(([handle, stats]) => ({ handle, ...stats }))
+        .sort((a, b) => b.totalPoints - a.totalPoints);
+
+      setLeaderboard(sortedLeaderboard);
+    };
+
     const fetchData = async () => {
       if (!userHandle) return;
 
       setDataLoading(true);
       try {
-        // 1. Trigger Sync (Fire and wait to ensure latest data)
+        // 1. Fetch History & Problems immediately (Fast)
+        const [historyRes, problemsRes] = await Promise.all([
+          fetch('/api/daily/history?days=30'),
+          fetch("https://codeforces.com/api/problemset.problems")
+        ]);
+
+        const historyData = await historyRes.json();
+        const problemsData = await problemsRes.json();
+
+        // Render immediately with existing data
+        processAndSetData(historyData, problemsData);
+        setDataLoading(false);
+
+        // 2. Trigger Sync in background (Slow)
+        // We don't await this for the initial render, but we await it for the update
         await fetch('/api/daily/sync', { method: 'POST' });
 
-        // 2. Fetch History
-        const historyRes = await fetch('/api/daily/history?days=30');
-        const historyData = await historyRes.json();
+        // 3. Re-fetch History after sync
+        const updatedHistoryRes = await fetch('/api/daily/history?days=30');
+        const updatedHistoryData = await updatedHistoryRes.json();
 
-        // 3. Fetch Problems (for generating links)
-        const problemsRes = await fetch("https://codeforces.com/api/problemset.problems");
-        const problemsData = await problemsRes.json();
-        if (problemsData.status !== "OK") throw new Error("Failed to fetch problems");
-
-        const allProblems: CFProblem[] = problemsData.result.problems;
-        const rated = allProblems.filter((p) => typeof p.rating === "number");
-
-        // Sort deterministically
-        rated.sort((a, b) => {
-          if (b.contestId !== a.contestId) return (b.contestId || 0) - (a.contestId || 0);
-          return (a.index || "").localeCompare(b.index || "");
-        });
-
-        const easy = rated.filter((p) => p.rating! >= 800 && p.rating! <= 1200);
-        const medium = rated.filter((p) => p.rating! >= 1300 && p.rating! <= 1600);
-        const hard = rated.filter((p) => p.rating! >= 1700 && p.rating! <= 2000);
-
-        // 4. Process Days
-        const processedDays: DayEntry[] = [];
-        const now = new Date();
-        // Shift to IST
-        const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-        const istOffset = 5.5 * 60 * 60 * 1000;
-        const istNow = new Date(utc + istOffset);
-        const todayStr = istNow.toISOString().split('T')[0];
-
-        // Map history for quick lookup
-        const userHistoryMap = new Map<string, { solve_count: number, points: number }>();
-        const leaderboardMap = new Map<string, { totalPoints: number, totalSolved: number }>();
-
-        interface HistoryEntry {
-          user_handle: string;
-          date: string;
-          solve_count: number;
-          points: number;
-        }
-
-        // Process history data
-        historyData.forEach((entry: HistoryEntry) => {
-          // Build Leaderboard
-          const current = leaderboardMap.get(entry.user_handle) || { totalPoints: 0, totalSolved: 0 };
-          leaderboardMap.set(entry.user_handle, {
-            totalPoints: current.totalPoints + entry.points,
-            totalSolved: current.totalSolved + entry.solve_count
-          });
-
-          // Store current user's daily stats
-          if (entry.user_handle.toLowerCase() === userHandle.toLowerCase()) {
-            userHistoryMap.set(entry.date, { solve_count: entry.solve_count, points: entry.points });
-          }
-        });
-
-        // Generate last 30 days (IST based)
-        for (let i = 0; i < 30; i++) {
-          const d = new Date(istNow); // Start from IST current date
-          d.setDate(istNow.getDate() - i); // Subtract days from IST current date
-
-          const dateStr = d.toISOString().split('T')[0]; // YYYY-MM-DD for this IST day
-          const displayDate = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-          const isToday = dateStr === todayStr;
-
-          // Use noon time to avoid timezone edge cases for seed
-          // This date object 'd' is already in IST, so its getTime() will reflect IST.
-          // We want the noon of *this specific IST day* for the seed.
-          const noonTime = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0).getTime() / 1000;
-          const questions = generateProblemsForDate(noonTime, easy, medium, hard);
-
-          const stats = userHistoryMap.get(dateStr) || { solve_count: 0, points: 0 };
-
-          processedDays.push({
-            date: dateStr,
-            displayDate,
-            questions,
-            solvedCount: stats.solve_count,
-            points: stats.points,
-            isToday
-          });
-        }
-
-        setDays(processedDays);
-
-        // 5. Set Leaderboard
-        const sortedLeaderboard = Array.from(leaderboardMap.entries())
-          .map(([handle, stats]) => ({ handle, ...stats }))
-          .sort((a, b) => b.totalPoints - a.totalPoints);
-
-        setLeaderboard(sortedLeaderboard);
+        // Re-render with updated data (using same problems data)
+        processAndSetData(updatedHistoryData, problemsData);
 
       } catch (err) {
         console.error("Error fetching data:", err);
-      } finally {
         setDataLoading(false);
       }
     };
@@ -671,9 +689,13 @@ export default function DailyRoute() {
                       <TableRow key={user.handle} className="border-border hover:bg-muted/50">
                         <TableCell className="font-medium text-muted-foreground">{idx + 1}</TableCell>
                         <TableCell>
-                          <span className={`font-bold ${idx < 3 ? "text-yellow-500" : "text-foreground"}`}>
-                            {user.handle}
-                          </span>
+                          <Link
+                            href={`https://codeforces.com/profile/${user.handle}`}
+                            target="_blank"
+                            className={`font-bold hover:underline ${idx < 3 ? "text-yellow-500" : "text-foreground"}`}
+                          >
+                            {user.name}
+                          </Link>
                         </TableCell>
                         <TableCell className="text-right text-primary font-mono">
                           {user.totalPoints}
