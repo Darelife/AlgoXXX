@@ -200,7 +200,24 @@ export default function DailyRoute() {
   // Helper to generate problems for a specific date
   const generateProblemsForDate = (dateUnix: number, easy: CFProblem[], medium: CFProblem[], hard: CFProblem[]) => {
     const randomSeed = Math.floor(dateUnix / 86400);
-    const pick = (arr: CFProblem[]) => arr.length ? arr[randomSeed % arr.length] : null;
+
+    // Mulberry32 seeded random number generator
+    function mulberry32(a: number) {
+      return function () {
+        let t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      }
+    }
+
+    const rand = mulberry32(randomSeed);
+
+    const pick = (arr: CFProblem[]) => {
+      if (!arr.length) return null;
+      const index = Math.floor(rand() * arr.length);
+      return arr[index];
+    };
 
     const p1 = pick(easy);
     const p2 = pick(medium);
@@ -345,7 +362,7 @@ export default function DailyRoute() {
     fetchData();
   }, [userHandle]);
 
-  const getLink = (day: DayEntry, segmentIndex: number) => {
+  const getLink = (day: DayEntry, segmentIndex: number, override?: boolean) => {
     if (!day.questions || day.questions.length === 0) return "#";
     const { questions, solvedCount } = day;
 
@@ -355,14 +372,13 @@ export default function DailyRoute() {
     // 2 solved: 0->Easy, 1->Medium, 2->Hard
     // 3 solved: All -> respective
 
-    if (solvedCount === 0) return `https://codeforces.com/contest/${questions[0].problem.contestId}/problem/${questions[0].problem.index}`;
-
-    if (solvedCount === 1) {
+    if (solvedCount === 0 && !override) return `https://codeforces.com/contest/${questions[0].problem.contestId}/problem/${questions[0].problem.index}`;
+    if (solvedCount === 1 && !override) {
       if (segmentIndex === 0) return `https://codeforces.com/contest/${questions[0].problem.contestId}/problem/${questions[0].problem.index}`;
       return `https://codeforces.com/contest/${questions[1].problem.contestId}/problem/${questions[1].problem.index}`;
     }
 
-    if (solvedCount >= 2) {
+    if (solvedCount >= 2 || override) {
       if (segmentIndex === 0) return `https://codeforces.com/contest/${questions[0].problem.contestId}/problem/${questions[0].problem.index}`;
       if (segmentIndex === 1) return `https://codeforces.com/contest/${questions[1].problem.contestId}/problem/${questions[1].problem.index}`;
       return `https://codeforces.com/contest/${questions[2].problem.contestId}/problem/${questions[2].problem.index}`;
@@ -593,7 +609,7 @@ export default function DailyRoute() {
                             <TableCell className="text-center p-0">
                               {day.questions && day.questions[0] ? (
                                 <Link
-                                  href={getLink(day, 0)}
+                                  href={getLink(day, 0, true)}
                                   target="_blank"
                                   className={`flex items-center justify-center h-full w-full py-4 transition-colors
                                     ${day.solvedCount >= 1
@@ -611,14 +627,15 @@ export default function DailyRoute() {
                             <TableCell className="text-center p-0">
                               {day.questions && day.questions[1] ? (
                                 <Link
-                                  href={getLink(day, 1)}
+                                  href={getLink(day, 1, true)}
                                   target="_blank"
                                   className={`flex items-center justify-center h-full w-full py-4 transition-colors
                                     ${day.solvedCount >= 2
                                       ? "text-gray-400 hover:bg-gray-400/10"
-                                      : day.solvedCount === 1
-                                        ? "text-primary hover:bg-primary/10" // Next up
-                                        : "text-muted-foreground/30 pointer-events-none" // Locked
+                                      : "text-primary hover:bg-primary/10"
+                                    //  day.solvedCount === 1
+                                    //   ? "text-primary hover:bg-primary/10" // Next up
+                                    //   : "text-muted-foreground/30 pointer-events-none" // Locked
                                     }
                                   `}
                                 >
@@ -631,14 +648,15 @@ export default function DailyRoute() {
                             <TableCell className="text-center p-0">
                               {day.questions && day.questions[2] ? (
                                 <Link
-                                  href={getLink(day, 2)}
+                                  href={getLink(day, 2, true)}
                                   target="_blank"
                                   className={`flex items-center justify-center h-full w-full py-4 transition-colors
                                     ${day.solvedCount >= 3
                                       ? "text-yellow-500 hover:bg-yellow-500/10"
-                                      : day.solvedCount === 2
-                                        ? "text-primary hover:bg-primary/10" // Next up
-                                        : "text-muted-foreground/30 pointer-events-none" // Locked
+                                      : "text-primary hover:bg-primary/10"
+                                    // day.solvedCount === 2
+                                    //   ? "text-primary hover:bg-primary/10" // Next up
+                                    //   : "text-muted-foreground/30 pointer-events-none" // Locked
                                     }
                                   `}
                                 >

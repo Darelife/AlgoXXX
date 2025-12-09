@@ -34,6 +34,18 @@ export async function POST() {
         const timeunix = Math.floor(istDate.getTime() / 1000);
         const randomSeed = Math.floor(timeunix / 86400);
 
+        // Mulberry32 seeded random number generator
+        function mulberry32(a: number) {
+            return function () {
+                let t = a += 0x6D2B79F5;
+                t = Math.imul(t ^ (t >>> 15), t | 1);
+                t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+            }
+        }
+
+        const rand = mulberry32(randomSeed);
+
         const problemsRes = await fetch("https://codeforces.com/api/problemset.problems");
         const problemsData = await problemsRes.json();
 
@@ -46,7 +58,11 @@ export async function POST() {
         const mediumProblems = rated.filter((p) => p.rating! >= 1300 && p.rating! <= 1600);
         const hardProblems = rated.filter((p) => p.rating! >= 1700 && p.rating! <= 2000);
 
-        const pick = (arr: CFProblem[]) => arr.length ? arr[randomSeed % arr.length] : null;
+        const pick = (arr: CFProblem[]) => {
+            if (!arr.length) return null;
+            const index = Math.floor(rand() * arr.length);
+            return arr[index];
+        };
 
         const dailyProblems = [
             pick(easyProblems),
