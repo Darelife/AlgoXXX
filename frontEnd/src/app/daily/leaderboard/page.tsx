@@ -5,6 +5,8 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { Session } from "@supabase/supabase-js";
 
+import NavBar from "../../components/navBar";
+
 // Types
 interface LeaderboardEntry {
     handle: string;
@@ -21,8 +23,14 @@ export default function LeaderboardPage() {
     const [days, setDays] = useState<string[]>([]); // Array of YYYY-MM-DD
     const [loading, setLoading] = useState(true);
     const [currentUser, setCurrentUser] = useState<string | null>(null);
+    const [theme, setTheme] = useState<"light" | "dark">("dark"); // Default to dark for AoC feel
 
     useEffect(() => {
+        // Load theme
+        const storedTheme = localStorage.getItem("theme") || "dark";
+        setTheme(storedTheme as "light" | "dark");
+        document.documentElement.classList.toggle("dark", storedTheme === "dark");
+
         // Determine the last 25 days (to match AoC style typically)
         // Or maybe 30 since we fetch 30. Let's do 25 to keep it compact and "AoC-like" specific number
         // Actually the fetch is 30, let's show all 30.
@@ -102,28 +110,53 @@ export default function LeaderboardPage() {
         getUser();
     }, [supabase]);
 
+    const toggleTheme = () => {
+        const newTheme = theme === "light" ? "dark" : "light";
+        setTheme(newTheme);
+        document.documentElement.classList.toggle("dark", newTheme === "dark");
+        localStorage.setItem("theme", newTheme);
+    };
+
     if (loading) {
-        return <div className="min-h-screen bg-[#0f0f23] text-green-500 font-mono p-10">Loading leaderboard...</div>;
+        return (
+            <div className={`min-h-screen font-mono p-10 ${theme === 'dark' ? 'bg-[#0a0a0a] text-green-500' : 'bg-white text-green-600'}`}>
+                Loading leaderboard...
+            </div>
+        );
     }
 
+    // Dynamic styles based on theme
+    const bgClass = theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white';
+    const textMain = theme === 'dark' ? 'text-[#cccccc]' : 'text-gray-600';
+    const textHeader = theme === 'dark' ? 'text-[#ffff66]' : 'text-orange-500'; // Gold/Orange for header
+    const textLink = theme === 'dark' ? 'text-green-500 hover:text-[#99ff99]' : 'text-green-600 hover:text-green-800';
+    const textRowHover = theme === 'dark' ? 'hover:bg-[#1a1a2e]' : 'hover:bg-gray-100';
+    const textRank = theme === 'dark' ? 'text-[#888888]' : 'text-gray-400';
+    const textScore = theme === 'dark' ? 'text-white' : 'text-black';
+    const cellTens = theme === 'dark' ? 'text-[#cccccc]' : 'text-black';
+    const cellOnes = theme === 'dark' ? 'text-[#cccccc]' : 'text-black';
+    const starEmpty = theme === 'dark' ? 'text-[#333333]' : 'text-gray-200';
+
     return (
-        <div className="min-h-screen bg-[#0f0f23] text-[#cccccc] font-mono p-4 md:p-8">
-            <div className="max-w-[1200px] mx-auto">
+        <div className={`min-h-screen font-mono ${bgClass} ${textMain}`}>
+            <NavBar toggleTheme={toggleTheme} fixed={false} />
+
+            <div className="max-w-[1200px] mx-auto p-4 md:p-8 pt-12">
                 <header className="mb-8">
-                    <h1 className="text-[#ffff66] text-3xl font-bold mb-2 text-shadow-glow">Leaderboard</h1>
-                    <div className="text-[#cccccc] mb-4">
-                        <Link href="/daily" className="text-green-500 hover:text-[#99ff99]">[Return to Daily Challenges]</Link>
+                    <h1 className={`${textHeader} text-3xl font-bold mb-2 ${theme === 'dark' ? 'text-shadow-glow' : ''}`}>Leaderboard</h1>
+                    <div className="mb-4">
+                        <Link href="/daily" className={textLink}>[Return to Daily Challenges]</Link>
                     </div>
-                    <p className="text-[#cccccc]">
-                        This is the private leaderboard for <span className="text-white">AlgoManiax Daily</span>.
+                    <p>
+                        This is the private leaderboard for <span className={`${textScore}`}>AlgoManiax Daily</span>.
                         Usage of this leaderboard is for educational purposes.
                         <br />
-                        Current event: <span className="text-[#ffff66]">Daily Streak 2025</span>
+                        Current event: <span className={`${textHeader}`}>Daily Streak 2025</span>
                     </p>
-                    <p className="mt-4 text-sm text-[#888888]">
-                        Gold <span className="text-[#ffff66]">*</span> indicates full completion (3/3),
-                        Silver <span className="text-[#9999cc]">*</span> means partial (1/2),
-                        and Gray <span className="text-[#444444]">*</span> means none.
+                    <p className="mt-4 text-sm opacity-80">
+                        Gold <span className={`${theme === 'dark' ? 'text-[#ffff66]' : 'text-yellow-500'}`}>*</span> indicates full completion (3/3),
+                        Silver <span className={`${theme === 'dark' ? 'text-[#9999cc]' : 'text-slate-400'}`}>*</span> means partial (2/3),
+                        and Purple <span className={`${theme === 'dark' ? 'text-[#a855f7]' : 'text-purple-600'}`}>*</span> means started (1/3).
                     </p>
                 </header>
 
@@ -136,11 +169,12 @@ export default function LeaderboardPage() {
                         <div className="flex">
                             <div className="w-[100px] shrink-0"></div> {/* Spacer for Rank + Score */}
                             <div className="flex">
-                                {days.map((_, idx) => {
-                                    const dayNum = idx + 1;
+                                {days.map((dayDate, idx) => {
+                                    // Parse date string YYYY-MM-DD
+                                    const dayNum = parseInt(dayDate.split('-')[2]);
                                     const tens = Math.floor(dayNum / 10);
                                     return (
-                                        <span key={`tens-${idx}`} className="w-[18px] text-center text-[#cccccc] whitespace-pre text-xs">
+                                        <span key={`tens-${idx}`} className={`w-[18px] text-center whitespace-pre text-xs ${cellTens}`}>
                                             {tens > 0 ? tens : " "}
                                         </span>
                                     );
@@ -152,11 +186,11 @@ export default function LeaderboardPage() {
                         <div className="flex mb-2">
                             <div className="w-[100px] shrink-0"></div> {/* Spacer for Rank + Score */}
                             <div className="flex">
-                                {days.map((_, idx) => {
-                                    const dayNum = idx + 1;
+                                {days.map((dayDate, idx) => {
+                                    const dayNum = parseInt(dayDate.split('-')[2]);
                                     const ones = dayNum % 10;
                                     return (
-                                        <span key={`ones-${idx}`} className="w-[18px] text-center text-[#cccccc] text-xs">
+                                        <span key={`ones-${idx}`} className={`w-[18px] text-center text-xs ${cellOnes}`}>
                                             {ones}
                                         </span>
                                     );
@@ -166,24 +200,32 @@ export default function LeaderboardPage() {
 
                         {/* Entries */}
                         {leaderboard.map((user, idx) => (
-                            <div key={user.handle} className="flex hover:bg-[#1a1a2e] transition-colors items-center">
+                            <div key={user.handle} className={`flex transition-colors items-center ${textRowHover}`}>
                                 {/* Rank & Score */}
-                                <div className="w-[100px] shrink-0 flex items-center justify-end gap-3 text-[#cccccc] whitespace-nowrap overflow-hidden pr-4">
-                                    <span className="text-[#888888] text-sm">{idx + 1})</span>
-                                    <span className="font-bold text-white tracking-wider">{user.totalPoints}</span>
+                                <div className="w-[100px] shrink-0 flex items-center justify-end gap-3 whitespace-nowrap overflow-hidden pr-4">
+                                    <span className={`${textRank} text-sm`}>{idx + 1})</span>
+                                    <span className={`font-bold tracking-wider ${textScore}`}>{user.totalPoints}</span>
                                 </div>
 
                                 {/* Stars Grid */}
                                 <div className="flex items-center">
                                     {days.map((dayDate) => {
                                         const stats = user.dailyStats[dayDate];
-                                        let star = <span className="text-[#333333] select-none scale-75 block">.</span>; // Empty
+                                        let star = <span className={`${starEmpty} select-none scale-75 block`}>.</span>; // Empty
 
                                         if (stats) {
                                             if (stats.solved === 3) {
-                                                star = <span className="text-[#ffff66] text-shadow-gold text-sm block">*</span>;
-                                            } else if (stats.solved >= 1) {
-                                                star = <span className="text-[#9999cc] text-shadow-silver text-sm block">*</span>;
+                                                // Gold
+                                                const color = theme === 'dark' ? 'text-[#ffff66] text-shadow-gold' : 'text-yellow-500';
+                                                star = <span className={`${color} text-sm block`}>*</span>;
+                                            } else if (stats.solved === 2) {
+                                                // Silver (Was 1-2, now strictly 2)
+                                                const color = theme === 'dark' ? 'text-[#9999cc] text-shadow-silver' : 'text-slate-400';
+                                                star = <span className={`${color} text-sm block`}>*</span>;
+                                            } else if (stats.solved === 1) {
+                                                // Purple (New)
+                                                const color = theme === 'dark' ? 'text-[#a855f7] text-shadow-purple' : 'text-purple-600';
+                                                star = <span className={`${color} text-sm block`}>*</span>;
                                             }
                                         }
 
@@ -196,7 +238,7 @@ export default function LeaderboardPage() {
                                 </div>
 
                                 {/* Name */}
-                                <div className="ml-4 truncate text-green-500 hover:text-[#99ff99] transition-colors">
+                                <div className={`ml-4 truncate transition-colors ${textLink}`}>
                                     <Link href={`https://codeforces.com/profile/${user.handle}`} target="_blank">
                                         {user.name}
                                     </Link>
@@ -217,7 +259,11 @@ export default function LeaderboardPage() {
         .text-shadow-silver {
            text-shadow: 0 0 5px #9999cc;
         }
+        .text-shadow-purple {
+            text-shadow: 0 0 5px #a855f7;
+        }
       `}</style>
         </div>
     );
 }
+
