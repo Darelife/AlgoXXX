@@ -686,53 +686,13 @@ export default function DailyRoute() {
               </Card>
             )}
 
-            {/* Monthly Leaderboard */}
-            <div className="mt-16">
-              <h2 className="text-2xl font-bold text-foreground mb-6 border-b border-border pb-2 flex items-center gap-2">
-                <span className="text-primary">#</span> Monthly Leaderboard (Last 30 Days)
-              </h2>
-
-              <Card className="bg-card/50 backdrop-blur-sm border-border">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-border hover:bg-transparent">
-                      <TableHead className="w-[100px]">Rank</TableHead>
-                      <TableHead>User</TableHead>
-                      <TableHead className="text-right">Total Score</TableHead>
-                      <TableHead className="text-right">Total Solved</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {leaderboard.map((user, idx) => (
-                      <TableRow key={user.handle} className="border-border hover:bg-muted/50">
-                        <TableCell className="font-medium text-muted-foreground">{idx + 1}</TableCell>
-                        <TableCell>
-                          <Link
-                            href={`https://codeforces.com/profile/${user.handle}`}
-                            target="_blank"
-                            className={`font-bold hover:underline ${idx < 3 ? "text-yellow-500" : "text-foreground"}`}
-                          >
-                            {user.name}
-                          </Link>
-                        </TableCell>
-                        <TableCell className="text-right text-primary font-mono">
-                          {user.totalPoints}
-                        </TableCell>
-                        <TableCell className="text-right text-muted-foreground">
-                          {user.totalSolved}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                    {leaderboard.length === 0 && (
-                      <TableRow>
-                        <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
-                          No active solvers yet. Be the first!
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </Card>
+            {/* Monthly Leaderboard Link */}
+            <div className="mt-16 flex justify-center">
+              <Link href="/daily/leaderboard">
+                <Button variant="outline" className="border-green-500 text-green-500 hover:bg-green-500/10 hover:text-green-400 font-mono text-lg px-8 py-6 h-auto transition-all transform hover:scale-105">
+                  [ VIEW FULL LEADERBOARD ]
+                </Button>
+              </Link>
             </div>
           </>
         )}
