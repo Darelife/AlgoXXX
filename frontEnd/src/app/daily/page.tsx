@@ -310,7 +310,7 @@ export default function DailyRoute() {
         const stats = userHistoryMap.get(dateStr) || { solve_count: 0, points: 0 };
 
         processedDays.push({
-          date: dateStr,
+          date: dateStr.split('-').reverse().join('-'),
           displayDate,
           questions,
           solvedCount: stats.solve_count,
