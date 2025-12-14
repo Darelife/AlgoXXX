@@ -34,10 +34,17 @@ export default function LeaderboardPage() {
         // Determine the last 25 days (to match AoC style typically)
         // Or maybe 30 since we fetch 30. Let's do 25 to keep it compact and "AoC-like" specific number
         // Actually the fetch is 30, let's show all 30.
+        // const now = new Date();
+        // // Shift to IST
+        // const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+        // const istOffset = 5.5 * 60 * 60 * 1000;
+        // const istNow = new Date(utc + istOffset);
         const now = new Date();
-        const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+        console.log(now);
         const istOffset = 5.5 * 60 * 60 * 1000;
-        const istNow = new Date(utc + istOffset);
+        const istNow = new Date(now.getTime() + istOffset);
+        console.log(istNow);
+
 
         // We want the columns to be 1..N where 1 is the oldest day?
         // AoC does 1..25 where 1 is Dec 1.
@@ -54,45 +61,58 @@ export default function LeaderboardPage() {
         const fetchLeaderboard = async () => {
             setLoading(true);
             try {
+                // 1. Initial Fetch
                 const res = await fetch('/api/daily/history?days=30');
                 const historyData = await res.json();
+                processAndSetLeaderboard(historyData);
+                setLoading(false);
 
-                const leaderboardMap = new Map<string, LeaderboardEntry>();
+                // 2. Trigger Sync (Background)
+                await fetch('/api/daily/sync', { method: 'POST' });
 
-                historyData.forEach((entry: any) => {
-                    if (!leaderboardMap.has(entry.user_handle)) {
-                        leaderboardMap.set(entry.user_handle, {
-                            handle: entry.user_handle,
-                            name: entry.name || entry.user_handle,
-                            totalPoints: 0,
-                            totalSolved: 0,
-                            dailyStats: {}
-                        });
-                    }
+                // 3. Re-fetch
+                const updatedRes = await fetch('/api/daily/history?days=30');
+                const updatedData = await updatedRes.json();
+                processAndSetLeaderboard(updatedData);
 
-                    const user = leaderboardMap.get(entry.user_handle)!;
-                    // Accumulate totals
-                    user.totalPoints += entry.points;
-                    user.totalSolved += entry.solve_count;
-
-                    // Record daily stat
-                    user.dailyStats[entry.date] = {
-                        solved: entry.solve_count,
-                        points: entry.points
-                    };
-                });
-
-                const sorted = Array.from(leaderboardMap.values()).sort((a, b) => {
-                    if (b.totalPoints !== a.totalPoints) return b.totalPoints - a.totalPoints;
-                    return b.totalSolved - a.totalSolved;
-                });
-
-                setLeaderboard(sorted);
             } catch (err) {
                 console.error("Failed to load leaderboard", err);
-            } finally {
                 setLoading(false);
             }
+        };
+
+        const processAndSetLeaderboard = (historyData: any[]) => {
+            const leaderboardMap = new Map<string, LeaderboardEntry>();
+
+            historyData.forEach((entry: any) => {
+                if (!leaderboardMap.has(entry.user_handle)) {
+                    leaderboardMap.set(entry.user_handle, {
+                        handle: entry.user_handle,
+                        name: entry.name || entry.user_handle,
+                        totalPoints: 0,
+                        totalSolved: 0,
+                        dailyStats: {}
+                    });
+                }
+
+                const user = leaderboardMap.get(entry.user_handle)!;
+                // Accumulate totals
+                user.totalPoints += entry.points;
+                user.totalSolved += entry.solve_count;
+
+                // Record daily stat
+                user.dailyStats[entry.date] = {
+                    solved: entry.solve_count,
+                    points: entry.points
+                };
+            });
+
+            const sorted = Array.from(leaderboardMap.values()).sort((a, b) => {
+                if (b.totalPoints !== a.totalPoints) return b.totalPoints - a.totalPoints;
+                return b.totalSolved - a.totalSolved;
+            });
+
+            setLeaderboard(sorted);
         };
 
         fetchLeaderboard();

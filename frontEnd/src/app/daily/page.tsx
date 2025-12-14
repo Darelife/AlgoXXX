@@ -252,11 +252,16 @@ export default function DailyRoute() {
 
       // 4. Process Days
       const processedDays: DayEntry[] = [];
+      // const now = new Date();
+      // // Shift to IST
+      // const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      // const istOffset = 5.5 * 60 * 60 * 1000;
+      // const istNow = new Date(utc + istOffset);
       const now = new Date();
-      // Shift to IST
-      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      console.log(now);
       const istOffset = 5.5 * 60 * 60 * 1000;
-      const istNow = new Date(utc + istOffset);
+      const istNow = new Date(now.getTime() + istOffset);
+      console.log(istNow);
       const todayStr = istNow.toISOString().split('T')[0];
 
       // Map history for quick lookup
