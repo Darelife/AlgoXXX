@@ -26,13 +26,14 @@ export async function POST() {
         // 1. Get Daily Problems (Same logic as frontend)
         // Use IST (UTC+5:30) for consistency
         const now = new Date();
-        console.log(now);
-        const istOffset = 5.5 * 60 * 60 * 1000;
-        const istDate = new Date(now.getTime() + istOffset);
-        console.log(istDate);
+        const istOffsetSec = 5.5 * 60 * 60; // 5.5 hours in seconds
 
-        const timeunix = Math.floor(istDate.getTime() / 1000);
-        const randomSeed = Math.floor(timeunix / 86400);
+        // Calculate "Day Index" relative to IST
+        // Day Index = floor( (Unix Timestamp + IST Offset) / 86400 )
+        const currentTimestampSec = Math.floor(now.getTime() / 1000);
+        const dayIndex = Math.floor((currentTimestampSec + istOffsetSec) / 86400);
+
+        const randomSeed = dayIndex;
 
         // Mulberry32 seeded random number generator
         function mulberry32(a: number) {
@@ -53,6 +54,12 @@ export async function POST() {
 
         const allProblems: CFProblem[] = problemsData.result.problems;
         const rated = allProblems.filter((p) => typeof p.rating === "number");
+
+        // Sort deterministically (Exact match with frontend)
+        rated.sort((a, b) => {
+            if (b.contestId !== a.contestId) return (b.contestId || 0) - (a.contestId || 0);
+            return (a.index || "").localeCompare(b.index || "");
+        });
 
         const easyProblems = rated.filter((p) => p.rating! >= 800 && p.rating! <= 1200);
         const mediumProblems = rated.filter((p) => p.rating! >= 1300 && p.rating! <= 1600);
@@ -77,30 +84,23 @@ export async function POST() {
         usersData.forEach(u => userMap.set(u.cfid.toLowerCase().trim(), u));
 
         // 3. Process Submissions
-        // Calculate start of day in IST
 
-        // Adjust back to UTC timestamp for CF comparison (since CF uses Unix timestamp which is UTC based, but we want 00:00 IST)
-        // Wait, new Date(y, m, d) creates a date in LOCAL server time.
-        // We constructed istDate manually.
-        // Let's be precise:
-        // We want the timestamp corresponding to 00:00:00 IST of the current IST day.
-        // 00:00 IST = Previous Day 18:30 UTC.
+        // Start of Day in UTC (for filtering submissions)
+        // The start of "dayIndex" occurs when (t + offset) / 86400 == dayIndex (integer division)
+        // t_start + offset = dayIndex * 86400
+        // t_start = (dayIndex * 86400) - offset
+        const startOfDay = (dayIndex * 86400) - istOffsetSec;
 
-        // Construct string "YYYY-MM-DD" from IST date
-        const dateStr = istDate.toISOString().split('T')[0];
-
-        // To get the unix timestamp of 00:00 IST:
-        // Create a Date object for that YYYY-MM-DD at 00:00:00 in IST timezone
-        // Since we can't easily force timezone in Date constructor, we can calculate it.
-        // istDate is the current time shifted to IST.
-        // We strip time from it.
-        const istDayStart = new Date(istDate);
-        istDayStart.setHours(0, 0, 0, 0);
-        // Now istDayStart is "00:00" but in the shifted time. 
-        // We need to shift it BACK to UTC to get the real timestamp.
-        const startOfDay = (istDayStart.getTime() - istOffset) / 1000;
+        // Calculate Date String (YYYY-MM-DD)
+        // The day index usually corresponds to days since epoch if offset was 0. 
+        // We want the string representation of that day.
+        // new Date(dayIndex * 86400 * 1000) gives us 00:00 UTC on that day.
+        // Since we aligned our "day" to be consistent, we can just use the UTC date string of this timestamp.
+        const dateObj = new Date(dayIndex * 86400 * 1000);
+        const dateStr = dateObj.toISOString().split('T')[0];
 
         console.log(`[Sync] IST Date: ${dateStr}`);
+        console.log(`[Sync] Day Index: ${dayIndex}`);
         console.log(`[Sync] Start of Day (Unix): ${startOfDay}`);
         console.log(`[Sync] Daily Problems: ${dailyProblems.map(p => p.index).join(', ')}`);
 

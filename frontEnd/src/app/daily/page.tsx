@@ -198,9 +198,7 @@ export default function DailyRoute() {
   };
 
   // Helper to generate problems for a specific date
-  const generateProblemsForDate = (dateUnix: number, easy: CFProblem[], medium: CFProblem[], hard: CFProblem[]) => {
-    const randomSeed = Math.floor(dateUnix / 86400);
-
+  const generateProblemsForDate = (seed: number, easy: CFProblem[], medium: CFProblem[], hard: CFProblem[]) => {
     // Mulberry32 seeded random number generator
     function mulberry32(a: number) {
       return function () {
@@ -211,7 +209,7 @@ export default function DailyRoute() {
       }
     }
 
-    const rand = mulberry32(randomSeed);
+    const rand = mulberry32(seed);
 
     const pick = (arr: CFProblem[]) => {
       if (!arr.length) return null;
@@ -252,17 +250,17 @@ export default function DailyRoute() {
 
       // 4. Process Days
       const processedDays: DayEntry[] = [];
-      // const now = new Date();
-      // // Shift to IST
-      // const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-      // const istOffset = 5.5 * 60 * 60 * 1000;
-      // const istNow = new Date(utc + istOffset);
       const now = new Date();
-      console.log(now);
-      const istOffset = 5.5 * 60 * 60 * 1000;
-      const istNow = new Date(now.getTime() + istOffset);
-      console.log(istNow);
-      const todayStr = istNow.toISOString().split('T')[0];
+      const istOffsetMs = 5.5 * 60 * 60 * 1000;
+
+      // Strict Day Index Calculation (Same as Backend)
+      // Day Index = floor( (Unix MS + IST Offset MS) / 86400000 )
+      const currentTimestampMs = now.getTime();
+      const currentDayIndex = Math.floor((currentTimestampMs + istOffsetMs) / 86400000);
+
+      // We still need the "Today" string for identifying the current day row highlight
+      const todayDateObj = new Date(currentDayIndex * 86400000);
+      const todayStr = todayDateObj.toISOString().split('T')[0];
 
       // Map history for quick lookup
       const userHistoryMap = new Map<string, { solve_count: number, points: number }>();
@@ -292,25 +290,23 @@ export default function DailyRoute() {
         }
       });
 
-      // Generate last 30 days (IST based)
+      // Generate last 30 days
       for (let i = 0; i < 30; i++) {
-        const d = new Date(istNow); // Start from IST current date
-        d.setDate(istNow.getDate() - i); // Subtract days from IST current date
+        const dayIndex = currentDayIndex - i;
 
-        const dateStr = d.toISOString().split('T')[0]; // YYYY-MM-DD for this IST day
-        const displayDate = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        // This Date object is at 00:00 UTC of the day.
+        // Since our dayIndex is global/absolute, using UTC methods gives the consistent result.
+        const dateObj = new Date(dayIndex * 86400000);
+        const dateStr = dateObj.toISOString().split('T')[0];
+
+        const displayDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
         const isToday = dateStr === todayStr;
 
-        // Use noon time to avoid timezone edge cases for seed
-        // This date object 'd' is already in IST, so its getTime() will reflect IST.
-        // We want the noon of *this specific IST day* for the seed.
-        const noonTime = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0).getTime() / 1000;
-        const questions = generateProblemsForDate(noonTime, easy, medium, hard);
-
+        const questions = generateProblemsForDate(dayIndex, easy, medium, hard);
         const stats = userHistoryMap.get(dateStr) || { solve_count: 0, points: 0 };
 
         processedDays.push({
-          date: dateStr.split('-').reverse().join('-'),
+          date: dateStr.split('-').reverse().join('-'), // DD-MM-YYYY format for visual if needed, though usually strict ISO is better
           displayDate,
           questions,
           solvedCount: stats.solve_count,
