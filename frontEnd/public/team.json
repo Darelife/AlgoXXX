@@ -1,4 +1,88 @@
 {
+  "2025-26": {
+    "year": "2025-26",
+    "roles": {
+      "Coordinators": [
+        { "name": "Aditya Birla", "link": "AdityABIRLA2005" },
+        { "name": "Prakhar Bhandari", "link": "darelife" },
+        { "name": "Aashman Patwardhan", "link": "aashman" },
+        { "name": "Keshav Kavra", "link": "kshav2" }
+      ],
+      "Core Members": [
+        { "name": "Meet Parmar", "link": "tiwoeem" },
+        { "name": "Siddharth Damle", "link": "supersidd" },
+        { "name": "Ishaan Gupta", "link": "thandaprani" },
+        { "name": "Anush Vishnoi", "link": "lighthouse1" },
+        { "name": "Jayant Chandwani", "link": "garam_icecream" },
+        { "name": "Navneet Singh", "link": "navneet2311" },
+        { "name": "Ujwal Jain", "link": "masteroojway" },
+        { "name": "Parth Jayanandan", "link": "chaotic_carni" },
+        { "name": "Aishwarya Naidu", "link": "aryaaa14"},
+        { "name": "Ria Arora", "link": "riaaax" },
+        { "name": "Khushi Mishra", "link":"khushi_mishra"},
+        { "name": "Apurva Verma", "link":"MaggiMonster"},
+        { "name": "Ananya Khaitan", "link": "Hawkstar" }
+      ],
+      "Crew": [
+        { "name": "Arjun Pathak", "link": "Arjun_The_Great" },
+        { "name": "Shreyas Sinha", "link": "sinha.shreyas" },
+        { "name": "Devansh Sandeep Karania", "link": "dskan" },
+        { "name": "Avya Jain", "link": "asterix25" },
+        { "name": "Yuthran", "link": "yuthran" },
+        { "name": "Ashwin Gupta", "link": "ashwng" },
+        { "name": "Arnav Gupta", "link": "arnavBITS" },
+        { "name": "Devanshu Bhatt", "link": "dev_anshu" },
+        { "name": "Piyush Tandon", "link": "aleph.piyu" },
+        { "name": "Prashant Baid", "link": "prsh11" },
+        { "name": "Rohan Khandelwal", "link": "rohan040207" },
+        { "name": "Mahadh Shivakumar", "link": "maAadu" },
+        { "name": "Tanish Kalgude", "link": "TanishKalgude" },
+        { "name": "Eshaan Gupta", "link": "EshaanDVLPR" },
+        { "name": "Mitresh Janarthanan", "link": "mitreshjana" },
+        { "name": "Dhriti Sankhala", "link": "7dhriti" },
+        { "name": "Suryansh Ray", "link": "solicitor_of_solitude" },
+        { "name": "Keshav Sharma", "link": "keshav007" },
+        { "name": "Parag Jyoti Pal", "link": "bisleribaddie" },
+        { "name": "Raghav Arora", "link": "Raghav_Arora" },
+        { "name": "Aaryaveer Raviraj Adyanthaya", "link": "Firefazer28" },
+        { "name": "Anshuman Srivastava", "link": "AnshumanSRI" },
+
+        { "name": "Divya Doctor", "link": "divyadoctor1" },
+        { "name": "Harshit Grover", "link": "harshitgrover" },
+        { "name": "Rohan Sharma", "link": "EronAt" },
+        { "name": "Aaryan Pandey", "link": "Arxalier" },
+        { "name": "Kunal Gupta", "link": "KG31" },
+        { "name": "Mervin Savio Jude", "link": "Mervinsjude2006" },
+        { "name": "Albin Abraham", "link": "AlbinAbr" },
+        { "name": "Dhananjay Bhattacharya", "link": "EmeraldBeast" },
+        { "name": "Jaivin Bengani", "link": "Jacenv" },
+        { "name": "Aryan Baid", "link": "aryan9846" },
+        { "name": "Tanmai", "link": "cant_codeTM" },
+        { "name": "Nivya Nandagopal", "link": "n1vy4" },
+        { "name": "Satvik", "link": "Argonised" },
+        { "name": "Tanay Sheth", "link": "tanaysheth" },
+        { "name": "Aayush Aggarwal", "link": "Ash1718" },
+        { "name": "Shreyash Lakshmi Narayanan", "link": "Sodasman" },
+        { "name": "Siddh Jain", "link": "CyberBlade_" },
+        { "name": "Aditi Rajaram Patil", "link": "ARPatil" },
+        { "name": "Aavishkar Kanani", "link": "Mr_Aaka" },
+        { "name": "Swaraj", "link": "UnknownUvS" },
+        { "name": "Akash Gupta", "link": "joselu973" },
+        { "name": "Shaurya Suman", "link": "ShauryaSuman" },
+        { "name": "Arnav Gupta", "link": "argpcoding" },
+        { "name": "Sachit Ramesh", "link": "sachit_14" },
+        { "name": "Prasham", "link": "prashamshah_" },
+        { "name": "Atharv Consul", "link": "atharvconsul45" },
+        { "name": "Krrish Bhasin", "link": "levi0p" },
+        { "name": "Krish Garg", "link": "krishgarg" },
+        { "name": "Ansh Varma", "link": "aviate" },
+        { "name": "Krish Jaiswal", "link": "krigs" },
+        { "name": "Satvik Shrinivas", "link": "laxy" }
+      ]
+
+    }
+  }
+  ,
   "2024-25": {
     "year": "2024-25",
     "roles": {
@@ -30,7 +114,10 @@
         { "name": "Naitik Verma", "link": "velvet...thunder" },
         { "name": "Chinmay Rao", "link": "frost_14" },
         { "name": "Aishwarya Naidu", "link": "aryaaa14"},
-        { "name": "Arkaprava Roy, Arko", "link": "alien_huntrr"}
+        { "name": "Arkaprava Roy, Arko", "link": "alien_huntrr"},
+        { "name": "Ria Arora", "link": "riaaax" },
+        { "name": "Khushi Mishra", "link":"khushi_mishra"},
+        { "name": "Ananya Khaitan", "link": "Hawkstar" }
       ],
       "Crew": [
         { "name": "Ansh Varma", "link": "aviate" },
