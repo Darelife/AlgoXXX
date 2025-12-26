@@ -50,6 +50,14 @@ interface DailyQuestion {
   type: "Easy" | "Medium" | "Hard";
 }
 
+interface DailyOverride {
+  id: number;
+  date: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  contest_id: number;
+  problem_index: string;
+}
+
 interface DayEntry {
   date: string; // YYYY-MM-DD
   displayDate: string;
@@ -198,7 +206,7 @@ export default function DailyRoute() {
   };
 
   // Helper to generate problems for a specific date
-  const generateProblemsForDate = (seed: number, easy: CFProblem[], medium: CFProblem[], hard: CFProblem[]) => {
+  const generateProblemsForDate = (seed: number, easy: CFProblem[], medium: CFProblem[], hard: CFProblem[], allProblems: CFProblem[], dayOverrides?: Map<string, DailyOverride>) => {
     // Mulberry32 seeded random number generator
     function mulberry32(a: number) {
       return function () {
@@ -221,18 +229,33 @@ export default function DailyRoute() {
     const p2 = pick(medium);
     const p3 = pick(hard);
 
-    if (!p1 || !p2 || !p3) return [];
+    const applyOverride = (difficulty: string, original: CFProblem | null) => {
+      if (!dayOverrides) return original;
+      const override = dayOverrides.get(difficulty);
+      if (override) {
+        const found = allProblems.find(p => p.contestId === override.contest_id && p.index === override.problem_index);
+        if (found) return found;
+        console.warn(`Override problem not found: ${override.contest_id}${override.problem_index}`);
+      }
+      return original;
+    };
+
+    const finalP1 = applyOverride('Easy', p1);
+    const finalP2 = applyOverride('Medium', p2);
+    const finalP3 = applyOverride('Hard', p3);
+
+    if (!finalP1 || !finalP2 || !finalP3) return [];
 
     return [
-      { problem: p1, type: "Easy" as const },
-      { problem: p2, type: "Medium" as const },
-      { problem: p3, type: "Hard" as const },
+      { problem: finalP1, type: "Easy" as const },
+      { problem: finalP2, type: "Medium" as const },
+      { problem: finalP3, type: "Hard" as const },
     ];
   };
 
   // Main Data Fetch
   useEffect(() => {
-    const processAndSetData = (historyData: any[], problemsData: any) => {
+    const processAndSetData = (historyData: any[], problemsData: any, overridesData: DailyOverride[] | null) => {
       if (problemsData.status !== "OK") throw new Error("Failed to fetch problems");
 
       const allProblems: CFProblem[] = problemsData.result.problems;
@@ -302,7 +325,17 @@ export default function DailyRoute() {
         const displayDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
         const isToday = dateStr === todayStr;
 
-        const questions = generateProblemsForDate(dayIndex, easy, medium, hard);
+        // Filter overrides for this day
+        let dayOverridesMap: Map<string, DailyOverride> | undefined;
+        if (overridesData) {
+          const daysOverrides = overridesData.filter(o => o.date === dateStr);
+          if (daysOverrides.length > 0) {
+            dayOverridesMap = new Map();
+            daysOverrides.forEach(o => dayOverridesMap!.set(o.difficulty, o));
+          }
+        }
+
+        const questions = generateProblemsForDate(dayIndex, easy, medium, hard, allProblems, dayOverridesMap);
         const stats = userHistoryMap.get(dateStr) || { solve_count: 0, points: 0 };
 
         processedDays.push({
@@ -331,16 +364,23 @@ export default function DailyRoute() {
       setDataLoading(true);
       try {
         // 1. Fetch History & Problems immediately (Fast)
-        const [historyRes, problemsRes] = await Promise.all([
+        // Calculate date for 35 days ago to be safe
+        const now = new Date();
+        const pastDate = new Date(now.getTime() - 35 * 24 * 60 * 60 * 1000);
+        const pastDateStr = pastDate.toISOString().split('T')[0];
+
+        const [historyRes, problemsRes, overridesRes] = await Promise.all([
           fetch('/api/daily/history?days=30'),
-          fetch("https://codeforces.com/api/problemset.problems")
+          fetch("https://codeforces.com/api/problemset.problems"),
+          supabase.from('daily_overrides').select('*').gte('date', pastDateStr)
         ]);
 
         const historyData = await historyRes.json();
         const problemsData = await problemsRes.json();
+        const overridesData = overridesRes.data;
 
         // Render immediately with existing data
-        processAndSetData(historyData, problemsData);
+        processAndSetData(historyData, problemsData, overridesData);
         setDataLoading(false);
 
         // 2. Trigger Sync in background (Slow)
@@ -352,7 +392,7 @@ export default function DailyRoute() {
         const updatedHistoryData = await updatedHistoryRes.json();
 
         // Re-render with updated data (using same problems data)
-        processAndSetData(updatedHistoryData, problemsData);
+        processAndSetData(updatedHistoryData, problemsData, overridesData);
 
       } catch (err) {
         console.error("Error fetching data:", err);
