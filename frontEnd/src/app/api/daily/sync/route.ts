@@ -19,6 +19,14 @@ interface DBUser {
     name: string;
 }
 
+interface DailyOverride {
+    id: number;
+    date: string;
+    difficulty: 'Easy' | 'Medium' | 'Hard';
+    contest_id: number;
+    problem_index: string;
+}
+
 export async function POST() {
     try {
         const supabase = createClient();
@@ -32,6 +40,37 @@ export async function POST() {
         // Day Index = floor( (Unix Timestamp + IST Offset) / 86400 )
         const currentTimestampSec = Math.floor(now.getTime() / 1000);
         const dayIndex = Math.floor((currentTimestampSec + istOffsetSec) / 86400);
+
+
+        // Start of Day in UTC (for filtering submissions)
+        // The start of "dayIndex" occurs when (t + offset) / 86400 == dayIndex (integer division)
+        // t_start + offset = dayIndex * 86400
+        // t_start = (dayIndex * 86400) - offset
+        const startOfDay = (dayIndex * 86400) - istOffsetSec;
+
+        // Calculate Date String (YYYY-MM-DD)
+        // The day index usually corresponds to days since epoch if offset was 0. 
+        // We want the string representation of that day.
+        // new Date(dayIndex * 86400 * 1000) gives us 00:00 UTC on that day.
+        // Since we aligned our "day" to be consistent, we can just use the UTC date string of this timestamp.
+        const dateObj = new Date(dayIndex * 86400 * 1000);
+        const dateStr = dateObj.toISOString().split('T')[0];
+
+        // Fetch Overrides for this date
+        const { data: overrides } = await supabase
+            .from('daily_overrides')
+            .select('*')
+            .eq('date', dateStr);
+
+        const overrideMap = new Map<string, DailyOverride>();
+        if (overrides) {
+            overrides.forEach((o: DailyOverride) => overrideMap.set(o.difficulty, o));
+        }
+
+        console.log(`[Sync] IST Date: ${dateStr}`);
+        console.log(`[Sync] Day Index: ${dayIndex}`);
+        console.log(`[Sync] Start of Day (Unix): ${startOfDay}`);
+
 
         const randomSeed = dayIndex;
 
@@ -71,10 +110,27 @@ export async function POST() {
             return arr[index];
         };
 
+        const pickedEasy = pick(easyProblems);
+        const pickedMedium = pick(mediumProblems);
+        const pickedHard = pick(hardProblems);
+
+        const applyOverride = (difficulty: string, original: CFProblem | null) => {
+            const override = overrideMap.get(difficulty);
+            if (override) {
+                const found = allProblems.find(p => p.contestId === override.contest_id && p.index === override.problem_index);
+                if (found) {
+                    console.log(`[Sync] Applying override for ${difficulty}: ${found.contestId}${found.index}`);
+                    return found;
+                }
+                console.warn(`[Sync] Override problem not found: ${override.contest_id}${override.problem_index}`);
+            }
+            return original;
+        };
+
         const dailyProblems = [
-            pick(easyProblems),
-            pick(mediumProblems),
-            pick(hardProblems),
+            applyOverride('Easy', pickedEasy),
+            applyOverride('Medium', pickedMedium),
+            applyOverride('Hard', pickedHard),
         ].filter(p => p !== null) as CFProblem[];
 
         // 2. Get Users
@@ -85,23 +141,7 @@ export async function POST() {
 
         // 3. Process Submissions
 
-        // Start of Day in UTC (for filtering submissions)
-        // The start of "dayIndex" occurs when (t + offset) / 86400 == dayIndex (integer division)
-        // t_start + offset = dayIndex * 86400
-        // t_start = (dayIndex * 86400) - offset
-        const startOfDay = (dayIndex * 86400) - istOffsetSec;
 
-        // Calculate Date String (YYYY-MM-DD)
-        // The day index usually corresponds to days since epoch if offset was 0. 
-        // We want the string representation of that day.
-        // new Date(dayIndex * 86400 * 1000) gives us 00:00 UTC on that day.
-        // Since we aligned our "day" to be consistent, we can just use the UTC date string of this timestamp.
-        const dateObj = new Date(dayIndex * 86400 * 1000);
-        const dateStr = dateObj.toISOString().split('T')[0];
-
-        console.log(`[Sync] IST Date: ${dateStr}`);
-        console.log(`[Sync] Day Index: ${dayIndex}`);
-        console.log(`[Sync] Start of Day (Unix): ${startOfDay}`);
         console.log(`[Sync] Daily Problems: ${dailyProblems.map(p => p.index).join(', ')}`);
 
         const userScores = new Map<string, { solveCount: number, points: number, name: string }>();
