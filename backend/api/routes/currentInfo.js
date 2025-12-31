@@ -317,7 +317,7 @@ router.get("/all", async (req, res, next) => {
       allCfData = allCfData.concat(data.result);
     }
 
-    const SHOULD_UPDATE_DB = false;
+    const SHOULD_UPDATE_DB = true;
 
     const updatedDocs = await Promise.all(
       docs.map(async (user, index) => {
