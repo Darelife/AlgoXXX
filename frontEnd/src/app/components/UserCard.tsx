@@ -18,37 +18,37 @@ interface UserCardProps {
   contestDelta: string;
 }
 
+interface Rank {
+  name: string;
+  color: string;
+}
+
+const getRank = (rating: number): Rank => {
+  if (rating < 1200) return { name: 'Newbie', color: 'text-gray-500' }
+  if (rating < 1400) return { name: 'Pupil', color: 'text-green-500' }
+  if (rating < 1600) return { name: 'Specialist', color: 'text-cyan-500' }
+  if (rating < 1900) return { name: 'Expert', color: 'text-blue-700' }
+  if (rating < 2100) return { name: 'Candidate Master', color: 'text-purple-700' }
+  if (rating < 2300) return { name: 'Master', color: 'text-orange-500' }
+  if (rating < 2400) return { name: 'International Master', color: 'text-orange-500' }
+  if (rating < 2600) return { name: 'Grandmaster', color: 'text-red-500' }
+  if (rating < 3000) return { name: 'International Grandmaster', color: 'text-red-500' }
+  return { name: 'Legendary Grandmaster', color: 'text-red-600' }
+}
+
+// Get rank number color based on position
+const getRankColor = (rank: number): string => {
+  if (rank === 1) return 'text-yellow-500 dark:text-yellow-400';
+  if (rank === 2) return 'text-gray-500 dark:text-gray-300';
+  if (rank === 3) return 'text-amber-700 dark:text-amber-500';
+  return 'text-gray-300 dark:text-gray-600';
+}
+
 // <UserCard key={user.bitsid} data={user} />
 const UserCard: React.FC<UserCardProps> = React.memo(({ user, userRank, contestDelta }) => {
-  interface Rank {
-    name: string;
-    color: string;
-  }
-
-  const getRank = (rating: number): Rank => {
-    if (rating < 1200) return { name: 'Newbie', color: 'text-gray-500' }
-    if (rating < 1400) return { name: 'Pupil', color: 'text-green-500' }
-    if (rating < 1600) return { name: 'Specialist', color: 'text-cyan-500' }
-    if (rating < 1900) return { name: 'Expert', color: 'text-blue-700' }
-    if (rating < 2100) return { name: 'Candidate Master', color: 'text-purple-700' }
-    if (rating < 2300) return { name: 'Master', color: 'text-orange-500' }
-    if (rating < 2400) return { name: 'International Master', color: 'text-orange-500' }
-    if (rating < 2600) return { name: 'Grandmaster', color: 'text-red-500' }
-    if (rating < 3000) return { name: 'International Grandmaster', color: 'text-red-500' }
-    return { name: 'Legendary Grandmaster', color: 'text-red-600' }
-  }
-
   // if user.titlePhoto contains "no-title"
   if (user.titlePhoto.includes("no-title")) {
     user.titlePhoto = "/no-title.jpg";
-  }
-
-  // Get rank number color based on position
-  const getRankColor = (rank: number): string => {
-    if (rank === 1) return 'text-yellow-500 dark:text-yellow-400';
-    if (rank === 2) return 'text-gray-500 dark:text-gray-300';
-    if (rank === 3) return 'text-amber-700 dark:text-amber-500';
-    return 'text-gray-300 dark:text-gray-600';
   }
 
   // Get appropriate color for contest delta
