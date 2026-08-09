@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import NavBar from "../components/navBar";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { ChevronRight } from 'lucide-react';
 
 interface BootcampData {
@@ -19,7 +19,7 @@ const ResourceItem = ({ name, content }: { name: string; content: string | Bootc
     return (
       <div className="mb-1">
         <motion.div 
-          className="bg-white/25 dark:bg-gray-800/15 backdrop-blur-sm p-3 rounded-lg border border-orange-100/20 dark:border-red-900/10 hover:border-orange-200/30 dark:hover:border-red-800/20 transition-all duration-300"
+          className="bg-white/25 dark:bg-gray-800/15 backdrop-blur-sm p-3 rounded-lg border border-orange-100/20 dark:border-red-900/10 hover:border-orange-200/30 dark:hover:border-red-800/20 transition-colors duration-300"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
@@ -45,18 +45,21 @@ const ResourceItem = ({ name, content }: { name: string; content: string | Bootc
             </span>
           </button>
           
-          {isOpen && (
-            <motion.div 
-              className="mt-2 pl-3 space-y-0.5 border-l border-orange-100/30 dark:border-red-900/20 ml-1"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              transition={{ duration: 0.2 }}
-            >
-              {Object.entries(content).map(([key, value]) => (
-                <ResourceItem key={key} name={key} content={value} />
-              ))}
-            </motion.div>
-          )}
+          <AnimatePresence initial={false}>
+            {isOpen && (
+              <motion.div
+                className="mt-2 pl-3 space-y-0.5 border-l border-orange-100/30 dark:border-red-900/20 ml-1 overflow-hidden"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {Object.entries(content).map(([key, value]) => (
+                  <ResourceItem key={key} name={key} content={value} />
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </div>
     );
