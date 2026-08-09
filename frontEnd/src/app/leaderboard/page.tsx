@@ -6,7 +6,7 @@ import { Slider } from "@mui/material";
 import { ArrowUpDown, Search } from 'lucide-react';
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import { FixedSizeGrid as Grid, GridChildComponentProps } from 'react-window';
 // import Link from 'next/link';
@@ -119,6 +119,7 @@ const SampleTable: React.FC = () => {
   const gridWrapperRef = useCallback((node: HTMLDivElement | null) => {
     setGridWrapperNode(node);
   }, []);
+  const gridRef = useRef<Grid>(null);
   const windowSize = useWindowSize();
 
 
@@ -403,10 +404,41 @@ const handleSliderChangeCommitted = (
   const gridColumnCount = windowSize.width >= 1024 ? 3 : windowSize.width >= 640 ? 2 : 1;
   const gridRowCount = Math.ceil(filteredUsers.length / gridColumnCount);
   const gridColumnWidth = gridContainerWidth / gridColumnCount;
+  const gridContentHeight = gridRowCount * GRID_ROW_HEIGHT;
+  // This is just the virtualization "viewport" - how many rows react-window
+  // actually mounts at once - not a scroll container. The wrapper below is
+  // sized to the full content height and stays in normal page flow, so the
+  // page itself scrolls; this height only bounds how much of the grid the
+  // sticky panel below shows (and therefore renders) at any instant.
   const gridHeight = Math.min(
-    gridRowCount * GRID_ROW_HEIGHT,
-    windowSize.height > 0 ? windowSize.height * 0.75 : FALLBACK_GRID_HEIGHT
+    gridContentHeight,
+    windowSize.height > 0 ? windowSize.height : FALLBACK_GRID_HEIGHT
   );
+
+  // Grid renders with overflow:hidden (see style override below) so it never
+  // scrolls on its own - it's pinned via CSS `position: sticky` inside a
+  // full-height wrapper instead. This keeps the single native page scrollbar
+  // (no nested scroll trap) while still only mounting the rows near the
+  // viewport: on every window scroll we translate how far the wrapper has
+  // scrolled past the top of the viewport into the grid's internal scrollTop.
+  useEffect(() => {
+    if (!gridWrapperNode) return;
+
+    const maxScrollTop = Math.max(0, gridContentHeight - gridHeight);
+    const syncScrollTop = () => {
+      const distanceScrolledPastTop = -gridWrapperNode.getBoundingClientRect().top;
+      const scrollTop = Math.min(maxScrollTop, Math.max(0, distanceScrolledPastTop));
+      gridRef.current?.scrollTo({ scrollTop });
+    };
+
+    syncScrollTop();
+    window.addEventListener('scroll', syncScrollTop, { passive: true });
+    window.addEventListener('resize', syncScrollTop);
+    return () => {
+      window.removeEventListener('scroll', syncScrollTop);
+      window.removeEventListener('resize', syncScrollTop);
+    };
+  }, [gridWrapperNode, gridContentHeight, gridHeight]);
 
   const GridCell = useCallback(({ columnIndex, rowIndex, style }: GridChildComponentProps) => {
     const index = rowIndex * gridColumnCount + columnIndex;
@@ -455,28 +487,28 @@ const handleSliderChangeCommitted = (
         />
         </div>
         <div className='grid gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3'>
-          <div className="w-full flex flex-col gap-4 items-center px-4 py-6 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
-            <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-3">
+          <div className="w-full flex flex-col gap-2 items-center px-4 py-3 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
+            <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-1">
               Search
             </div>
             <div className="relative w-full">
               <div className="absolute left-6 top-1/2 transform -translate-y-1/2 flex items-center justify-center h-5 w-5 bg-blue-100 dark:bg-indigo-900/30 rounded-full p-0.5">
                 <Search className="h-3 w-3 text-blue-600 dark:text-indigo-400" />
               </div>
-              
+
               <Input
                 id="search"
                 placeholder="Search users..."
                 value={searchTerm}
                 onChange={searchAll}
-                className="pl-12 h-12 w-[95%] mx-auto bg-white dark:bg-gray-800/40 border-blue-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 
-                  focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 dark:focus-visible:ring-indigo-500 
+                className="pl-12 h-9 w-[95%] mx-auto bg-white dark:bg-gray-800/40 border-blue-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500
+                  focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 dark:focus-visible:ring-indigo-500
                   focus-visible:border-transparent transition-all duration-200
                   shadow-sm hover:shadow-md rounded-xl"
               />
             </div>
             {searchTerm && (
-              <div className="flex items-center gap-2 mt-2">
+              <div className="flex items-center gap-2 mt-1">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Searching for:</span>
                 <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium">
                   &quot;{searchTerm}&quot;
@@ -485,8 +517,8 @@ const handleSliderChangeCommitted = (
             )}
           </div>
           <div>
-            <div className="w-full flex flex-col gap-4 items-center px-4 py-6 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
-              <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-3">
+            <div className="w-full flex flex-col gap-2 items-center px-4 py-3 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
+              <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-1">
                 Rating Range
               </div>
               <Slider
@@ -544,10 +576,9 @@ const handleSliderChangeCommitted = (
                   },
                 }}
               />
-              
 
-              
-              <div className="flex items-center gap-2 mt-2">
+
+              <div className="flex items-center gap-2 mt-1">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Rating Range:</span>
                 <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium">
                   {/* {ratingRange[0]} - {ratingRange[1]} */}
@@ -556,29 +587,29 @@ const handleSliderChangeCommitted = (
               </div>
             </div>
           </div>
-            <div className="w-full flex flex-col gap-4 items-center px-4 py-6 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
-            <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-3">
+            <div className="w-full flex flex-col gap-2 items-center px-4 py-3 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
+            <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-1">
               Search by Year
             </div>
             <div className="relative w-full">
               <div className="absolute left-6 top-1/2 transform -translate-y-1/2 flex items-center justify-center h-5 w-5 bg-blue-100 dark:bg-indigo-900/30 rounded-full p-0.5">
               <Search className="h-3 w-3 text-blue-600 dark:text-indigo-400" />
               </div>
-              
+
               <Input
               id="year"
               placeholder="Enter year (e.g., 2024)"
               value={selectedYear}
               onChange={searchYear}
-              className="pl-12 h-12 w-[95%] mx-auto bg-white dark:bg-gray-800/40 border-blue-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 
-                focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 dark:focus-visible:ring-indigo-500 
+              className="pl-12 h-9 w-[95%] mx-auto bg-white dark:bg-gray-800/40 border-blue-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500
+                focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 dark:focus-visible:ring-indigo-500
                 focus-visible:border-transparent transition-all duration-200
                 shadow-sm hover:shadow-md rounded-xl"
               />
             </div>
-            
+
             {selectedYear && (
-              <div className="flex items-center gap-2 mt-2">
+              <div className="flex items-center gap-2 mt-1">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Year:</span>
               <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium">
                 {selectedYear}
@@ -710,9 +741,10 @@ const handleSliderChangeCommitted = (
         // Virtualized with react-window: only visible rows (+ a small
         // overscan buffer) are ever mounted, instead of all 100+ UserCards
         // (each with its own <Image>) at once.
-        <div ref={gridWrapperRef} className="w-full">
+        <div ref={gridWrapperRef} className="w-full" style={{ height: gridContentHeight }}>
           {gridContainerWidth > 0 && (
             <Grid
+              ref={gridRef}
               columnCount={gridColumnCount}
               columnWidth={gridColumnWidth}
               rowCount={gridRowCount}
@@ -720,6 +752,7 @@ const handleSliderChangeCommitted = (
               width={gridContainerWidth}
               height={gridHeight}
               overscanRowCount={2}
+              style={{ position: 'sticky', top: 0, overflow: 'hidden' }}
             >
               {GridCell}
             </Grid>
