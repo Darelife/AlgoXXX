@@ -5,12 +5,15 @@
 import { Slider } from "@mui/material";
 import { ArrowUpDown, Search } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
+import { FixedSizeGrid as Grid, GridChildComponentProps } from 'react-window';
 // import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { debounce } from 'lodash';
+import { useDebounce } from '@/hooks/useDebounce';
+import { useWindowSize } from '@/hooks/useWindowSize';
 // import { useMemo } from "react";
 // import { Label } from '@/components/ui/label';
 
@@ -33,18 +36,66 @@ interface User {
   titlePhoto: string;
 }
 
+const DEFAULT_RATING_RANGE: [number, number] = [0, 4000];
+const ALLOWED_SORT_BY: ReadonlyArray<keyof User> = ['rating', 'maxRating'];
+const ALLOWED_SORT_ORDER: ReadonlyArray<'asc' | 'desc'> = ['asc', 'desc'];
+
+// Fixed row height for the virtualized user-card grid. UserCard's content
+// (64px image + header + rating block + footer link) comfortably fits
+// within this, with room to spare across the two theme variants.
+const GRID_ROW_HEIGHT = 330;
+// Matches the gap-4 (16px) spacing the old CSS grid used - 8px on every
+// side of each cell gives 16px between adjacent cards.
+const GRID_CELL_PADDING = 8;
+const FALLBACK_GRID_HEIGHT = 600;
+
+// Parse the initial rating range out of the URL, falling back to the
+// default [0, 4000] whenever the params are missing or malformed.
+function parseInitialRatingRange(searchParams: URLSearchParams): [number, number] {
+  const minParam = searchParams.get('minRating');
+  const maxParam = searchParams.get('maxRating');
+  if (minParam === null || maxParam === null) {
+    return DEFAULT_RATING_RANGE;
+  }
+  const min = Number(minParam);
+  const max = Number(maxParam);
+  if (
+    Number.isFinite(min) && Number.isFinite(max) &&
+    min >= 0 && max <= 4000 && min <= max
+  ) {
+    return [min, max];
+  }
+  return DEFAULT_RATING_RANGE;
+}
+
+function parseInitialSortBy(searchParams: URLSearchParams): keyof User {
+  const sort = searchParams.get('sort');
+  return (ALLOWED_SORT_BY as ReadonlyArray<string>).includes(sort ?? '')
+    ? (sort as keyof User)
+    : 'rating';
+}
+
+function parseInitialSortOrder(searchParams: URLSearchParams): 'asc' | 'desc' {
+  const order = searchParams.get('order');
+  return (ALLOWED_SORT_ORDER as ReadonlyArray<string>).includes(order ?? '')
+    ? (order as 'asc' | 'desc')
+    : 'desc';
+}
+
 const SampleTable: React.FC = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [users, setUsers] = useState<User[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [cfHandleSearch] = useState('');
-  // const [ratingRange, setRatingRange] = useState<[number, number]>([0, 4000]);
-  const [sliderValue, setSliderValue] = useState<number[]>([0, 4000]); // For visual updates
-  const [ratingRange, setRatingRange] = useState<[number, number]>([0, 4000]); // For state updates
+  const [searchTerm, setSearchTerm] = useState(() => searchParams.get('search') ?? '');
+  // For visual updates while dragging; kept local-only (not synced to URL)
+  const [sliderValue, setSliderValue] = useState<number[]>(() => parseInitialRatingRange(searchParams));
+  const [ratingRange, setRatingRange] = useState<[number, number]>(() => parseInitialRatingRange(searchParams)); // For state updates
   // const sliderTimeout = useRef<NodeJS.Timeout | null>(null);
-  const [selectedYear, setSelectedYear] = useState('');
-  const [sortBy, setSortBy] = useState<keyof User>('rating');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [selectedYear, setSelectedYear] = useState(() => searchParams.get('year') ?? '');
+  const [sortBy, setSortBy] = useState<keyof User>(() => parseInitialSortBy(searchParams));
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>(() => parseInitialSortOrder(searchParams));
   // const [selectedRank, setSelectedRank] = useState('all');
   // const [minRating, setMinRating] = useState(0);
   // const [maxRating, setMaxRating] = useState(3500);
@@ -56,7 +107,20 @@ const SampleTable: React.FC = () => {
   const [overlayColor, setOverlayColor] = useState("#121212"); // Default dark theme overlay
   const [userRankMap, setUserRankMap] = useState<{[key: string]: number}>({});
   const [contestDeltaMap, setContestDeltaMap] = useState<{[key: string]: string}>({});
-  const [count, setCount] = useState(0);
+
+  // Measured pixel width of the grid's wrapper element (not the raw
+  // viewport width - the grid lives inside a `container mx-auto` div with
+  // its own responsive max-width/padding). Tracked via a callback ref so
+  // we re-measure whenever the wrapper mounts/unmounts across the
+  // loading/error/empty/grid ternary branches, and via ResizeObserver so
+  // we stay in sync with later resizes.
+  const [gridWrapperNode, setGridWrapperNode] = useState<HTMLDivElement | null>(null);
+  const [gridContainerWidth, setGridContainerWidth] = useState(0);
+  const gridWrapperRef = useCallback((node: HTMLDivElement | null) => {
+    setGridWrapperNode(node);
+  }, []);
+  const gridRef = useRef<Grid>(null);
+  const windowSize = useWindowSize();
 
 
   // Load the initial theme from localStorage
@@ -123,12 +187,15 @@ const SampleTable: React.FC = () => {
   // Add this right after you fetch users and before setting the state
 
 useEffect(() => {
+  const controller = new AbortController();
+
   async function fetchUsers() {
     try {
       const response = await axios.get('https://algoxxx.onrender.com/currentInfo/all', {
         headers: {
           'Content-Type': 'application/json',
         },
+        signal: controller.signal,
       });
       const data = response.data;
       const sanitizedData = data.map((user: User) => ({
@@ -163,10 +230,12 @@ useEffect(() => {
       
       setUserRankMap(rankMap);
       setUsers(sanitizedData);
-      setFilteredUsers(sanitizedData);
       setLoading(false);
-      fetchContestDelta();
+      fetchContestDelta(controller.signal);
     } catch (error) {
+      if (axios.isCancel(error) || controller.signal.aborted) {
+        return;
+      }
       console.error('Error fetching users:', error);
       setError('Error fetching users. Please try again later.');
       setLoading(false);
@@ -174,190 +243,132 @@ useEffect(() => {
   }
 
   fetchUsers();
+
+  return () => {
+    controller.abort();
+  };
 }, []);
 
-  const fetchContestDelta = async () => {
+  const fetchContestDelta = async (signal?: AbortSignal) => {
     try {
       const response = await axios.get('https://algoxxx.onrender.com/currentinfo/contestDelta', {
         headers: {
           'Content-Type': 'application/json',
         },
+        signal,
       });
-      
+
       // The API returns an array of objects with cfid and contestDelta properties
       // Convert it to a map where the keys are the CF handles and the values are the contestDelta
       const deltaData = response.data;
       const deltaMap: {[key: string]: string} = {};
-      
+
       if (Array.isArray(deltaData)) {
         deltaData.forEach(item => {
           if (item.cfid && item.contestDelta) {
             deltaMap[item.cfid] = item.contestDelta;
           }
         });
-        
+
         // console.log("Processed contest delta data:", deltaMap);
         setContestDeltaMap(deltaMap);
       } else {
         console.error('Invalid contest delta data format:', deltaData);
       }
     } catch (error) {
+      if (axios.isCancel(error) || signal?.aborted) {
+        return;
+      }
       console.error('Error fetching contest delta data:', error);
     }
   };
 
-  const debouncedFilterUsers = debounce((
-    searchTerm: string, 
-    ratingRange: [number, number], 
-    selectedYear: string, 
-    cfHandleSearch: string
-  ) => {
+  const debouncedSearchTerm = useDebounce(searchTerm, 400);
+  const debouncedSelectedYear = useDebounce(selectedYear, 400);
+
+  const filteredUsers = useMemo(() => {
     let filtered = users;
-
-    if (searchTerm) {
+    if (debouncedSearchTerm) {
       filtered = filtered.filter((user) =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+        user.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
       );
     }
-
-    if (cfHandleSearch) {
+    if (debouncedSelectedYear) {
       filtered = filtered.filter((user) =>
-        user.cfid.toLowerCase().includes(cfHandleSearch.toLowerCase())
+        user.bitsid.substring(0, 4).includes(debouncedSelectedYear)
       );
     }
-
-    if (selectedYear) {
-      filtered = filtered.filter(
-        (user) => user.bitsid.substring(0, 4) === selectedYear
-      );
-    }
-
     if (ratingRange) {
       filtered = filtered.filter(
         (user) => user.rating >= ratingRange[0] && user.rating <= ratingRange[1]
       );
     }
+    return [...filtered].sort((a, b) => {
+      if (sortOrder === 'asc') {
+        return a[sortBy] > b[sortBy] ? 1 : -1;
+      }
+      return a[sortBy] < b[sortBy] ? 1 : -1;
+    });
+  }, [users, debouncedSearchTerm, debouncedSelectedYear, ratingRange, sortBy, sortOrder]);
 
-    sortUsers(filtered, sortBy, sortOrder);
-  }, 150);
+  // Keep the URL query string in sync with the (debounced) filter state so
+  // filter combinations are shareable and survive a refresh. This only ever
+  // writes to the URL - initial state is read once via the lazy useState
+  // initializers above, so this effect can't fight with that read.
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (debouncedSearchTerm) params.set('search', debouncedSearchTerm);
+    if (debouncedSelectedYear) params.set('year', debouncedSelectedYear);
+    if (ratingRange[0] !== DEFAULT_RATING_RANGE[0] || ratingRange[1] !== DEFAULT_RATING_RANGE[1]) {
+      params.set('minRating', String(ratingRange[0]));
+      params.set('maxRating', String(ratingRange[1]));
+    }
+    if (sortBy !== 'rating') params.set('sort', sortBy);
+    if (sortOrder !== 'desc') params.set('order', sortOrder);
 
-  // const handleCfHandleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setCfHandleSearch(event.target.value);
-  //   filterUsers(searchTerm, ratingRange, selectedYear, event.target.value);
-  // };
-
-  // const cfidSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSearchTerm(event.target.value);
-  //   filterUsers(event.target.value, ratingRange, selectedYear, cfHandleSearch);
-  // };
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  }, [debouncedSearchTerm, debouncedSelectedYear, ratingRange, sortBy, sortOrder, router, pathname]);
 
   const searchAll = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchData = event.target.value;
-    setSearchTerm(searchData);
-    // setCfHandleSearch(searchData);
-    filterUsers('', ratingRange, selectedYear, '', searchData);
+    setSearchTerm(event.target.value);
   };
 
   const searchYear = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedYear(event.target.value);
-    filterUsers('', ratingRange, event.target.value, '');
   }
 
   const cfidSort = (field: keyof User) => {
     const order = sortBy === field && sortOrder === 'desc' ? 'asc' : 'desc';
     setSortBy(field);
     setSortOrder(order);
-    sortUsers(filteredUsers, field, order);
   };
-  const sortUsers = (users: User[], field: keyof User, order: 'asc' | 'desc') => {
-    const sortedUsers = [...users].sort((a, b) => {
-      if (order === 'asc') {
-        return a[field] > b[field] ? 1 : -1;
-      }
-      return a[field] < b[field] ? 1 : -1;
-    });
-    setFilteredUsers(sortedUsers);
-  };
-
-  useEffect(() => {
-    sortUsers(users, 'rating', 'desc');
-  }, [users]);
-
-  const filterUsers = (
-  searchTerm: string = '', 
-  ratingRange: [number, number], 
-  selectedYear: string = '',
-  cfHandleSearch: string = '',
-  searchData: string = ''
-) => {
-  let filtered = users;
-
-  if (searchTerm && searchTerm.length > 0) {
-    filtered = filtered.filter((user) =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }
-
-  if (cfHandleSearch && cfHandleSearch.length > 0) {
-    filtered = filtered.filter((user) =>
-      user.cfid.toLowerCase().includes(cfHandleSearch.toLowerCase())
-    );
-  }
-
-  if (searchData) {
-    filtered = filtered.filter((user) =>
-      user.name.toLowerCase().includes(searchData.toLowerCase()) ||
-      user.cfid.toLowerCase().includes(searchData.toLowerCase()) ||
-      user.bitsid.substring(0, 4).includes(searchData.toLowerCase())
-    );
-  }
-
-  if (selectedYear) {
-    filtered = filtered.filter((user) =>
-      user.bitsid.substring(0, 4).includes(selectedYear)
-    )
-  }
-
-  if (ratingRange) {
-    filtered = filtered.filter(
-      (user) => user.rating >= ratingRange[0] && user.rating <= ratingRange[1]
-    );
-  }
-
-  sortUsers(filtered, sortBy, sortOrder);
-  // count
-  setCount(filtered.length);
-};
 
 const handleSliderChange = (
   _: React.SyntheticEvent | Event,
   newValue: number | number[]
 ) => {
   if (!Array.isArray(newValue)) return;
-  
+
   // Update local visual state immediately
   const min = Math.max(0, newValue[0]);
   const max = Math.min(4000, newValue[1]);
-  
+
   setSliderValue([min, max]);
-  
+
   // Use debounced filter function instead of direct filtering
 };
-useEffect(() => {
-  setCount(filteredUsers.length);
-}, [filteredUsers.length]);
 
 const handleSliderChangeCommitted = (
   _: React.SyntheticEvent | Event,
   newValue: number | number[]
 ) => {
   if (!Array.isArray(newValue)) return;
-  
+
   const min = Math.max(0, newValue[0]);
   const max = Math.min(4000, newValue[1]);
-  
+
   setRatingRange([min, max] as [number, number]);
-  debouncedFilterUsers(searchTerm, [min, max] as [number, number], selectedYear, cfHandleSearch);
 };
 
   // useEffect(() => {
@@ -372,6 +383,84 @@ const handleSliderChangeCommitted = (
       setError(null);
     }
   }, [ratingRange]);
+
+  // Measure the grid wrapper's rendered width before the first paint (not
+  // useEffect) so the FixedSizeGrid never mounts at the wrong width and
+  // then snaps - same class of flash-of-wrong-size bug fixed elsewhere in
+  // this codebase (see frontEnd/src/app/bootcamp/page.tsx).
+  useLayoutEffect(() => {
+    if (!gridWrapperNode) return;
+
+    const measure = () => setGridContainerWidth(gridWrapperNode.getBoundingClientRect().width);
+    measure();
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(gridWrapperNode);
+    return () => observer.disconnect();
+  }, [gridWrapperNode]);
+
+  // Tailwind breakpoints for this grid (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3),
+  // using the project's default sm=640px / lg=1024px screens.
+  const gridColumnCount = windowSize.width >= 1024 ? 3 : windowSize.width >= 640 ? 2 : 1;
+  const gridRowCount = Math.ceil(filteredUsers.length / gridColumnCount);
+  const gridColumnWidth = gridContainerWidth / gridColumnCount;
+  const gridContentHeight = gridRowCount * GRID_ROW_HEIGHT;
+  // This is just the virtualization "viewport" - how many rows react-window
+  // actually mounts at once - not a scroll container. The wrapper below is
+  // sized to the full content height and stays in normal page flow, so the
+  // page itself scrolls; this height only bounds how much of the grid the
+  // sticky panel below shows (and therefore renders) at any instant.
+  const gridHeight = Math.min(
+    gridContentHeight,
+    windowSize.height > 0 ? windowSize.height : FALLBACK_GRID_HEIGHT
+  );
+
+  // Grid renders with overflow:hidden (see style override below) so it never
+  // scrolls on its own - it's pinned via CSS `position: sticky` inside a
+  // full-height wrapper instead. This keeps the single native page scrollbar
+  // (no nested scroll trap) while still only mounting the rows near the
+  // viewport: on every window scroll we translate how far the wrapper has
+  // scrolled past the top of the viewport into the grid's internal scrollTop.
+  useEffect(() => {
+    if (!gridWrapperNode) return;
+
+    const maxScrollTop = Math.max(0, gridContentHeight - gridHeight);
+    const syncScrollTop = () => {
+      const distanceScrolledPastTop = -gridWrapperNode.getBoundingClientRect().top;
+      const scrollTop = Math.min(maxScrollTop, Math.max(0, distanceScrolledPastTop));
+      gridRef.current?.scrollTo({ scrollTop });
+    };
+
+    syncScrollTop();
+    window.addEventListener('scroll', syncScrollTop, { passive: true });
+    window.addEventListener('resize', syncScrollTop);
+    return () => {
+      window.removeEventListener('scroll', syncScrollTop);
+      window.removeEventListener('resize', syncScrollTop);
+    };
+  }, [gridWrapperNode, gridContentHeight, gridHeight]);
+
+  const GridCell = useCallback(({ columnIndex, rowIndex, style }: GridChildComponentProps) => {
+    const index = rowIndex * gridColumnCount + columnIndex;
+    const user = filteredUsers[index];
+    if (!user) return null;
+
+    return (
+      <div style={style}>
+        <div
+          className="h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+          style={{ padding: GRID_CELL_PADDING }}
+        >
+          <UserCard
+            key={user.bitsid}
+            user={user}
+            userRank={userRankMap[user.bitsid]}
+            contestDelta={contestDeltaMap[user.cfid] || "N/A"}
+          />
+        </div>
+      </div>
+    );
+  }, [filteredUsers, gridColumnCount, userRankMap, contestDeltaMap]);
 
   return (
     <>
@@ -398,28 +487,28 @@ const handleSliderChangeCommitted = (
         />
         </div>
         <div className='grid gap-4 mb-4 md:grid-cols-2 lg:grid-cols-3'>
-          <div className="w-full flex flex-col gap-4 items-center px-4 py-6 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
-            <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-3">
+          <div className="w-full flex flex-col gap-2 items-center px-4 py-3 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
+            <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-1">
               Search
             </div>
             <div className="relative w-full">
               <div className="absolute left-6 top-1/2 transform -translate-y-1/2 flex items-center justify-center h-5 w-5 bg-blue-100 dark:bg-indigo-900/30 rounded-full p-0.5">
                 <Search className="h-3 w-3 text-blue-600 dark:text-indigo-400" />
               </div>
-              
+
               <Input
                 id="search"
                 placeholder="Search users..."
                 value={searchTerm}
                 onChange={searchAll}
-                className="pl-12 h-12 w-[95%] mx-auto bg-white dark:bg-gray-800/40 border-blue-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 
-                  focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 dark:focus-visible:ring-indigo-500 
+                className="pl-12 h-9 w-[95%] mx-auto bg-white dark:bg-gray-800/40 border-blue-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500
+                  focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 dark:focus-visible:ring-indigo-500
                   focus-visible:border-transparent transition-all duration-200
                   shadow-sm hover:shadow-md rounded-xl"
               />
             </div>
             {searchTerm && (
-              <div className="flex items-center gap-2 mt-2">
+              <div className="flex items-center gap-2 mt-1">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Searching for:</span>
                 <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium">
                   &quot;{searchTerm}&quot;
@@ -428,8 +517,8 @@ const handleSliderChangeCommitted = (
             )}
           </div>
           <div>
-            <div className="w-full flex flex-col gap-4 items-center px-4 py-6 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
-              <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-3">
+            <div className="w-full flex flex-col gap-2 items-center px-4 py-3 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
+              <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-1">
                 Rating Range
               </div>
               <Slider
@@ -487,10 +576,9 @@ const handleSliderChangeCommitted = (
                   },
                 }}
               />
-              
 
-              
-              <div className="flex items-center gap-2 mt-2">
+
+              <div className="flex items-center gap-2 mt-1">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Rating Range:</span>
                 <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium">
                   {/* {ratingRange[0]} - {ratingRange[1]} */}
@@ -499,29 +587,29 @@ const handleSliderChangeCommitted = (
               </div>
             </div>
           </div>
-            <div className="w-full flex flex-col gap-4 items-center px-4 py-6 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
-            <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-3">
+            <div className="w-full flex flex-col gap-2 items-center px-4 py-3 bg-blue-50/90 dark:bg-white/5 backdrop-blur-sm rounded-xl shadow-sm border border-blue-200/50 dark:border-0 dark:border-white/10">
+            <div className="text-xs text-gray-500 dark:text-gray-400 px-2 mb-1">
               Search by Year
             </div>
             <div className="relative w-full">
               <div className="absolute left-6 top-1/2 transform -translate-y-1/2 flex items-center justify-center h-5 w-5 bg-blue-100 dark:bg-indigo-900/30 rounded-full p-0.5">
               <Search className="h-3 w-3 text-blue-600 dark:text-indigo-400" />
               </div>
-              
+
               <Input
               id="year"
               placeholder="Enter year (e.g., 2024)"
               value={selectedYear}
               onChange={searchYear}
-              className="pl-12 h-12 w-[95%] mx-auto bg-white dark:bg-gray-800/40 border-blue-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 
-                focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 dark:focus-visible:ring-indigo-500 
+              className="pl-12 h-9 w-[95%] mx-auto bg-white dark:bg-gray-800/40 border-blue-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500
+                focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0 dark:focus-visible:ring-indigo-500
                 focus-visible:border-transparent transition-all duration-200
                 shadow-sm hover:shadow-md rounded-xl"
               />
             </div>
-            
+
             {selectedYear && (
-              <div className="flex items-center gap-2 mt-2">
+              <div className="flex items-center gap-2 mt-1">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Year:</span>
               <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium">
                 {selectedYear}
@@ -539,7 +627,7 @@ const handleSliderChangeCommitted = (
           </Button>
           <Button className="border-[#292929]">
             {/* Sort by Peak Rating <ArrowUpDown className='w-4 h-4 ml-2' /> */}
-            Total : {count}
+            Total : {filteredUsers.length}
           </Button>
               {/* <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Total Users: {count}
@@ -650,47 +738,46 @@ const handleSliderChangeCommitted = (
           <p className="mt-2 text-gray-500 dark:text-gray-400">Try adjusting your search filters</p>
         </div>
       ) : (
-        // Keep your existing user cards with animation fix
-        <>
-          {/* <style jsx global>{`
-            @keyframes fadeInUp {
-              from {
-                opacity: 0;
-                transform: translateY(20px);
-              }
-              to {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-          `}</style> */}
-          <div 
-            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-            // style = {{
-            //   opacity: 0,
-            //   animation: `fadeInUp 0.5s ease-out forwards`,
-            //   animationDelay: `0.5s`,
-            // }}
-          >
-            {filteredUsers.map((user) => (
-                <div 
-                key={user.bitsid} 
-                className="transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
-                style={{
-                  // opacity: 0,
-                  // animation: `fadeInUp 0.5s ease-out forwards`,
-                  // animationDelay: `${index * 0.1}s`
-                }}
-                >
-                <UserCard user={user} userRank={userRankMap[user.bitsid]} contestDelta={contestDeltaMap[user.cfid] || "N/A"} />
-                </div>
-            ))}
-          </div>
-        </>
+        // Virtualized with react-window: only visible rows (+ a small
+        // overscan buffer) are ever mounted, instead of all 100+ UserCards
+        // (each with its own <Image>) at once.
+        <div ref={gridWrapperRef} className="w-full" style={{ height: gridContentHeight }}>
+          {gridContainerWidth > 0 && (
+            <Grid
+              ref={gridRef}
+              columnCount={gridColumnCount}
+              columnWidth={gridColumnWidth}
+              rowCount={gridRowCount}
+              rowHeight={GRID_ROW_HEIGHT}
+              width={gridContainerWidth}
+              height={gridHeight}
+              overscanRowCount={2}
+              style={{ position: 'sticky', top: 0, overflow: 'hidden' }}
+            >
+              {GridCell}
+            </Grid>
+          )}
+        </div>
       )}
       </div>
     </>
   );
 };
 
-export default SampleTable;
+const LeaderboardFallback = () => (
+  <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="relative h-16 w-16 mb-4">
+      <div className="absolute h-16 w-16 rounded-full border-4 border-blue-200 dark:border-blue-900/30 opacity-25"></div>
+      <div className="absolute h-16 w-16 rounded-full border-4 border-transparent border-t-blue-600 dark:border-t-blue-400 animate-spin"></div>
+    </div>
+    <p className="text-sm text-gray-600 dark:text-gray-400">Loading leaderboard...</p>
+  </div>
+);
+
+export default function LeaderboardPage() {
+  return (
+    <Suspense fallback={<LeaderboardFallback />}>
+      <SampleTable />
+    </Suspense>
+  );
+}
