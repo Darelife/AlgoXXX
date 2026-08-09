@@ -6,12 +6,14 @@ import { Slider } from "@mui/material";
 import { ArrowUpDown, Search } from 'lucide-react';
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import axios from 'axios';
+import { FixedSizeGrid as Grid, GridChildComponentProps } from 'react-window';
 // import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useWindowSize } from '@/hooks/useWindowSize';
 // import { useMemo } from "react";
 // import { Label } from '@/components/ui/label';
 
@@ -37,6 +39,15 @@ interface User {
 const DEFAULT_RATING_RANGE: [number, number] = [0, 4000];
 const ALLOWED_SORT_BY: ReadonlyArray<keyof User> = ['rating', 'maxRating'];
 const ALLOWED_SORT_ORDER: ReadonlyArray<'asc' | 'desc'> = ['asc', 'desc'];
+
+// Fixed row height for the virtualized user-card grid. UserCard's content
+// (64px image + header + rating block + footer link) comfortably fits
+// within this, with room to spare across the two theme variants.
+const GRID_ROW_HEIGHT = 330;
+// Matches the gap-4 (16px) spacing the old CSS grid used - 8px on every
+// side of each cell gives 16px between adjacent cards.
+const GRID_CELL_PADDING = 8;
+const FALLBACK_GRID_HEIGHT = 600;
 
 // Parse the initial rating range out of the URL, falling back to the
 // default [0, 4000] whenever the params are missing or malformed.
@@ -96,6 +107,19 @@ const SampleTable: React.FC = () => {
   const [overlayColor, setOverlayColor] = useState("#121212"); // Default dark theme overlay
   const [userRankMap, setUserRankMap] = useState<{[key: string]: number}>({});
   const [contestDeltaMap, setContestDeltaMap] = useState<{[key: string]: string}>({});
+
+  // Measured pixel width of the grid's wrapper element (not the raw
+  // viewport width - the grid lives inside a `container mx-auto` div with
+  // its own responsive max-width/padding). Tracked via a callback ref so
+  // we re-measure whenever the wrapper mounts/unmounts across the
+  // loading/error/empty/grid ternary branches, and via ResizeObserver so
+  // we stay in sync with later resizes.
+  const [gridWrapperNode, setGridWrapperNode] = useState<HTMLDivElement | null>(null);
+  const [gridContainerWidth, setGridContainerWidth] = useState(0);
+  const gridWrapperRef = useCallback((node: HTMLDivElement | null) => {
+    setGridWrapperNode(node);
+  }, []);
+  const windowSize = useWindowSize();
 
 
   // Load the initial theme from localStorage
@@ -358,6 +382,53 @@ const handleSliderChangeCommitted = (
       setError(null);
     }
   }, [ratingRange]);
+
+  // Measure the grid wrapper's rendered width before the first paint (not
+  // useEffect) so the FixedSizeGrid never mounts at the wrong width and
+  // then snaps - same class of flash-of-wrong-size bug fixed elsewhere in
+  // this codebase (see frontEnd/src/app/bootcamp/page.tsx).
+  useLayoutEffect(() => {
+    if (!gridWrapperNode) return;
+
+    const measure = () => setGridContainerWidth(gridWrapperNode.getBoundingClientRect().width);
+    measure();
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(gridWrapperNode);
+    return () => observer.disconnect();
+  }, [gridWrapperNode]);
+
+  // Tailwind breakpoints for this grid (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3),
+  // using the project's default sm=640px / lg=1024px screens.
+  const gridColumnCount = windowSize.width >= 1024 ? 3 : windowSize.width >= 640 ? 2 : 1;
+  const gridRowCount = Math.ceil(filteredUsers.length / gridColumnCount);
+  const gridColumnWidth = gridContainerWidth / gridColumnCount;
+  const gridHeight = Math.min(
+    gridRowCount * GRID_ROW_HEIGHT,
+    windowSize.height > 0 ? windowSize.height * 0.75 : FALLBACK_GRID_HEIGHT
+  );
+
+  const GridCell = useCallback(({ columnIndex, rowIndex, style }: GridChildComponentProps) => {
+    const index = rowIndex * gridColumnCount + columnIndex;
+    const user = filteredUsers[index];
+    if (!user) return null;
+
+    return (
+      <div style={style}>
+        <div
+          className="h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+          style={{ padding: GRID_CELL_PADDING }}
+        >
+          <UserCard
+            key={user.bitsid}
+            user={user}
+            userRank={userRankMap[user.bitsid]}
+            contestDelta={contestDeltaMap[user.cfid] || "N/A"}
+          />
+        </div>
+      </div>
+    );
+  }, [filteredUsers, gridColumnCount, userRankMap, contestDeltaMap]);
 
   return (
     <>
@@ -636,43 +707,24 @@ const handleSliderChangeCommitted = (
           <p className="mt-2 text-gray-500 dark:text-gray-400">Try adjusting your search filters</p>
         </div>
       ) : (
-        // Keep your existing user cards with animation fix
-        <>
-          {/* <style jsx global>{`
-            @keyframes fadeInUp {
-              from {
-                opacity: 0;
-                transform: translateY(20px);
-              }
-              to {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-          `}</style> */}
-          <div 
-            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-            // style = {{
-            //   opacity: 0,
-            //   animation: `fadeInUp 0.5s ease-out forwards`,
-            //   animationDelay: `0.5s`,
-            // }}
-          >
-            {filteredUsers.map((user) => (
-                <div 
-                key={user.bitsid} 
-                className="transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
-                style={{
-                  // opacity: 0,
-                  // animation: `fadeInUp 0.5s ease-out forwards`,
-                  // animationDelay: `${index * 0.1}s`
-                }}
-                >
-                <UserCard user={user} userRank={userRankMap[user.bitsid]} contestDelta={contestDeltaMap[user.cfid] || "N/A"} />
-                </div>
-            ))}
-          </div>
-        </>
+        // Virtualized with react-window: only visible rows (+ a small
+        // overscan buffer) are ever mounted, instead of all 100+ UserCards
+        // (each with its own <Image>) at once.
+        <div ref={gridWrapperRef} className="w-full">
+          {gridContainerWidth > 0 && (
+            <Grid
+              columnCount={gridColumnCount}
+              columnWidth={gridColumnWidth}
+              rowCount={gridRowCount}
+              rowHeight={GRID_ROW_HEIGHT}
+              width={gridContainerWidth}
+              height={gridHeight}
+              overscanRowCount={2}
+            >
+              {GridCell}
+            </Grid>
+          )}
+        </div>
       )}
       </div>
     </>
