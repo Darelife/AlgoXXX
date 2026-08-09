@@ -123,12 +123,15 @@ const SampleTable: React.FC = () => {
   // Add this right after you fetch users and before setting the state
 
 useEffect(() => {
+  const controller = new AbortController();
+
   async function fetchUsers() {
     try {
       const response = await axios.get('https://algoxxx.onrender.com/currentInfo/all', {
         headers: {
           'Content-Type': 'application/json',
         },
+        signal: controller.signal,
       });
       const data = response.data;
       const sanitizedData = data.map((user: User) => ({
@@ -165,8 +168,11 @@ useEffect(() => {
       setUsers(sanitizedData);
       setFilteredUsers(sanitizedData);
       setLoading(false);
-      fetchContestDelta();
+      fetchContestDelta(controller.signal);
     } catch (error) {
+      if (axios.isCancel(error) || controller.signal.aborted) {
+        return;
+      }
       console.error('Error fetching users:', error);
       setError('Error fetching users. Please try again later.');
       setLoading(false);
@@ -174,34 +180,42 @@ useEffect(() => {
   }
 
   fetchUsers();
+
+  return () => {
+    controller.abort();
+  };
 }, []);
 
-  const fetchContestDelta = async () => {
+  const fetchContestDelta = async (signal?: AbortSignal) => {
     try {
       const response = await axios.get('https://algoxxx.onrender.com/currentinfo/contestDelta', {
         headers: {
           'Content-Type': 'application/json',
         },
+        signal,
       });
-      
+
       // The API returns an array of objects with cfid and contestDelta properties
       // Convert it to a map where the keys are the CF handles and the values are the contestDelta
       const deltaData = response.data;
       const deltaMap: {[key: string]: string} = {};
-      
+
       if (Array.isArray(deltaData)) {
         deltaData.forEach(item => {
           if (item.cfid && item.contestDelta) {
             deltaMap[item.cfid] = item.contestDelta;
           }
         });
-        
+
         // console.log("Processed contest delta data:", deltaMap);
         setContestDeltaMap(deltaMap);
       } else {
         console.error('Invalid contest delta data format:', deltaData);
       }
     } catch (error) {
+      if (axios.isCancel(error) || signal?.aborted) {
+        return;
+      }
       console.error('Error fetching contest delta data:', error);
     }
   };
