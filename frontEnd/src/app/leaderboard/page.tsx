@@ -5,7 +5,8 @@
 import { Slider } from "@mui/material";
 import { ArrowUpDown, Search } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useMemo, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 // import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -33,16 +34,57 @@ interface User {
   titlePhoto: string;
 }
 
+const DEFAULT_RATING_RANGE: [number, number] = [0, 4000];
+const ALLOWED_SORT_BY: ReadonlyArray<keyof User> = ['rating', 'maxRating'];
+const ALLOWED_SORT_ORDER: ReadonlyArray<'asc' | 'desc'> = ['asc', 'desc'];
+
+// Parse the initial rating range out of the URL, falling back to the
+// default [0, 4000] whenever the params are missing or malformed.
+function parseInitialRatingRange(searchParams: URLSearchParams): [number, number] {
+  const minParam = searchParams.get('minRating');
+  const maxParam = searchParams.get('maxRating');
+  if (minParam === null || maxParam === null) {
+    return DEFAULT_RATING_RANGE;
+  }
+  const min = Number(minParam);
+  const max = Number(maxParam);
+  if (
+    Number.isFinite(min) && Number.isFinite(max) &&
+    min >= 0 && max <= 4000 && min <= max
+  ) {
+    return [min, max];
+  }
+  return DEFAULT_RATING_RANGE;
+}
+
+function parseInitialSortBy(searchParams: URLSearchParams): keyof User {
+  const sort = searchParams.get('sort');
+  return (ALLOWED_SORT_BY as ReadonlyArray<string>).includes(sort ?? '')
+    ? (sort as keyof User)
+    : 'rating';
+}
+
+function parseInitialSortOrder(searchParams: URLSearchParams): 'asc' | 'desc' {
+  const order = searchParams.get('order');
+  return (ALLOWED_SORT_ORDER as ReadonlyArray<string>).includes(order ?? '')
+    ? (order as 'asc' | 'desc')
+    : 'desc';
+}
+
 const SampleTable: React.FC = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [users, setUsers] = useState<User[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  // const [ratingRange, setRatingRange] = useState<[number, number]>([0, 4000]);
-  const [sliderValue, setSliderValue] = useState<number[]>([0, 4000]); // For visual updates
-  const [ratingRange, setRatingRange] = useState<[number, number]>([0, 4000]); // For state updates
+  const [searchTerm, setSearchTerm] = useState(() => searchParams.get('search') ?? '');
+  // For visual updates while dragging; kept local-only (not synced to URL)
+  const [sliderValue, setSliderValue] = useState<number[]>(() => parseInitialRatingRange(searchParams));
+  const [ratingRange, setRatingRange] = useState<[number, number]>(() => parseInitialRatingRange(searchParams)); // For state updates
   // const sliderTimeout = useRef<NodeJS.Timeout | null>(null);
-  const [selectedYear, setSelectedYear] = useState('');
-  const [sortBy, setSortBy] = useState<keyof User>('rating');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [selectedYear, setSelectedYear] = useState(() => searchParams.get('year') ?? '');
+  const [sortBy, setSortBy] = useState<keyof User>(() => parseInitialSortBy(searchParams));
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>(() => parseInitialSortOrder(searchParams));
   // const [selectedRank, setSelectedRank] = useState('all');
   // const [minRating, setMinRating] = useState(0);
   // const [maxRating, setMaxRating] = useState(3500);
@@ -243,6 +285,25 @@ useEffect(() => {
       return a[sortBy] < b[sortBy] ? 1 : -1;
     });
   }, [users, debouncedSearchTerm, debouncedSelectedYear, ratingRange, sortBy, sortOrder]);
+
+  // Keep the URL query string in sync with the (debounced) filter state so
+  // filter combinations are shareable and survive a refresh. This only ever
+  // writes to the URL - initial state is read once via the lazy useState
+  // initializers above, so this effect can't fight with that read.
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (debouncedSearchTerm) params.set('search', debouncedSearchTerm);
+    if (debouncedSelectedYear) params.set('year', debouncedSelectedYear);
+    if (ratingRange[0] !== DEFAULT_RATING_RANGE[0] || ratingRange[1] !== DEFAULT_RATING_RANGE[1]) {
+      params.set('minRating', String(ratingRange[0]));
+      params.set('maxRating', String(ratingRange[1]));
+    }
+    if (sortBy !== 'rating') params.set('sort', sortBy);
+    if (sortOrder !== 'desc') params.set('order', sortOrder);
+
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  }, [debouncedSearchTerm, debouncedSelectedYear, ratingRange, sortBy, sortOrder, router, pathname]);
 
   const searchAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -618,4 +679,20 @@ const handleSliderChangeCommitted = (
   );
 };
 
-export default SampleTable;
+const LeaderboardFallback = () => (
+  <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="relative h-16 w-16 mb-4">
+      <div className="absolute h-16 w-16 rounded-full border-4 border-blue-200 dark:border-blue-900/30 opacity-25"></div>
+      <div className="absolute h-16 w-16 rounded-full border-4 border-transparent border-t-blue-600 dark:border-t-blue-400 animate-spin"></div>
+    </div>
+    <p className="text-sm text-gray-600 dark:text-gray-400">Loading leaderboard...</p>
+  </div>
+);
+
+export default function LeaderboardPage() {
+  return (
+    <Suspense fallback={<LeaderboardFallback />}>
+      <SampleTable />
+    </Suspense>
+  );
+}
