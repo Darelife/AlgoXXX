@@ -32,7 +32,7 @@
   const pathname = location.pathname;
   const modelist = ace.require("ace/ext/modelist");
   const logged = !!$("a").filter(
-    (_, el) => $(el).text() === "Logout" || $(el).text() === "Выйти"
+    (_, el) => $(el).text() === "Logout" || $(el).text() === "Выйти",
   ).length;
   let $form;
   let $programType;
@@ -95,6 +95,7 @@
     87: "[^{}]*public\\s+(final)?\\s*class\\s+(\\w+).*|$2.java",
     88: "program.kt",
     89: "program.cpp",
+    91: "program.cpp",
   };
 
   const regenerateInterval = 30; // minutes
@@ -151,7 +152,7 @@
         if (await initAppendForm(first, false)) return;
       } catch (e) {
         removeForm();
-        console.error(`[${SCRIPT_NAME}] unexpected error has been occured.`);
+        console.error(`[${SCRIPT_NAME}] unexpected error has been occured.`, e);
         throw e;
       }
       removeForm();
@@ -243,7 +244,7 @@
           action: "setEditorEnabled",
           editorEnabled: editorEnabled,
         },
-        function (response) {}
+        function (response) {},
       );
       return false;
     });
@@ -253,7 +254,7 @@
       $.post(
         "/data/customtest",
         { communityCode: "", action: "setTabSize", tabSize: tabSize },
-        function (response) {}
+        function (response) {},
       );
     });
     $programType.on("change", () => {
@@ -280,6 +281,12 @@
   }
   function setAceMode() {
     var filePath = extensionMap[$programType.val()];
+    if (!filePath) {
+      console.warn(
+        `[${SCRIPT_NAME}] unknown programTypeId "${$programType.val()}", falling back to plain text mode`,
+      );
+      filePath = "program.txt";
+    }
     const mode = modelist.getModeForPath(filePath).mode;
     if (editor) editor.session.setMode(mode);
   }
@@ -361,7 +368,7 @@
           img.hide();
           button.prop("disabled", false);
         },
-        alwaysDisable ? 1000 : 10000
+        alwaysDisable ? 1000 : 10000,
       );
     }
     if (result) succeedSubmit();
@@ -424,7 +431,7 @@
             $(".submit-form :submit").removeAttr("disabled");
           }
         },
-        "json"
+        "json",
       );
     } else {
       Codeforces.clearAjaxFormErrors("form table");
