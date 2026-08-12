@@ -359,7 +359,7 @@ const CodeforcesPage: NextPage = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            Submit a compile error to verify your Codeforces handle
+            Submit a compilation error to verify your Codeforces handle
           </motion.p>
         </div>
       </motion.div>
@@ -446,11 +446,11 @@ const CodeforcesPage: NextPage = () => {
                       </div>
 
                       <h2 className={`text-xl font-bold text-center ${theme === "dark" ? "text-gray-200" : "text-gray-800"}`}>
-                        Submit a Compile Error
+                        Submit a compilation error
                       </h2>
 
                       <p className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"} text-center`}>
-                        Submit code with a compile error to the problem below for verification.
+                        Submit code with a compilation error to the problem below for verification.
                       </p>
 
                       <div className="mt-4 p-4 rounded-lg text-center">
@@ -522,7 +522,7 @@ const CodeforcesPage: NextPage = () => {
           <ol className={`space-y-3 ${theme === "dark" ? "text-gray-300" : "text-gray-600"} list-decimal pl-5`}>
             <li>Fill in your BITS ID, full name, and Codeforces handle</li>
             <li>Click the problem link to visit the Codeforces problem page</li>
-            <li>Submit any solution that produces a <strong>compile error</strong> (e.g., write, &quot;Compilation Error&quot;)</li>
+            <li>Submit any solution that produces a <strong>compilation error</strong> (e.g., write, &quot;Compilation Error&quot;)</li>
             <li>After submitting, return here and click &quot;Verify Submission&quot;</li>
             <li>Once verified, you&apos;ll be redirected to the homepage</li>
           </ol>
