@@ -48,7 +48,7 @@ router.post("/", async (req, res) => {
         name: name.trim(),
         cfid: cfid.trim(),
         bitsid: bitsid.trim(),
-        contestDelta: contestDelta || 0,
+        contestDelta: contestDelta || "10+",
       },
     ]);
 

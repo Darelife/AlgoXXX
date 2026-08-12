@@ -46,6 +46,7 @@ router.get("/contestDeltaFetch", async (req, res, next) => {
     );
 
     const recentContests = sortedContests.slice(0, 100);
+    // Ordered most-recent-first: position in this array == "contests missed" delta
     const contestIds = recentContests
       .filter(
         (contest) =>
@@ -58,11 +59,15 @@ router.get("/contestDeltaFetch", async (req, res, next) => {
       .slice(0, 11)
       .map((contest) => contest.id);
 
+    // One request per contest (bounded, ~11), not per user (800+). Codeforces
+    // rejects any extra params (e.g. showUnofficial, handles) on this endpoint
+    // for non-admin users regardless of anonymous vs. authenticated access -
+    // confirmed live, so we fetch the plain standings and take official rows.
     const contestParticipants = [];
 
     for (const contestId of contestIds) {
       try {
-        const url = `https://codeforces.com/api/contest.standings?contestId=${contestId}&showUnofficial=true`;
+        const url = `https://codeforces.com/api/contest.standings?contestId=${contestId}`;
         const response = await fetch(url);
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -82,23 +87,15 @@ router.get("/contestDeltaFetch", async (req, res, next) => {
           continue;
         }
 
-        const participants = data.result.rows.map(
-          (row) => row.party.members[0].handle
+        const participants = new Set(
+          data.result.rows.map((row) => row.party.members[0].handle.toLowerCase())
         );
-        contestParticipants.push([contestId, participants]);
+        contestParticipants.push(participants);
       } catch (error) {
         console.error(`Error processing contest ${contestId}:`, error.message);
         continue;
       }
     }
-
-    const normalizedContestParticipants = contestParticipants.map(
-      ([contestId, participants]) => {
-        return [contestId, participants.map((handle) => handle.toLowerCase())];
-      }
-    );
-
-    const userContestCount = new Map();
 
     const { data: users, error: fetchError } = await supabase
       .from("users")
@@ -106,22 +103,16 @@ router.get("/contestDeltaFetch", async (req, res, next) => {
 
     if (fetchError) throw fetchError;
 
-    users.forEach((user) => {
-      let count = 0;
-      userContestCount.set(user.cfid, -1);
-      for (const [_, participants] of normalizedContestParticipants) {
-        if (participants.includes(user.cfid.toLowerCase())) {
-          userContestCount.set(user.cfid, count);
-          break;
-        }
-        count++;
-      }
-    });
-
-    userContestCount.forEach(async (value, key) => {
-      const contestDelta = value === -1 ? "10+" : value.toString();
-      await supabase.from("users").update({ contestDelta }).eq("cfid", key);
-    });
+    await Promise.all(
+      users.map((user) => {
+        const cfidLower = user.cfid.toLowerCase();
+        const delta = contestParticipants.findIndex((participants) =>
+          participants.has(cfidLower)
+        );
+        const contestDelta = delta === -1 ? "10+" : delta.toString();
+        return supabase.from("users").update({ contestDelta }).eq("cfid", user.cfid);
+      })
+    );
 
     return res
       .status(200)
