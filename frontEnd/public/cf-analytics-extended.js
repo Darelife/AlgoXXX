@@ -1489,10 +1489,27 @@
   }
 
   // ================= INIT =================
+  // Codeforces ships its own viewport meta with an extreme initial-scale
+  // (width=device-width, initial-scale=0.01), which makes mobile browsers
+  // compute a layout viewport far wider than the physical screen. That
+  // means our @media (max-width: 700px) rules never match on phones, so
+  // the dashboard renders at desktop sizing and only looks right zoomed
+  // out. Force a sane viewport so the responsive CSS actually applies.
+  function fixViewport() {
+    let meta = document.querySelector('meta[name="viewport"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "viewport";
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", "width=device-width, initial-scale=1");
+  }
+
   function init() {
     const pageContent = document.querySelector("#pageContent");
     if (!pageContent) return;
 
+    fixViewport();
     state.handle = getProfileIdFromUrl(window.location.href);
     buildScaffold();
     loadAndRender(state.handle, false);
