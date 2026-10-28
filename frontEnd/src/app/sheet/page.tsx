@@ -63,7 +63,7 @@ export default function Home() {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('https://algoxxx.onrender.com/currentInfo/algosheet');
+        const response = await axios.get('https://algoxxx-6sf7.onrender.com/currentInfo/algosheet');
         setQuestions(response.data);
         setFilteredQuestions(response.data);
         setError(null);

@@ -91,7 +91,7 @@ const ContestsPage: React.FC = () => {
   const fetchContests = async () => {
     try {
       setLoading(true);
-      const response = await fetch('https://algoxxx.onrender.com/currentinfo/nextcontest');
+      const response = await fetch('https://algoxxx-6sf7.onrender.com/currentinfo/nextcontest');
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

@@ -177,7 +177,7 @@ export async function POST() {
         console.log(`[Sync] Processing leaderboard for today (${todayDateStr})...`);
 
         // Fetch Users
-        const usersRes = await fetch("https://algoxxx.onrender.com/database");
+        const usersRes = await fetch("https://algoxxx-6sf7.onrender.com/database");
         const usersData: DBUser[] = await usersRes.json();
         const userMap = new Map<string, DBUser>();
         usersData.forEach(u => userMap.set(u.cfid.toLowerCase().trim(), u));

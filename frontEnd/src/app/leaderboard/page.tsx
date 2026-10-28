@@ -191,7 +191,7 @@ useEffect(() => {
 
   async function fetchUsers() {
     try {
-      const response = await axios.get('https://algoxxx.onrender.com/currentInfo/all', {
+      const response = await axios.get('https://algoxxx-6sf7.onrender.com/currentInfo/all', {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -251,7 +251,7 @@ useEffect(() => {
 
   const fetchContestDelta = async (signal?: AbortSignal) => {
     try {
-      const response = await axios.get('https://algoxxx.onrender.com/currentinfo/contestDelta', {
+      const response = await axios.get('https://algoxxx-6sf7.onrender.com/currentinfo/contestDelta', {
         headers: {
           'Content-Type': 'application/json',
         },

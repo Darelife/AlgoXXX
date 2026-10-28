@@ -104,7 +104,7 @@ export default function SuggestPage() {
   const fetchSuggestedQuestions = async () => {
     try {
       setLoadingSuggestions(true);
-      const response = await axios.get('https://algoxxx.onrender.com/currentInfo/algosheetreq');
+      const response = await axios.get('https://algoxxx-6sf7.onrender.com/currentInfo/algosheetreq');
       
       if (response.status === 200) {
         setSuggestedQuestions(response.data);
@@ -151,7 +151,7 @@ export default function SuggestPage() {
       setApprovingQuestion(questionId);
       
           // const response = await axios.post('http://localhost:5000/currentInfo/algosheetreq/approve', {
-          const response = await axios.post('https://algoxxx.onrender.com/currentInfo/algosheetreq/approve', {
+          const response = await axios.post('https://algoxxx-6sf7.onrender.com/currentInfo/algosheetreq/approve', {
             questionId: questionId,
             voterEmail: userEmail
           });      if (response.status === 200) {
@@ -217,7 +217,7 @@ export default function SuggestPage() {
       for (const questionId of questionIds) {
         try {
           // const response = await axios.post('http://localhost:5000/currentInfo/algosheetreq/approve', {
-          const response = await axios.post('https://algoxxx.onrender.com/currentInfo/algosheetreq/approve', {
+          const response = await axios.post('https://algoxxx-6sf7.onrender.com/currentInfo/algosheetreq/approve', {
             questionId: questionId,
             voterEmail: userEmail
           });
@@ -278,7 +278,7 @@ export default function SuggestPage() {
       };
       console.log("Sending request:", requestData);
 
-      const response = await axios.post('https://algoxxx.onrender.com/currentInfo/algosheetreq', requestData);
+      const response = await axios.post('https://algoxxx-6sf7.onrender.com/currentInfo/algosheetreq', requestData);
       
       console.log("Response:", response.data);
 

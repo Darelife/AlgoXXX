@@ -4,7 +4,7 @@ export async function GET() {
   try {
     // Make the request to the contest delta API
     const response = await fetch(
-      'https://algoxxx.onrender.com/currentinfo/contestdeltafetch',
+      'https://algoxxx-6sf7.onrender.com/currentinfo/contestdeltafetch',
       {
         method: 'GET',
         headers: {

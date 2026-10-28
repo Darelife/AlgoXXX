@@ -125,7 +125,7 @@ export default function DailyRoute() {
       try {
         if (session?.user?.email) {
           const email = session.user.email.toLowerCase();
-          const usersRes = await fetch("https://algoxxx.onrender.com/database");
+          const usersRes = await fetch("https://algoxxx-6sf7.onrender.com/database");
           const usersData: DBUser[] = await usersRes.json();
 
           const foundUser = usersData.find(u => {
